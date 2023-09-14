@@ -33,9 +33,9 @@ char	*ft_strdup(const char *s1)
 {
 	char	*str;
 
-	str = (char *)malloc(ft_strlen(s1) * sizeof(char));
+	str = (char *)malloc(ft_strlen((char *)s1) * sizeof(char));
 	if (str == NULL)
 		return (0);
-	str = ft_strcpy(str, s1);
+	str = ft_strcpy(str, (char *)s1);
 	return (str);
 }
