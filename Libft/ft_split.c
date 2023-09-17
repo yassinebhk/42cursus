@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 19:04:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/14 18:12:30 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2023/09/17 18:51:17 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@ static int	num_words(char const *s, char c)
 	int	num;
 	int	i;
 
-	num = 1;
+	num = 0;
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] == c)
+		if (s[i] != c)
+		{
 			num++;
+			while (s[i] != c && s[i + 1])
+				i++;
+		}
 		i++;
 	}
 	return (num);
@@ -56,6 +60,12 @@ static char	*fill_word(char *palabra, char *s, int ini, int pos)
 	return (palabra);
 }
 
+static void	find_pos(char *palabra, int *i, char c)
+{
+	while (palabra[*i] && palabra[*i] == c)
+		(*i)++;
+}
+
 char	**ft_split(char const *s, char c)
 {
 	int		words;
@@ -72,9 +82,10 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	while (i < words)
 	{
+		find_pos((char *)s, &pos, c);
 		ini = pos;
 		palabra[i] = (char *)malloc((size_words(s, c, &pos) + 1)
-				* sizeof(char));
+				*sizeof(char));
 		palabra[i] = fill_word(palabra[i], (char *)s, ini, pos);
 		i++;
 		pos++;

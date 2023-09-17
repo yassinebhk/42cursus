@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 17:14:25 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/13 17:14:27 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2023/09/17 18:50:33 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 	j = 0;
 	i = 0;
-	str = (char *)malloc(sizeof(char) * ft_strlen(s1));
+	str = (char *)malloc(sizeof(char) * (strlen(s1) + 1));
 	if (*str)
 		return (NULL);
 	while (ft_strchr(set, *(s1 + i)))
 		i++;
 	cont = i;
 	i = 0;
-	while (ft_strchr(set, *(s1 + ft_strlen(s1) - 1 - i)))
+	while (ft_strchr(set, *(s1 + strlen(s1) - 1 - i)))
 		i++;
-	while (j < ft_strlen(s1) - i - cont)
+	while (j < strlen(s1) - i - cont)
 	{
 		*(str + j) = *(s1 + j + cont);
 		j++;

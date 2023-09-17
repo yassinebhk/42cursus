@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/13 13:40:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/13 13:40:57 by ybouhaik         ###   ########.fr       */
+/*   Created: 2023/09/17 12:09:44 by ybouhaik          #+#    #+#             */
+/*   Updated: 2023/09/17 12:09:45 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	int		diff;
-	size_t	cont;
+	t_list	*new;
 
-	cont = 0;
-	diff = 0;
-	while (*s1 == *s2 && *s1 != 0 && cont < n)
+	new = (t_list *)malloc(ft_lstsize(lst) * sizeof(t_list));
+	if (new)
+		return (NULL);
+	while (lst)
 	{
-		s1++;
-		s2++;
-		cont++;
+		if ((*f)(lst->content))
+		{
+			new->content = (*f)(lst->content);
+			new = new->next;
+		}
+		else
+			(*del)(lst->content);
+		lst = lst->next;
 	}
-	if (*s1 != *s2 && cont < n)
-		diff = (unsigned char)(*s1) - (unsigned char)(*s2);
-	return (diff);
+	return (new);
 }

@@ -21,16 +21,15 @@ char	*ft_strnstr(const char *haystack, const char *neddle, size_t len)
 	j = 0;
 	if (neddle[j] == '\0')
 		return ((char *)haystack);
-	while (haystack[i] != '\0')
+	while (haystack[i] != '\0' && i < len)
 	{
 		while (haystack[i + j] == neddle[j] && haystack[i + j] != '\0'
-			&& j < len)
+			&& (i + j) < len)
 			j++;
 		if (neddle[j] == '\0')
 			return ((char *)haystack + i);
 		i++;
 		j = 0;
-		len--;
 	}
 	return (NULL);
 }

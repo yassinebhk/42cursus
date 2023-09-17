@@ -14,7 +14,7 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	size_t	diff;
+	int		diff;
 	size_t	cont;
 	char	*a;
 	char	*b;
@@ -23,13 +23,13 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	diff = 0;
 	a = (char *)s1;
 	b = (char *)s2;
-	while (cont < n)
+	while (cont < n && *a == *b && *a != 0)
 	{
 		a++;
 		b++;
 		cont++;
 	}
 	if (*a != *b && cont < n)
-		diff = *a - *b;
+		diff = (unsigned char)(*a) - (unsigned char)(*b);
 	return (diff);
 }
