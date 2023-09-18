@@ -17,7 +17,7 @@ static int	num_digs(int n)
 	int	num;
 
 	if (n == 0)
-		return (0);
+		return (1);
 	num = 0;
 	while (n != 0)
 	{

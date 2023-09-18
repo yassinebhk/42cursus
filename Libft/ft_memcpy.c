@@ -29,7 +29,5 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 			n--;
 		}
 	}
-	else
-		return (NULL);
 	return (dst);
 }
