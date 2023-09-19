@@ -36,13 +36,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	i = 0;
 	s = (char *)malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char) + 1);
-	if (*s)
+	if (!s)
 		return (NULL);
 	while (*(s1 + i) != '\0')
 	{
 		*(s + i) = *(s1 + i);
 		i++;
-	} // FREE DE S1 ¿?¿?¿?¿?
+	}
+	*(s + i) = '\0';
 	s = ft_strcat(s, (char *)s2);
 	return (s);
 }
+// FREE DE S1 ¿?¿?¿?¿?

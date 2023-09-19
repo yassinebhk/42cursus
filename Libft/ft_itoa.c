@@ -17,7 +17,7 @@ static int	num_digs(int n)
 	int	num;
 
 	if (n == 0)
-		return (1);
+		return (0);
 	num = 0;
 	while (n != 0)
 	{
@@ -52,12 +52,13 @@ char	*ft_itoa(int n)
 
 	num_dig = num_digs(n);
 	num = (char *)malloc((num_dig + 2) * sizeof(char));
-	if (*num)
+	if (!num)
 		return (NULL);
 	if (n == 0)
 	{
 		*num = '0';
-		*(num++) = '\0';
+		*(num + 1) = '\0';
+		return (num);
 	}
 	else if (n < 0)
 	{

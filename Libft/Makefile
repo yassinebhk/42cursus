@@ -37,11 +37,11 @@ $(NAME): $(OBJS)
 bonus: $(OBJS) $(OBJS2)
 	ar -rcs  $(NAME) $(OBJS2)
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJS2)
 
 fclean: clean 
 	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
