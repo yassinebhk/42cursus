@@ -12,10 +12,33 @@
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int n, int fd)
+void putnbr(int n, int fd)
 {
-	char	*num;
+	char	a;
 
-	num = ft_itoa(n);
-	write(fd, num, ft_strlen(num));
+    if (n > 0)
+    {
+        putnbr(n/10, fd);
+        a = n%10 + '0';
+        write(fd, &a, 1);
+    }
+}
+
+void	ft_putnbr_fd(int n, int fd)
+{	
+	if (n == 0)
+        write(1, "0", 1);
+    else if (n == INT_MIN)
+    {
+        write(1, "-", 1);
+        write(1, "2", 1);
+        ft_putnbr_fd(147483648, fd);
+    }
+    else if (n < 0)
+    {
+        write(1, "-", 1);
+        ft_putnbr_fd(-n, fd);
+    }
+	else if (n > 0)
+        putnbr(n, fd);
 }
