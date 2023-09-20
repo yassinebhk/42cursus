@@ -6,7 +6,7 @@ Hi there ✋!
 
 ```mermaid
 graph TD;
-    A-->A;
+    LIBFT-->LIBFT;
 ```
 
 | Projects | Mark |
