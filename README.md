@@ -14,8 +14,6 @@ graph TD;
     LIBFT --> BORN2BEROOT
     FT_PRINTF --> BORN2BEROOT
     BORN2BEROOT --> FT_PRINTF
-    BOR2BEROOT --> LIBFT
-    FT_PRINTF --> LIBFT
 ```
 
 | Projects | Mark |
