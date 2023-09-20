@@ -4,6 +4,11 @@ Hi there ✋!
 [![Header](https://www.42lausanne.ch/wp-content/uploads/2021/02/Holy-Graph.png "Header")](https://42lausanne.ch/formation-informatique-42//)
 - ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png)
 
+```mermaid
+graph TD;
+    A-->A;
+```
+
 | Projects | Mark |
 | --- | --- |
 | `Libft` | 125/125 |
