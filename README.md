@@ -12,7 +12,6 @@ graph TD;
 graph TD;
     LIBFT --> FT_PRINTF;
     LIBFT --> BORN2BEROOT
-    FT_PRINTF --> BORN2BEROOT
     BORN2BEROOT --> FT_PRINTF
 ```
 
