@@ -6,12 +6,18 @@ Hi there ✋!
 
 ```mermaid
 graph TD;
-    LIBFT-->LIBFT;
+    LIBFT --> LIBFT;
+```
+```mermaid
+graph TD;
+    LIBFT --> FT_PRINTF;
+    LIBFT --> BORN2BEROOT
+    FT_PRINTF --> BOR2BEROOT
 ```
 
 | Projects | Mark |
 | --- | --- |
 | `Libft` | 125/125 |
-| `Printf` | 0/100 |
+| `Ft_printf` | 0/100 |
 
 [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-informational?style=flat&logo=linkedin&logoColor=white&color=0D76A8)](https://www.linkedin.com/in/yassine-bouhaik-34593219a/)
