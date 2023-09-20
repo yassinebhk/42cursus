@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 19:04:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/17 18:51:17 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2023/09/20 21:12:06 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,30 +66,53 @@ static void	find_pos(char *palabra, int *i, char c)
 		(*i)++;
 }
 
-char	**ft_split(char const *s, char c)
+void	ft_free(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (*(s + i))
+	{
+		free(*(s + i));
+		i++;
+	}
+	free(s);
+}
+
+struct		s_vbs
 {
 	int		words;
 	int		i;
 	int		pos;
 	int		ini;
 	char	**palabra;
+};
 
-	i = 0;
-	pos = 0;
-	words = num_words(s, c);
-	palabra = (char **)malloc((words + 1) * sizeof(char *));
-	if (!palabra)
+char	**ft_split(char const *s, char c)
+{
+	struct s_vbs	a;
+
+	a.i = 0;
+	a.pos = 0;
+	a.words = num_words(s, c);
+	a.palabra = (char **)malloc((a.words + 1) * sizeof(char *));
+	if (!a.palabra)
 		return (NULL);
-	while (i < words)
+	while (a.i < a.words)
 	{
-		find_pos((char *)s, &pos, c);
-		ini = pos;
-		palabra[i] = (char *)malloc((size_words(s, c, &pos) + 1)
-				*sizeof(char));
-		palabra[i] = fill_word(palabra[i], (char *)s, ini, pos);
-		i++;
-		pos++;
+		find_pos((char *)s, &a.pos, c);
+		a.ini = a.pos;
+		a.palabra[a.i] = (char *)malloc((size_words(s, c, &a.pos) + 1)
+				* sizeof(char));
+		if (!a.palabra[a.i])
+		{
+			ft_free(a.palabra);
+			return (NULL);
+		}
+		a.palabra[a.i] = fill_word(a.palabra[a.i], (char *)s, a.ini, a.pos);
+		a.i++;
+		a.pos++;
 	}
-	palabra[i] = NULL;
-	return (palabra);
+	a.palabra[a.i] = NULL;
+	return (a.palabra);
 }

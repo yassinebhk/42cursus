@@ -17,7 +17,7 @@ static int	num_digs(int n)
 	int	num;
 
 	if (n == 0)
-		return (0);
+		return (1);
 	num = 0;
 	while (n != 0)
 	{
@@ -47,11 +47,9 @@ static char	*convert_str(char *num, long n, int i)
 
 char	*ft_itoa(int n)
 {
-	int		num_dig;
 	char	*num;
 
-	num_dig = num_digs(n);
-	num = (char *)malloc((num_dig + 2) * sizeof(char));
+	num = (char *)malloc((num_digs(n) + (n < 0) + 1) * sizeof(char));
 	if (!num)
 		return (NULL);
 	if (n == 0)
