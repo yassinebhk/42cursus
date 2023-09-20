@@ -10,8 +10,8 @@ graph TD;
 ```
 ```mermaid
 graph TD;
-    LIBFT --> FT_PRINTF;
-    LIBFT --> BORN2BEROOT
+    GET_NEXT_LINE --> FT_PRINTF;
+    GET_NEXT_LINE --> BORN2BEROOT
     BORN2BEROOT --> FT_PRINTF
 ```
 
