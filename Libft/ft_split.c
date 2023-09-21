@@ -32,19 +32,6 @@ static int	num_words(char const *s, char c)
 	return (num);
 }
 
-static int	size_words(char const *s, char c, int *i)
-{
-	int	num;
-
-	num = 0;
-	while (s[*i] != c && s[*i])
-	{
-		num++;
-		(*i)++;
-	}
-	return (num);
-}
-
 static char	*fill_word(char *palabra, char *s, int ini, int pos)
 {
 	int	j;
@@ -60,10 +47,17 @@ static char	*fill_word(char *palabra, char *s, int ini, int pos)
 	return (palabra);
 }
 
-static void	find_pos(char *palabra, int *i, char c)
+static void	find_pos(char *palabra, int *i, char c, int *size, int *ini)
 {
+	*size = 0;
 	while (palabra[*i] && palabra[*i] == c)
 		(*i)++;
+	*ini = *i;
+	while (palabra[*i] != c && palabra[*i])
+	{
+		(*size)++;
+		(*i)++;
+	}	
 }
 
 void	ft_free(char **s)
@@ -81,10 +75,10 @@ void	ft_free(char **s)
 
 struct		s_vbs
 {
-	int		words;
 	int		i;
 	int		pos;
 	int		ini;
+	int		size;
 	char	**palabra;
 };
 
@@ -94,16 +88,15 @@ char	**ft_split(char const *s, char c)
 
 	a.i = 0;
 	a.pos = 0;
-	a.words = num_words(s, c);
-	a.palabra = (char **)malloc((a.words + 1) * sizeof(char *));
+	a.size = 0;
+	a.ini = 0;
+	a.palabra = (char **)malloc((num_words(s, c) + 1) * sizeof(char *));
 	if (!a.palabra)
 		return (NULL);
-	while (a.i < a.words)
+	while (a.i < num_words(s, c))
 	{
-		find_pos((char *)s, &a.pos, c);
-		a.ini = a.pos;
-		a.palabra[a.i] = (char *)malloc((size_words(s, c, &a.pos) + 1)
-				* sizeof(char));
+		find_pos((char *)s, &a.pos, c, &a.size, &a.ini);
+		a.palabra[a.i] = (char *)malloc((a.size + 1) * sizeof(char));
 		if (!a.palabra[a.i])
 		{
 			ft_free(a.palabra);
@@ -111,7 +104,6 @@ char	**ft_split(char const *s, char c)
 		}
 		a.palabra[a.i] = fill_word(a.palabra[a.i], (char *)s, a.ini, a.pos);
 		a.i++;
-		a.pos++;
 	}
 	a.palabra[a.i] = NULL;
 	return (a.palabra);
