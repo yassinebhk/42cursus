@@ -47,4 +47,3 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s = ft_strcat(s, (char *)s2);
 	return (s);
 }
-// FREE DE S1 ¿?¿?¿?¿?
