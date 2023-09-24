@@ -17,7 +17,7 @@ graph TD;
 
 | Projects | Mark |
 | --- | --- |
-| `Libft` | ![image]("C:\Users\yassi\Downloads\Screen Shot 2023-09-24 at 5.28.40 PM.png") |
+| `Libft` | ![Alt text]("C:\Users\yassi\Downloads\125.png"?raw=true "Title") |
 | `Ft_printf` | 0/100 |
 
 [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-informational?style=flat&logo=linkedin&logoColor=white&color=0D76A8)](https://www.linkedin.com/in/yassine-bouhaik-34593219a/)
