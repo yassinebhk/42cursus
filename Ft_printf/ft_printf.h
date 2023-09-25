@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+int ft_putnbr_base(long long num, va_list arg, int *res, char *base);
 int ft_printf(char const *, ...);
+char *base (char c);
 
 #endif
