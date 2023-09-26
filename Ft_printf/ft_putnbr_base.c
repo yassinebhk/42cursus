@@ -3,36 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: alumno <alumno@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 18:07:00 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/25 18:07:03 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:07:05 by alumno           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char *base (char c)
+static int char_in_base(char *base, long long num)
 {
-    char *base_dec;
-    char *base_hex;
-    char *base_HEX;
+    int pos;
 
-    base_dec = "0123456789";
-    base_HEX = "0123456789ABCDEF";
-    base_hex = "0123456789abcdef";
-    if (c == 'p' || c == 'x' || c == 'X')
+    pos = 0;
+    while (*(base + pos))
     {
-        if (c == 'e')
-        ;
-            //devuelvo lo que searchfs
-        //devuelvo lo otro
+        if (*(base + pos) == num)
+            return (pos);
+        pos++;
     }
+    return (0);
 }
 
-int ft_putnbr_base(long long num, va_list arg, int *res, char *base)
+static int  ft_writenbr(long long num, int *res, char *base)
 {
-    int check;
+    int     check;
+    char    c;
+    
+    check = 1;
+    c = *(base + char_in_base(base, num));
+    check = write(1, &c, 1);
+    if (!(check + 1))
+        return (0);
+    *res += check;
+    return (check);
+}
 
-    check = 0;
+int ft_putnbr_base(long long num, int *res, char *base)
+{
+    int     check;
+    check = 1;
+    if (num < 0)
+    {
+        check = write(1, "-", 1);
+        if (!(check + 1))
+            return (0);
+        *res += check;
+        ft_putnbr_base(-num, res, base);
+    }
+    else if (num > 0)
+    {
+        ft_putnbr_base(num / ft_strlen(base), res, base);
+        if (!ft_writenbr(num % ft_strlen(base), res, base))
+            return (0);
+    }
+    else
+    {
+        check = write(1, "0", 1);
+        if (!(check + 1))
+            return (0);
+        *res += check;
+    }
+    return (check);   
 }
