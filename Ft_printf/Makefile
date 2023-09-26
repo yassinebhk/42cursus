@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alumno <alumno@student.42.fr>              +#+  +:+       +#+         #
+#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/24 18:03:25 by ybouhaik          #+#    #+#              #
-#    Updated: 2023/09/26 00:04:06 by alumno           ###   ########.fr        #
+#    Updated: 2023/09/24 18:03:27 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRCS = ft_printf.c ft_putnbr_base.c
+SRCS = ft_printf.c ft_putnbr_base.c ft_aux.c
 
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror

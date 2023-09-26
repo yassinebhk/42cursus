@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_aux.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/24 18:03:52 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/24 18:03:54 by ybouhaik         ###   ########.fr       */
+/*   Created: 2023/09/26 19:06:24 by ybouhaik          #+#    #+#             */
+/*   Updated: 2023/09/26 19:06:26 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "ft_printf.h"
 
-# include "libft/libft.h"
-# include <stdarg.h>
-# include <stdlib.h>
-# include <unistd.h>
+int	ft_putstr_fd(char *s, int fd)
+{
+	return (write(fd, s, ft_strlen(s)));
+}
 
-int		ft_putnbr_base(long long num, int *res, char *base);
-int		ft_printf(char const *buffer, ...);
-int		ft_putstr_fd(char *s, int fd);
-int		ft_putchar_fd(char c, int fd);
-size_t	ft_strlen(const char *s);
+size_t	ft_strlen(const char *s)
+{
+	size_t	cont;
 
-#endif
+	cont = 0;
+	while (s[cont] != '\0')
+		cont++;
+	return (cont);
+}
+
+int	ft_putchar_fd(char c, int fd)
+{
+	int	check;
+
+	check = (write(fd, &c, sizeof(char)));
+	if (check == -1)
+		return (0);
+	else
+		return (1);
+}
