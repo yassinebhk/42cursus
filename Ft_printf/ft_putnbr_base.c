@@ -45,7 +45,7 @@ static int	putnbr(long long n, int *res, char *base)
 	return (check);
 }
 
-int	ft_putnbr_base(long long num, int *res, char *base)
+static int	put_special(long long num, int *res)
 {
 	int	check;
 
@@ -56,8 +56,30 @@ int	ft_putnbr_base(long long num, int *res, char *base)
 		if (!(check + 1))
 			return (0);
 		*res += check;
+		return (-2);
 	}
-	else if (num < 0)
+	else if (num == LONG_MIN)
+	{	
+		if (num == LONG_MIN)
+			check = write(1, "8000000000000000", 16);
+		else
+			check = write(1, "ffffffffffffffff", 16);
+		if (!(check + 1))
+			return (0);
+		*res += check;
+		return (-2);
+	}
+	return (check);
+}
+
+int	ft_putnbr_base(long long num, int *res, char *base)
+{
+	int	check;
+
+	check = put_special(num, res);
+	if (!check)
+		return (0);
+	if (num < 0 && !(check - 1))
 	{
 		check = write(1, "-", 1);
 		if (!(check + 1))
@@ -65,7 +87,7 @@ int	ft_putnbr_base(long long num, int *res, char *base)
 		*res += check;
 		putnbr(-num, res, base);
 	}
-	else
+	else if (num > 0 && !(check - 1))
 	{
 		if (!putnbr(num, res, base))
 			return (0);

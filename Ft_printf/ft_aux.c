@@ -12,9 +12,20 @@
 
 #include "ft_printf.h"
 
-int	ft_putstr_fd(char *s, int fd)
+int	ft_putstr_fd(char *s, int *res)
 {
-	return (write(fd, s, ft_strlen(s)));
+	int	check;
+
+	if (!s)
+		return (1);
+	check = write(1, s, ft_strlen(s));
+	if (check == -1)
+		return (0);
+	else
+	{
+		*res += check;
+		return (1);
+	}
 }
 
 size_t	ft_strlen(const char *s)
@@ -27,13 +38,16 @@ size_t	ft_strlen(const char *s)
 	return (cont);
 }
 
-int	ft_putchar_fd(char c, int fd)
+int	ft_putchar_fd(char c, int *res)
 {
 	int	check;
 
-	check = (write(fd, &c, sizeof(char)));
+	check = write(1, &c, sizeof(char));
 	if (check == -1)
 		return (0);
 	else
+	{
+		*res += check;
 		return (1);
+	}
 }

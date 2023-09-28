@@ -17,11 +17,17 @@
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
-int		ft_putnbr_base(long long num, int *res, char *base);
-int		ft_printf(char const *buffer, ...);
-int		ft_putstr_fd(char *s, int fd);
-int		ft_putchar_fd(char c, int fd);
-size_t	ft_strlen(const char *s);
+struct		s_vars
+{
+	int		check;
+	int		res;
+	int		i;
+	va_list	arg;
+};
+
+int			ft_putnbr_base(long long num, int *res, char *base);
+int			ft_printf(char const *buffer, ...);
 
 #endif

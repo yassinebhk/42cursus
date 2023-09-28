@@ -12,61 +12,6 @@
 
 #include "ft_printf.h"
 
-static int	print_buffer(char *buffer, int *res, int *i)
-{
-	int	check;
-
-	check = 1;
-	while (*(buffer + *i) != '%' && *(buffer + *i))
-	{
-		check = write(1, buffer + *i, 1);
-		if (!(check + 1))
-			return (0);
-		*res += check;
-		(*i)++;
-	}
-	(*i)++;
-	if (*(buffer + *i) && *(buffer + *i) == '%')
-	{
-		check = write(1, buffer + *i, 1);
-		if (!(check + 1))
-			return (0);
-		*res += check;
-	}
-	if (!(*(buffer + *i)) && ft_putchar_fd(buffer[*i - 1], 1))
-	{
-		(*res)++;
-		return (1);
-	}
-	return (check);
-}
-
-static int	printf_char_or_str(char c, va_list arg, int *res)
-{
-	int		check;
-	char	letter;
-	char	*str;
-
-	check = 1;
-	if (c == 'c')
-	{
-		letter = va_arg(arg, int);
-		check = write(1, &letter, 1);
-		if (!(check + 1))
-			return (0);
-		*res += check;
-	}
-	else
-	{
-		str = va_arg(arg, char *);
-		check = ft_putstr_fd(str, 1);
-		if (!(check + 1))
-			return (0);
-		*res += check;
-	}
-	return (check);
-}
-
 static char	*base(char c)
 {
 	char	*base_dec;
@@ -100,51 +45,67 @@ static int	printf_num(char c, va_list arg, int *res)
 			return (0);
 		*res += check;
 		num = va_arg(arg, long long);
-		check = ft_putnbr_base(num, res, base(c));
-		if (!check)
-			return (0);
+		return (ft_putnbr_base((unsigned long long)num, res, base(c)));
+	}
+	else if (c == 'u' || c == 'x' || c == 'X')
+	{
+		num = va_arg(arg, unsigned int);
+		return (ft_putnbr_base(num, res, base(c)));
 	}
 	else
 	{
 		num = va_arg(arg, int);
-		check = ft_putnbr_base(num, res, base(c));
-		if (!check)
-			return (0);
+		return (ft_putnbr_base(num, res, base(c)));
 	}
-	return (check);
 }
 
-struct		s_vars
+static int	format(char c, int *res, va_list arg)
 {
-	int		res;
-	int		i;
-};
+	if (c == '%')
+		return (ft_putchar_fd('%', res));
+	else if (c == 'c')
+		return (ft_putchar_fd(va_arg(arg, int), res));
+	else if (c == 's')
+		return (ft_putstr_fd(va_arg(arg, char *), res));
+	else
+		return (printf_num(c, arg, res));
+}
 
-int	ft_printf(char const *buffer, ...)
+static int	print_buff(char *buff, int *res, int *i, va_list arg)
 {
-	va_list			arg;
+	int	check;
+
+	check = 1;
+	while (*(buff + *i) != '%' && *(buff + *i))
+	{
+		check = write(1, buff + *i, 1);
+		if (!(check + 1))
+			return (0);
+		*res += check;
+		(*i)++;
+	}
+	if (!*(buff + *i))
+		return (-1);
+	else
+		return (format(*(buff + *i + 1), res, arg));
+}
+
+int	ft_printf(char const *buff, ...)
+{
 	struct s_vars	a;
 
 	a.i = 0;
 	a.res = 0;
-	va_start(arg, buffer);
-	while (*(buffer + a.i))
+	va_start(a.arg, buff);
+	while (*(buff + a.i))
 	{
-		if (!(print_buffer((char *)buffer, &a.res, &a.i)))
+		a.check = print_buff((char *)buff, &a.res, &a.i, a.arg);
+		if (!a.check)
 			return (-1);
-		if (*(buffer + a.i) == 'c' || *(buffer + a.i) == 's')
-		{
-			if (!printf_char_or_str(*(buffer + a.i), arg, &a.res))
-				return (-1);
-		}
-		else if (buffer[a.i] == 'x' || buffer[a.i] == 'X' || buffer[a.i] == 'd'
-			|| buffer[a.i] == 'i' || buffer[a.i] == 'p' || buffer[a.i] == 'u')
-		{
-			if (!(printf_num(*(buffer + a.i), arg, &a.res)))
-				return (-1);
-		}
-		a.i++;
+		else if (!(a.check + 1))
+			break ;
+		a.i += 2;
 	}
-	va_end(arg);
+	va_end(a.arg);
 	return (a.res);
 }
