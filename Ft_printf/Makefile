@@ -24,8 +24,8 @@ all: $(NAME)
 	
 $(NAME): $(OBJS)
 	make -C Libft
-	mv Libft/libft.a Ft_printf
-	ar -rcs  $(NAME) $(OBJS)
+	mv Libft/libft.a $(NAME)
+	ar -rcs $(NAME) $(OBJS)
 
 clean:
 	rm -f *.o
