@@ -48,21 +48,21 @@ int	ft_putnbr_base(long long num, int *res, char *base, int u)
 
 	if (num == 0)
 	{
-		if (!(write(1, "0", 1) + 1))
+		if (write(1, "0", 1) <= 0)
 			return (0);
 		*res += 1;
 	}
 	check = put_special(num, res, u);
 	if (!check)
 		return (0);
-	if (num < 0 && !(check - 1))
+	if (num < 0 && check)
 	{
-		if (!(write(1, "-", 1) + 1))
+		if (write(1, "-", 1) <= 0)
 			return (0);
 		*res += 1;
-		putnbr(-num, res, base);
+		check = putnbr(-num, res, base);
 	}
-	else if (num > 0 && !(check - 1))
+	else if (num > 0 && check)
 	{
 		if (!putnbr(num, res, base))
 			return (0);
@@ -77,13 +77,13 @@ int	ft_putptr_base(unsigned long long num, int *res, char *base)
 	check = 1;
 	if (num == 0)
 	{
-		if (!(write(1, "0", 1) + 1))
+		if (write(1, "0", 1) <= 0)
 			return (0);
 		*res += 1;
 	}
 	else if (num == ULONG_MAX)
 	{
-		if (!(write(1, "ffffffffffffffff", 16) + 1))
+		if (write(1, "ffffffffffffffff", 16) <= 0)
 			return (0);
 		*res += 16;
 	}

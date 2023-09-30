@@ -41,14 +41,11 @@ size_t	ft_strlen(const char *s)
 
 int	ft_putchar_fd(char c, int *res)
 {
-	int	check;
-
-	check = write(1, &c, sizeof(char));
-	if (check == -1)
+	if (write(1, &c, sizeof(char)) == -1)
 		return (0);
 	else
 	{
-		*res += check;
+		*res += 1;
 		return (1);
 	}
 }
@@ -56,37 +53,31 @@ int	ft_putchar_fd(char c, int *res)
 int	putnbr(long long n, int *res, char *base)
 {
 	char	a;
-	int		check;
 
-	check = 1;
 	if (n > 0)
 	{
-		putnbr(n / ft_strlen(base), res, base);
-		a = *(base + char_in_base(base, n % ft_strlen(base)));
-		check = write(1, &a, 1);
-		if (!(check + 1))
+		if (!putnbr(n / ft_strlen(base), res, base))
 			return (0);
-		*res += check;
-		return (check);
+		a = *(base + char_in_base(base, n % ft_strlen(base)));
+		if (write(1, &a, 1) <= 0)
+			return (0);
+		*res += 1;
 	}
-	return (check);
+	return (1);
 }
 
 int	putptr(unsigned long long n, int *res, char *base)
 {
 	char	a;
-	int		check;
 
-	check = 1;
 	if (n > 0)
 	{
-		putnbr(n / ft_strlen(base), res, base);
-		a = *(base + char_in_base(base, n % ft_strlen(base)));
-		check = write(1, &a, 1);
-		if (!(check + 1))
+		if (!putnbr(n / ft_strlen(base), res, base))
 			return (0);
-		*res += check;
-		return (check);
+		a = *(base + char_in_base(base, n % ft_strlen(base)));
+		if (write(1, &a, 1) <= 0)
+			return (0);
+		*res += 1;
 	}
-	return (check);
+	return (1);
 }
