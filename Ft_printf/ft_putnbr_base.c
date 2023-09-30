@@ -57,10 +57,9 @@ int	ft_putnbr_base(long long num, int *res, char *base, int u)
 		return (0);
 	if (num < 0 && !(check - 1))
 	{
-		check = write(1, "-", 1);
-		if (!(check + 1))
+		if (!(write(1, "-", 1) + 1))
 			return (0);
-		*res += check;
+		*res += 1;
 		putnbr(-num, res, base);
 	}
 	else if (num > 0 && !(check - 1))
