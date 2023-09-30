@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static int	char_in_base(char *base, long long num)
+int	char_in_base(char *base, long long num)
 {
 	int	pos;
 
@@ -26,57 +26,33 @@ static int	char_in_base(char *base, long long num)
 	return (0);
 }
 
-static int	putnbr(long long n, int *res, char *base)
-{
-	char	a;
-	int		check;
-
-	check = 1;
-	if (n > 0)
-	{
-		putnbr(n / ft_strlen(base), res, base);
-		a = *(base + char_in_base(base, n % ft_strlen(base)));
-		check = write(1, &a, 1);
-		if (!(check + 1))
-			return (0);
-		*res += check;
-		return (check);
-	}
-	return (check);
-}
-
-static int	put_special(long long num, int *res)
+static int	put_special(long long num, int *res, int u)
 {
 	int	check;
 
 	check = 1;
+	if (u && (num == LONG_MIN))
+	{
+		check = write(1, "8000000000000000", 16);
+		if (!(check + 1))
+			return (0);
+		*res += check;
+		return (-2);
+	}
+	return (check);
+}
+
+int	ft_putnbr_base(long long num, int *res, char *base, int u)
+{
+	int	check;
+
 	if (num == 0)
 	{
-		check = write(1, "0", 1);
-		if (!(check + 1))
+		if (!(write(1, "0", 1) + 1))
 			return (0);
-		*res += check;
-		return (-2);
+		*res += 1;
 	}
-	else if (num == LONG_MIN)
-	{	
-		if (num == LONG_MIN)
-			check = write(1, "8000000000000000", 16);
-		else
-			check = write(1, "ffffffffffffffff", 16);
-		if (!(check + 1))
-			return (0);
-		*res += check;
-		return (-2);
-	}
-	return (check);
-}
-
-int	ft_putnbr_base(long long num, int *res, char *base)
-{
-	int	check;
-
-	check = put_special(num, res);
+	check = put_special(num, res, u);
 	if (!check)
 		return (0);
 	if (num < 0 && !(check - 1))
@@ -90,6 +66,31 @@ int	ft_putnbr_base(long long num, int *res, char *base)
 	else if (num > 0 && !(check - 1))
 	{
 		if (!putnbr(num, res, base))
+			return (0);
+	}
+	return (check);
+}
+
+int	ft_putptr_base(unsigned long long num, int *res, char *base)
+{
+	int	check;
+
+	check = 1;
+	if (num == 0)
+	{
+		if (!(write(1, "0", 1) + 1))
+			return (0);
+		*res += 1;
+	}
+	else if (num == ULONG_MAX)
+	{
+		if (!(write(1, "ffffffffffffffff", 16) + 1))
+			return (0);
+		*res += 16;
+	}
+	else
+	{
+		if (!putptr(num, res, base))
 			return (0);
 	}
 	return (check);

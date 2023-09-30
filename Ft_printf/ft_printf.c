@@ -34,8 +34,9 @@ static char	*base(char c)
 
 static int	printf_num(char c, va_list arg, int *res)
 {
-	int			check;
-	long long	num;
+	int					check;
+	long long			num;
+	unsigned long long	unum;
 
 	check = 1;
 	if (c == 'p')
@@ -44,18 +45,18 @@ static int	printf_num(char c, va_list arg, int *res)
 		if (!(check + 1))
 			return (0);
 		*res += check;
-		num = va_arg(arg, long long);
-		return (ft_putnbr_base((unsigned long long)num, res, base(c)));
+		unum = va_arg(arg, unsigned long long);
+		return (ft_putptr_base(unum, res, base(c)));
 	}
 	else if (c == 'u' || c == 'x' || c == 'X')
 	{
-		num = va_arg(arg, unsigned int);
-		return (ft_putnbr_base(num, res, base(c)));
+		unum = va_arg(arg, unsigned int);
+		return (ft_putptr_base(unum, res, base(c)));
 	}
 	else
 	{
 		num = va_arg(arg, int);
-		return (ft_putnbr_base(num, res, base(c)));
+		return (ft_putnbr_base(num, res, base(c), 0));
 	}
 }
 

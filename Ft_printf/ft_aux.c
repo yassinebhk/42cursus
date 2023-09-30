@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 19:06:24 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/26 19:06:26 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2023/09/30 18:43:01 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ int	ft_putstr_fd(char *s, int *res)
 	int	check;
 
 	if (!s)
-		return (1);
-	check = write(1, s, ft_strlen(s));
+		check = write(1, "(null)", 6);
+	else
+		check = write(1, s, ft_strlen(s));
 	if (check == -1)
 		return (0);
 	else
@@ -50,4 +51,42 @@ int	ft_putchar_fd(char c, int *res)
 		*res += check;
 		return (1);
 	}
+}
+
+int	putnbr(long long n, int *res, char *base)
+{
+	char	a;
+	int		check;
+
+	check = 1;
+	if (n > 0)
+	{
+		putnbr(n / ft_strlen(base), res, base);
+		a = *(base + char_in_base(base, n % ft_strlen(base)));
+		check = write(1, &a, 1);
+		if (!(check + 1))
+			return (0);
+		*res += check;
+		return (check);
+	}
+	return (check);
+}
+
+int	putptr(unsigned long long n, int *res, char *base)
+{
+	char	a;
+	int		check;
+
+	check = 1;
+	if (n > 0)
+	{
+		putnbr(n / ft_strlen(base), res, base);
+		a = *(base + char_in_base(base, n % ft_strlen(base)));
+		check = write(1, &a, 1);
+		if (!(check + 1))
+			return (0);
+		*res += check;
+		return (check);
+	}
+	return (check);
 }

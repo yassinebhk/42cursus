@@ -14,10 +14,10 @@
 # define FT_PRINTF_H
 
 # include "libft/libft.h"
+# include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <limits.h>
 
 struct		s_vars
 {
@@ -27,7 +27,11 @@ struct		s_vars
 	va_list	arg;
 };
 
-int			ft_putnbr_base(long long num, int *res, char *base);
+int			ft_putptr_base(unsigned long long num, int *res, char *base);
+int			ft_putnbr_base(long long num, int *res, char *base, int u);
 int			ft_printf(char const *buffer, ...);
+int			putptr(unsigned long long n, int *res, char *base);
+int			putnbr(long long n, int *res, char *base);
+int			char_in_base(char *base, long long num);
 
 #endif
