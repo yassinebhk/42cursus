@@ -60,6 +60,8 @@ char	*get_next_line(int fd)
 			if (!remaining)
 				return (NULL);
 		}
+		if (buffer[size_line - 1] == '\n')
+			break ;
 		readn = read(fd, buffer, BUFFER_SIZE);
 	}
 	// free(line);
