@@ -43,7 +43,7 @@ char	*get_next_line(int fd)
 	if (remaining)
 		line = ft_strjoin(line, remaining, ft_strlen(remaining));
 	readn = read(fd, buffer, BUFFER_SIZE);
-	if (readn < 0)
+	if (readn <= 0)
 		return (free(remaining), NULL);
 	while (readn != 0)
 	{
@@ -88,5 +88,8 @@ int	main(void)
 	printf("La tercera linea es: %s", get_next_line(fd));
 	printf("La cuartaa linea es: %s", get_next_line(fd));
 	printf("La quintaa linea es: %s", get_next_line(fd));
+	printf("La 6 linea es: \"%s\"", get_next_line(fd));
+	printf("La 7 linea es: \"%s\"", get_next_line(fd));
+	printf("La 8 linea es: \"%s\"", get_next_line(fd));
 	close(fd);
 }
