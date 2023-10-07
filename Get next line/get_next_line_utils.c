@@ -10,4 +10,82 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "get_next_line.h"
 
+static int	ft_strlen(const char *s)
+{
+	size_t	cont;
+
+	cont = 0;
+	while (s[cont] != '\0')
+		cont++;
+	return (cont);
+}
+
+static char	*ft_strcat(char *dest, char *src, int size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (*(dest + i) != '\0')
+		i++;
+	while (*src != '\0' && j < size)
+	{
+		*(dest + i) = *src;
+		i++;
+		src++;
+		j++;
+	}
+	*(dest + i) = '\0';
+	return (dest);
+}
+
+char	*ft_strjoin(char *s1, char *s2, int size)
+{
+	char	*s;
+	int		i;
+
+	i = 0;
+	s = (char *)malloc((ft_strlen(s1) + size + 1) * sizeof(char));
+	if (!s)
+		return (NULL);
+	while (*(s1 + i) != '\0')
+	{
+		*(s + i) = *(s1 + i);
+		i++;
+	}
+	*(s + i) = '\0';
+	s = ft_strcat(s, (char *)s2, size);
+	return (s);
+}
+
+char	*ft_substr(char *s, int start, int len)
+{
+	int		cont;
+	char	*str;
+
+	cont = 0;
+	if (start >= ft_strlen(s))
+		len = 0;
+	else if (start + len >= ft_strlen(s))
+		len = ft_strlen(s) - start;
+	str = (char *)malloc((len + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	if (start >= ft_strlen(s))
+	{
+		*str = '\0';
+		return (str);
+	}
+	while (len > 0 && *(s + start))
+	{
+		*(str + cont) = *(s + start);
+		start++;
+		cont++;
+		len--;
+	}
+	*(str + cont) = '\0';
+	return (str);
+}
