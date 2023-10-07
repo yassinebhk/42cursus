@@ -12,11 +12,13 @@
 
 #include "get_next_line.h"
 
-static int	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	size_t	cont;
 
 	cont = 0;
+	if (!s)
+		return (0);
 	while (s[cont] != '\0')
 		cont++;
 	return (cont);

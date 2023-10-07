@@ -21,6 +21,7 @@
 #  define BUFFER_SIZE 3
 # endif
 
+int		ft_strlen(const char *s);
 char	*get_next_line(int fd);
 char	*ft_strjoin(char *s1, char *s2, int size);
 char	*ft_substr(char *s, int start, int len);
