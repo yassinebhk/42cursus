@@ -21,9 +21,19 @@
 #  define BUFFER_SIZE 3
 # endif
 
+struct s_vbs
+{
+    int			str_free;
+	int			readn;
+	int			size_line;
+	char		*line;
+	char		buffer[BUFFER_SIZE + 1];
+};
+
+
 int		ft_strlen(const char *s);
 char	*get_next_line(int fd);
-char	*ft_strjoin(char *s1, char *s2, int size);
+char	*ft_strjoin(char *s1, char *s2, int size, int mlc);
 char	*ft_substr(char *s, int start, int len);
 
 #endif

@@ -44,7 +44,7 @@ static char	*ft_strcat(char *dest, char *src, int size)
 	return (dest);
 }
 
-char	*ft_strjoin(char *s1, char *s2, int size)
+char	*ft_strjoin(char *s1, char *s2, int size, int mlc)
 {
 	char	*s;
 	int		i;
@@ -52,7 +52,7 @@ char	*ft_strjoin(char *s1, char *s2, int size)
 	i = 0;
 	s = (char *)malloc((ft_strlen(s1) + size + 1) * sizeof(char));
 	if (!s)
-		return (NULL);
+		return (free(s2), free(s1), NULL);
 	while (*(s1 + i) != '\0')
 	{
 		*(s + i) = *(s1 + i);
@@ -60,7 +60,10 @@ char	*ft_strjoin(char *s1, char *s2, int size)
 	}
 	*(s + i) = '\0';
 	s = ft_strcat(s, (char *)s2, size);
-	return (s);
+	if (!mlc)
+		return (free(s2), free(s1), s);
+	else
+		return (free(s1), s);
 }
 
 char	*ft_substr(char *s, int start, int len)

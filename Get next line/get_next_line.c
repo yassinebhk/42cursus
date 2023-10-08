@@ -115,8 +115,6 @@
 
 
 
-
-
 */
 
 static int	ft_size_line(char *buffer, int readn)
@@ -133,53 +131,96 @@ static int	ft_size_line(char *buffer, int readn)
 	return (size);
 }
 
-char	*get_next_line(int fd)
+
+static char	*ft_read(struct s_vbs a, char *remaining, int fd)
 {
-	int			readn;
-	int			size_line;
-	char		*line;
-	char		buffer[BUFFER_SIZE + 1];
+	while (a.readn != 0)
+	{
+		a.buffer[a.readn] = '\0';
+		a.size_line = ft_size_line(a.buffer, a.readn);
+		if (!a.size_line)
+			return (free(remaining), free(a.line), NULL);
+		a.line = ft_strjoin(a.line, a.buffer, a.size_line, 1);
+		if (a.line == NULL)
+			return (free(remaining), free(a.line), NULL);
+		if (a.size_line < BUFFER_SIZE)
+		{
+			remaining = (char *)malloc(BUFFER_SIZE - a.size_line + 1);
+			if (!remaining)
+				return (free(a.line), free(remaining), NULL);
+			remaining = ft_substr(a.buffer, a.size_line, BUFFER_SIZE - a.size_line);
+			if (!remaining)
+				return (free(remaining), free(a.line), NULL);
+		}
+		else
+			free(remaining);
+		if (a.buffer[a.size_line - 1] == '\n')
+			break ;
+		a.readn = read(fd, a.buffer, BUFFER_SIZE);
+		if (a.readn < 0)
+			return (free(remaining), free(a.line), NULL);
+		else if (a.readn == 0)
+			free(remaining);
+		a.buffer[a.readn] = '\0';
+	}
+}
+
+
+char	*get_next_line(int fd)
+{	
+	struct s_vbs a;
 	static char	*remaining = NULL;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	line = (char *)malloc(sizeof(char));
-	if (!line)
-		return (NULL);
-	*line = '\0';
+		return (free(remaining), NULL);
+	a.line = (char *)malloc(sizeof(char));
+	if (!a.line)
+		return (free(remaining), NULL);
+	*a.line = '\0';
+	a.str_free = 0;
 	if (remaining)
-		line = ft_strjoin(line, remaining, ft_strlen(remaining));
-	readn = read(fd, buffer, BUFFER_SIZE);
-	if (readn <= 0)
-		return (free(remaining), free(line), NULL);
-	while (readn != 0)
 	{
-		buffer[readn] = '\0';
-		size_line = ft_size_line(buffer, readn);
-		if (!size_line)
-			return (free(remaining), free(line), NULL);
-		line = ft_strjoin(line, buffer, size_line);
-		if (line == NULL)
-			return (free(remaining), free(line), NULL);
-		if (size_line < BUFFER_SIZE)
+		a.line = ft_strjoin(a.line, remaining, ft_strlen(remaining), 0);
+		a.str_free = 1;
+	}
+	a.readn = read(fd, a.buffer, BUFFER_SIZE);
+	if (a.readn <= 0)
+	{ 	
+		if (!a.str_free)
+			return (free(remaining), free(a.line), NULL);
+		else
+			return (NULL);
+	}
+	while (a.readn != 0)
+	{
+		a.buffer[a.readn] = '\0';
+		a.size_line = ft_size_line(a.buffer, a.readn);
+		if (!a.size_line)
+			return (free(remaining), free(a.line), NULL);
+		a.line = ft_strjoin(a.line, a.buffer, a.size_line, 1);
+		if (a.line == NULL)
+			return (free(remaining), free(a.line), NULL);
+		if (a.size_line < BUFFER_SIZE)
 		{
-			remaining = (char *)malloc(BUFFER_SIZE - size_line + 1);
+			remaining = (char *)malloc(BUFFER_SIZE - a.size_line + 1);
 			if (!remaining)
-				return (free(line), free(remaining), NULL);
-			remaining = ft_substr(buffer, size_line, BUFFER_SIZE - size_line);
+				return (free(a.line), free(remaining), NULL);
+			remaining = ft_substr(a.buffer, a.size_line, BUFFER_SIZE - a.size_line);
 			if (!remaining)
-				return (free(remaining), free(line), NULL);
+				return (free(remaining), free(a.line), NULL);
 		}
 		else
-			remaining = NULL;
-		if (buffer[size_line - 1] == '\n')
+			free(remaining);
+		if (a.buffer[a.size_line - 1] == '\n')
 			break ;
-		readn = read(fd, buffer, BUFFER_SIZE);
-		if (readn < 0)
-			return (free(remaining), free(line), NULL);
-		buffer[readn] = '\0';
+		a.readn = read(fd, a.buffer, BUFFER_SIZE);
+		if (a.readn < 0)
+			return (free(remaining), free(a.line), NULL);
+		else if (a.readn == 0)
+			free(remaining);
+		a.buffer[a.readn] = '\0';
 	}
-	return (line);
+	return (a.line);
 }
 
 // #include <fcntl.h>
