@@ -31,8 +31,9 @@ struct		s_vbs
 };
 
 int			ft_strlen(const char *s);
+int			ft_strchr(char *s, int c);
 char		*get_next_line(int fd);
 char		*ft_strjoin(char *s1, char *s2, int size, int mlc);
-char		*ft_substr(char *s, int start, int len);
+char		*ft_substr(char *s, int start, int len, int free_str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:22:28 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/10/02 17:22:30 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2023/10/09 22:08:01 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_strjoin(char *s1, char *s2, int size, int mlc)
 		return (free(s1), s);
 }
 
-char	*ft_substr(char *s, int start, int len)
+char	*ft_substr(char *s, int start, int len, int free_str)
 {
 	int		cont;
 	char	*str;
@@ -82,15 +82,36 @@ char	*ft_substr(char *s, int start, int len)
 	if (start >= ft_strlen(s))
 	{
 		*str = '\0';
-		return (str);
+		if (free_str)
+			return (free(s), str);
+		else
+			return (str);
 	}
 	while (len > 0 && *(s + start))
 	{
 		*(str + cont) = *(s + start);
-		start++;
-		cont++;
-		len--;
+		(free(NULL), start++, cont++, len--);
 	}
 	*(str + cont) = '\0';
-	return (str);
+	if (free_str)
+		return (free(s), str);
+	else
+		return (str);
+}
+
+int	ft_strchr(char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if ((unsigned char)c == s[i])
+			return (i);
+		i++;
+	}
+	if ((unsigned char)c == s[i])
+		return (i);
+	else
+		return (-1);
 }
