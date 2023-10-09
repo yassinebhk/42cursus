@@ -68,35 +68,30 @@ char	*ft_strjoin(char *s1, char *s2, int size, int mlc)
 
 char	*ft_substr(char *s, int start, int len, int free_str)
 {
-	int		cont;
-	char	*str;
+	struct s_v	a;
 
-	cont = 0;
+	a.cont = 0;
 	if (start >= ft_strlen(s))
 		len = 0;
 	else if (start + len >= ft_strlen(s))
 		len = ft_strlen(s) - start;
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
+	a.str = (char *)malloc((len + 1) * sizeof(char));
+	if (!a.str)
 		return (NULL);
 	if (start >= ft_strlen(s))
 	{
-		*str = '\0';
+		*a.str = '\0';
 		if (free_str)
-			return (free(s), str);
-		else
-			return (str);
+			return (free(s), a.str);
+		return (a.str);
 	}
 	while (len > 0 && *(s + start))
-	{
-		*(str + cont) = *(s + start);
-		(free(NULL), start++, cont++, len--);
-	}
-	*(str + cont) = '\0';
+		(free(NULL), *(a.str + a.cont) = *(s + start), start++, a.cont++,
+			len--);
+	*(a.str + a.cont) = '\0';
 	if (free_str)
-		return (free(s), str);
-	else
-		return (str);
+		return (free(s), a.str);
+	return (a.str);
 }
 
 int	ft_strchr(char *s, int c)

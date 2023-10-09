@@ -21,6 +21,12 @@
 #  define BUFFER_SIZE 10
 # endif
 
+struct		s_v
+{
+	int		cont;
+	char	*str;
+};
+
 struct		s_vbs
 {
 	int		str_free;
