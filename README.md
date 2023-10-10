@@ -17,6 +17,6 @@ graph TD;
 | Projects | Mark |
 | --- | --- |
 | `Libft` |<img src="https://github.com/aflr/aflr/blob/main/src/125.PNG" width="60">|
-| `Ft_printf` | 0/100 |
+| `Ft_printf` | <img src="https://github.com/aflr/aflr/blob/main/src/100.PNG" width="60"> |
 
 [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-informational?style=flat&logo=linkedin&logoColor=white&color=0D76A8)](https://www.linkedin.com/in/yassine-bouhaik-34593219a/)
