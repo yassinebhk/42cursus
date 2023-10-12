@@ -110,27 +110,3 @@ char	*get_next_line(int fd)
 		return (free(remaining), a.line);
 	return (ft_read(a, &remaining, fd));
 }
-
-// #include <fcntl.h>
-// #include <stdio.h>
-
-// int	main(void)
-// {
-// 	int	fd;
-
-// 	fd = open("hola.txt", O_RDONLY);
-// 	printf("La 1 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 2 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 3 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 4 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 5 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 6 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 7 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 8 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 9 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 10 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 11 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 12 linea es: \"%s\"", get_next_line(fd));
-// 	printf("La 13 linea es: \"%s\"", get_next_line(fd));
-// 	close(fd);
-// }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(const char *s)
 {
@@ -52,7 +52,12 @@ char	*ft_strjoin(char *s1, char *s2, int size, int mlc)
 	i = 0;
 	s = (char *)malloc((ft_strlen(s1) + size + 1) * sizeof(char));
 	if (!s)
-		return (free(s2), free(s1), NULL);
+	{
+		if (!mlc)
+			return (free(s2), free(s1), NULL);
+		else
+			return (free(s1), NULL);
+	}
 	while (*(s1 + i) != '\0')
 	{
 		*(s + i) = *(s1 + i);
