@@ -88,7 +88,7 @@ char	*get_next_line(int fd)
 	static char		*remain[2048];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (free(remain[fd]), NULL);
+		return (NULL);
 	a.line = (char *)malloc(sizeof(char));
 	if (!a.line)
 		return (free(remain[fd]), NULL);
