@@ -1,0 +1,117 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/02 17:22:28 by ybouhaik          #+#    #+#             */
+/*   Updated: 2023/10/09 22:08:01 by ybouhaik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+int	ft_strlen2(const char *s)
+{
+	size_t	cont;
+
+	cont = 0;
+	if (!s)
+		return (0);
+	while (s[cont] != '\0')
+		cont++;
+	return (cont);
+}
+
+static char	*ft_strcat2(char *dest, char *src, int size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (*(dest + i) != '\0')
+		i++;
+	while (*src != '\0' && j < size)
+	{
+		*(dest + i) = *src;
+		i++;
+		src++;
+		j++;
+	}
+	*(dest + i) = '\0';
+	return (dest);
+}
+
+char	*ft_strjoin2(char *s1, char *s2, int size, int mlc)
+{
+	char	*s;
+	int		i;
+
+	i = 0;
+	s = (char *)malloc((ft_strlen2(s1) + size + 1) * sizeof(char));
+	if (!s)
+	{
+		if (!mlc)
+			return (free(s2), free(s1), NULL);
+		else
+			return (free(s1), NULL);
+	}
+	while (*(s1 + i) != '\0')
+	{
+		*(s + i) = *(s1 + i);
+		i++;
+	}
+	*(s + i) = '\0';
+	s = ft_strcat2(s, (char *)s2, size);
+	if (!mlc)
+		return (free(s2), free(s1), s);
+	else
+		return (free(s1), s);
+}
+
+char	*ft_substr2(char *s, int start, int len, int free_str)
+{
+	struct s_v	a;
+
+	a.cont = 0;
+	if (start >= ft_strlen2(s))
+		len = 0;
+	else if (start + len >= ft_strlen2(s))
+		len = ft_strlen2(s) - start;
+	a.str = (char *)malloc((len + 1) * sizeof(char));
+	if (!a.str)
+		return (NULL);
+	if (start >= ft_strlen2(s))
+	{
+		*a.str = '\0';
+		if (free_str)
+			return (free(s), a.str);
+		return (a.str);
+	}
+	while (len > 0 && *(s + start))
+		(free(NULL), *(a.str + a.cont) = *(s + start), start++, a.cont++,
+			len--);
+	*(a.str + a.cont) = '\0';
+	if (free_str)
+		return (free(s), a.str);
+	return (a.str);
+}
+
+int	ft_strchr2(char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if ((unsigned char)c == s[i])
+			return (i);
+		i++;
+	}
+	if ((unsigned char)c == s[i])
+		return (i);
+	else
+		return (-1);
+}
