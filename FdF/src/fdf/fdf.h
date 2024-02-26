@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:41:09 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/02/25 17:53:12 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:21:37 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@
 # define RED 0xff0000
 
 # define BUF_SIZE 2048
-
-typedef struct s_data
-{
-    void	*mlx;
-    void	*win;
-    void	*img;
-}	t_data;
 
 
 //cabecera de la libreria meto los prototipos de las funciones que voy a usar en el proyecto

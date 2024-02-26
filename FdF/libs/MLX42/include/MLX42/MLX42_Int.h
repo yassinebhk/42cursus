@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   MLX42_Int.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: W2Wizard <w2.wizzard@gmail.com>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2021/12/27 23:55:34 by W2Wizard      #+#    #+#                 */
-/*   Updated: 2022/07/21 10:46:43 by sbos          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   MLX42_Int.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/27 23:55:34 by W2Wizard          #+#    #+#             */
+/*   Updated: 2024/02/26 11:22:38 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MLX42_INT_H
 # define MLX42_INT_H
 # define LODEPNG_NO_COMPILE_ALLOCATORS
-# include "MLX42/MLX42.h"
-# include "lodepng/lodepng.h"
-# include "glad/glad.h"
+# include "MLX42.h"
+# include "../lodepng/lodepng.h"
+# include "../glad/glad.h"
 # include "KHR/khrplatform.h"
 # if defined(__APPLE__)
 #  define GL_SILENCE_DEPRECATION

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 17:22:01 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/10/02 17:22:03 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:44:31 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ static char	*ft_read(struct s_vbs a, char **remaining, int fd)
 
 char	*ft_newline(char **remaining, struct s_vbs a, int pos)
 {
-	int		i;
 	char	*b;
 
-	i = 0;
 	b = ft_substr2(*remaining, 0, pos + 1, 0);
 	if (!b)
 		return (free(*remaining), free(a.line), NULL);

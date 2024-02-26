@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/24 18:03:25 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/02/25 19:07:50 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/02/26 11:42:22 by yassine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ all: $(NAME)
 	
 $(NAME): $(OBJS)
 	make -C libft
-	mv Libft/libft.a $(NAME)
+	mv libft/libft.a $(NAME)
 	ar -rcs $(NAME) $(OBJS)
 
 clean:
