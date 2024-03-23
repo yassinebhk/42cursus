@@ -125,7 +125,7 @@ typedef struct mlx_srcoll
 typedef struct mlx_mouse
 {
 	void*			param;
-	mlx_mousefunc	func;
+	mlx_mous  ef unc	func;
 }	mlx_mouse_t;
 
 typedef struct mlx_cursor

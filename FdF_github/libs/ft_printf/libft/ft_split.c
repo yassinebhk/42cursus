@@ -12,102 +12,74 @@
 
 #include "libft.h"
 
-static int	num_words(char const *s, char c)
+static int	count_words(const char *s, char c)
 {
-	int	num;
+	int	words;
+	int	in_word;
 	int	i;
 
-	num = 0;
+	words = 0;
+	in_word = 0;
 	i = 0;
-	while (s[i])
+	while (s[i] != '\0')
 	{
-		if (s[i] != c)
+		if (!in_word && s[i] != c)
 		{
-			num++;
-			while (s[i] != c && s[i + 1])
-				i++;
+			in_word = 1;
+			++words;
 		}
-		i++;
+		else if (in_word && s[i] == c)
+			in_word = 0;
+		++i;
 	}
-	return (num);
+	return (words);
 }
 
-static char	*fill_word(char *palabra, char *s, int ini, int pos)
+static void	advance_index_len(char const *s, char c, int *j, int *len)
 {
-	int	j;
-
-	j = 0;
-	while (ini < pos)
+	*len = 0;
+	while (s[*j] != '\0' && s[*j] == c)
+		*j = *j + 1;
+	while (s[*j] != '\0' && s[*j] != c)
 	{
-		palabra[j] = s[ini];
-		j++;
-		ini++;
+		*j = *j + 1;
+		*len = *len + 1;
 	}
-	palabra[j] = '\0';
-	return (palabra);
 }
 
-static int	find_pos(char *palabra, char c, int *size, int *ini)
-{	
-	int	i;
-
-	i = *ini + *size;
-	*size = 0;
-	while (palabra[i] && palabra[i] == c)
-		(i)++;
-	*ini = i;
-	while (palabra[i] != c && palabra[i])
-	{
-		(*size)++;
-		i++;
-	}
-	return (i);
-}
-
-void	ft_free(char **s)
+static void	*free_everything(char **res, int stop)
 {
 	int	i;
 
 	i = 0;
-	while (*(s + i))
-	{
-		free(*(s + i));
-		i++;
-	}
-	free(s);
+	while (i <= stop)
+		free(res[i++]);
+	free(res);
+	return (NULL);
 }
-
-struct		s_vbs
-{
-	int		i;
-	int		pos;
-	int		ini;
-	int		size;
-	char	**palabra;
-};
 
 char	**ft_split(char const *s, char c)
 {
-	struct s_vbs	a;
+	char	**res;
+	int		word_count;
+	int		len;
+	int		i;
+	int		j;
 
-	a.i = 0;
-	a.size = 0;
-	a.ini = 0;
-	a.palabra = (char **)malloc((num_words(s, c) + 1) * sizeof(char *));
-	if (!a.palabra)
+	word_count = count_words(s, c);
+	res = malloc(sizeof(char *) * (word_count + 1));
+	if (res == NULL)
 		return (NULL);
-	while (a.i < num_words(s, c))
+	i = 0;
+	j = 0;
+	while (i < word_count)
 	{
-		a.pos = find_pos((char *)s, c, &a.size, &a.ini);
-		a.palabra[a.i] = (char *)malloc((a.size + 1) * sizeof(char));
-		if (!a.palabra[a.i])
-		{
-			ft_free(a.palabra);
-			return (NULL);
-		}
-		a.palabra[a.i] = fill_word(a.palabra[a.i], (char *)s, a.ini, a.pos);
-		a.i++;
+		advance_index_len(s, c, &j, &len);
+		res[i] = ft_substr(s, j - len, len);
+		if (res[i] == NULL)
+			return (free_everything(res, i), NULL);
+		++i;
 	}
-	a.palabra[a.i] = NULL;
-	return (a.palabra);
+	res[word_count] = NULL;
+	return (res);
 }

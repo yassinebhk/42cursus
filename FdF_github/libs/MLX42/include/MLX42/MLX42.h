@@ -17,7 +17,7 @@
  * As for the few void* present in some structs and functions and 
  * why MLX is split into two different headers, so to speak, 
  * is mainly for abstraction. Most users won't have a need for the inner 
- * workings of MLX (shaders, ...) and it also helps keep MLX nice and tidy.
+ * workings of MLX (shaders, ...) and it mlx_mouse_hookalso helps keep MLX nice and tidy.
  */
 
 #ifndef MLX42_H
@@ -197,9 +197,10 @@ typedef void (*mlx_scrollfunc)(double xdelta, double ydelta, void* param);
  * @param[in] button The mouse button/key pressed.
  * @param[in] action The mouse action that took place.
  * @param[in] mods The modifier keys pressed during the mouse key.
- * @param[in] param Additional parameter to pass onto the function.
+ * @param[in] param1 Additional parameter to pass onto the function.
+ * @param[in] param2 Additional parameter to pass onto the function.
  */
-typedef void (*mlx_mousefunc)(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
+typedef void (*mlx_mousefunc)(mouse_key_t button, action_t action, modifier_key_t mods, mlx_t *param1);
 
 /**
  * Callback function used to handle raw mouse movement.
@@ -486,9 +487,10 @@ void mlx_scroll_hook(mlx_t* mlx, mlx_scrollfunc func, void* param);
  * 
  * @param[in] mlx The MLX instance handle.
  * @param[in] func The mouse callback function.
- * @param[in] param An additional optional parameter.
+ * @param[in] param1 An additional optional parameter.
+ * @param[in] param2 An additional optional parameter.
  */
-void mlx_mouse_hook(mlx_t* mlx, mlx_mousefunc func, void* param);
+void mlx_mouse_hook(mlx_t* mlx, mlx_mousefunc func, mlx_t *param1);
 
 /**
  * This function sets the cursor callback, which is called when a the

@@ -10,6 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
+# Colors
 MAGENTA = \033[35;1m
 YELLOW  = \033[33;1m
 GREEN   = \033[32;1m
@@ -20,6 +21,15 @@ BLUE    = \033[34;1m
 CYAN    = \033[37;1m
 BOLD	= \033[1m
 RED		= \033[31;1m
+
+# Styles
+RESET	= \033[0m
+BOLD	= \033[1m
+DIM		= \033[2m
+ITALIC	= \033[3m
+UNDER	= \033[4m
+INVERT	= \033[7m
+DASH	= \033[9m
 
 NAME = fdf
 CC = gcc
@@ -34,19 +44,18 @@ LIBS	:= -ldl -lglfw3 -L "/Users/ybouhaik/.brew/opt/glfw/lib/" -pthread -lm $(MLX
 INCLUDES = -I . -I include -I $(FT_PRINTF_DIR) -I $(GET_NEXT_LINE_DIR) -I $(MLX42_DIR)/include/MLX42 #/Users/ybouhaik/Documents/FdF/libs/MLX42/include/MLX42/
 
 # COMMON_SRCS
-FDF_SRCS = src/main.c
+FDF_SRCS = src/fdf.c src/draw.c src/hooks.c 
 FDF_OBJS = $(FDF_SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(FDF_OBJS) $(FT_PRINTF) $(GET_NEXT_LINE) $(MLX42)
+	@clear
 	@echo
 	@$(CC) $(CFLAGS) $(FDF_OBJS) $(FT_PRINTF) $(GET_NEXT_LINE) $(MLX42) $(LIBS) $(INCLUDES) -o $(NAME) 
 	@echo "$(BLUE)Compiling FDF...$(RESET)"
-	@echo "$(GREEN)COMPLETED$(RESET)"
-	@echo "$(BLUE)./fdf...$(RESET)"
-	./fdf
-	@echo "$(MAGENTA)FdF compiled!$(RESET)"
+	@echo "$(GREEN)$(BOLD)COMPLETED$(RESET)"
+	@echo "$(MAGENTA)$(ITALIC)FdF compiled!$(RESET)"
 	
 $(FT_PRINTF):
 	@$(MAKE) -C $(FT_PRINTF_DIR)
@@ -63,15 +72,44 @@ $(MINILIBX):
 
 clean:
 	rm -f $(FDF_OBJS)
+	@echo "$(YELLOW)Cleaning...$(RESET)"
 	@$(MAKE) -C $(FT_PRINTF_DIR) clean
 	@$(MAKE) -C $(GET_NEXT_LINE_DIR) clean
 	@$(MAKE) -C $(MLX42_DIR) clean
+	
+
 
 fclean: clean
 	rm -f $(NAME)
 	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
 	@$(MAKE) -C $(GET_NEXT_LINE_DIR) fclean
-
+	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
 re: fclean all
+
+norm:
+	@echo "$(BLUE)$(DIM)FT_PRINTF$(RESET)"
+	@norminette $(FT_PRINTF_DIR)/*.c $(FT_PRINTF_DIR)/*.h
+	@echo "$(GREEN)Completed!$(RESET)"
+	@echo
+	@echo "$(BLUE)$(DIM)LIBFT$(RESET)"
+	@norminette $(FT_PRINTF_DIR)/LIBFT/*.c $(FT_PRINTF_DIR)/LIBFT/*.h
+	@echo "$(GREEN)Completed!$(RESET)"
+	@echo
+	@echo "$(BLUE)$(DIM)SRC$(RESET)"
+	@norminette $(SRC) include/$(NAME).h
+	@echo "$(GREEN)Completed!$(RESET)"
+ascii:
+	@echo "$(MAGENTA)$(BOLD)"
+	@echo "                                            "
+	@echo " #########      #########         ######### "
+	@echo " ##             ##      ##        ##        "
+	@echo " ##             ##       ##       ##        "
+	@echo " #########      ##        ##      ######### "
+	@echo " ##             ##       ##       ##        "
+	@echo " ##             ##      ##        ##        "
+	@echo " ##             ##     ##         ##        "
+	@echo "                #######                     "
+	@echo "                                            "
+	@echo "$(RESET)"
 
 .PHONY: all clean fclean re
