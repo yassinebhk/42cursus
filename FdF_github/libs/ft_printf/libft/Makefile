@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 11:41:20 by ybouhaik          #+#    #+#              #
-#    Updated: 2023/09/13 11:41:24 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/03/23 22:47:13 by yassine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ $(NAME): $(OBJS)
 bonus: $(OBJS) $(OBJS2)
 	ar -rcs  $(NAME) $(OBJS2)
 clean:
-	rm -f $(OBJS) $(OBJS2)
+	@rm -f $(OBJS) $(OBJS2)
 
 fclean: clean 
 	rm -f $(NAME)

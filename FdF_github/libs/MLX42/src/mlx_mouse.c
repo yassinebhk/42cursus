@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   mlx_mouse.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: W2Wizard <w2.wizzard@gmail.com>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/01/01 23:20:13 by W2Wizard      #+#    #+#                 */
-/*   Updated: 2022/06/29 15:34:25 by lde-la-h      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   mlx_mouse.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/01 23:20:13 by W2Wizard          #+#    #+#             */
+/*   Updated: 2024/03/23 22:57:30 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void mlx_scroll_hook(mlx_t* mlx, mlx_scrollfunc func, void* param)
 	glfwSetScrollCallback(mlx->window, mlx_scroll_cb);
 }
 
-void mlx_mouse_hook(mlx_t* mlx, mlx_mousefunc func, void* param)
+void mlx_mouse_hook(mlx_t* mlx, mlx_mousefunc func, mlx_t *param)
 {
 	MLX_NONNULL(mlx);
 	MLX_NONNULL(func);

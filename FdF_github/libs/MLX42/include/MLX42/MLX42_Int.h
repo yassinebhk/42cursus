@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   MLX42_Int.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: W2Wizard <w2.wizzard@gmail.com>              +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2021/12/27 23:55:34 by W2Wizard      #+#    #+#                 */
-/*   Updated: 2022/07/21 10:46:43 by sbos          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   MLX42_Int.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/27 23:55:34 by W2Wizard          #+#    #+#             */
+/*   Updated: 2024/03/23 22:55:49 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct mlx_srcoll
 typedef struct mlx_mouse
 {
 	void*			param;
-	mlx_mous  ef unc	func;
+	mlx_mousefunc	func;
 }	mlx_mouse_t;
 
 typedef struct mlx_cursor

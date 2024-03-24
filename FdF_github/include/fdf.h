@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:41:09 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/02/25 17:53:12 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/03/24 00:38:28 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 //# include "MLX42_Int.h"
 # include "MLX42_Input.h"
 # include "ft_printf.h"
+# include "get_next_line.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
@@ -42,6 +43,17 @@
 # define BUF_SIZE 2048
 # define M_PI_6 0.52359877559
 # define M_PI_3 1.0471975512
+
+typedef struct fdf
+{
+	int width;
+	int height;
+	int **z_matrix;
+
+	void *mlx_ptr;
+	void *win_ptr;
+}			fdf_t;
+
 
 /*******************************************/
 /*                                         */
@@ -146,6 +158,7 @@ typedef struct line_ecuation
 /*                                         */
 /*******************************************/
 
+fdf_t   ft_read_file (char *file);
 void	ft_draw_table(mlx_image_t *img);
 void	ft_draw_x(mlx_image_t *img, int i, int j, int jmax);
 void	ft_draw_y(mlx_image_t *img, int i, int imax, int j);
@@ -163,5 +176,9 @@ void	ft_my_keyhook(mlx_key_data_t keydata, void *param);
 void	ft_my_scrollhook(double xdelta, double ydelta, void *param);
 void	ft_my_mouse_hook(mouse_key_t button, action_t action,
 			modifier_key_t mods, mlx_t *param1);
+
+
+void	ft_error(void);
+
 
 #endif

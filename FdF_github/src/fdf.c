@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 12:49:24 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/03/23 12:49:26 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/03/24 00:06:41 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fdf.h>
 
-static void	ft_error(void)
+void	ft_error(void)
 {
 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
 	exit(EXIT_FAILURE);

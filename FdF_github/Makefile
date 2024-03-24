@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/24 20:35:03 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/02/25 19:19:52 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/03/24 00:25:17 by yassine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,11 +40,12 @@ GET_NEXT_LINE_DIR = libs/get_next_line
 GET_NEXT_LINE = $(GET_NEXT_LINE_DIR)/getnextline.a
 MLX42_DIR = libs/MLX42
 MLX42 = $(MLX42_DIR)/libmlx42.a
-LIBS	:= -ldl -lglfw3 -L "/Users/ybouhaik/.brew/opt/glfw/lib/" -pthread -lm $(MLX42_DIR)/libmlx42.a -framework Cocoa -framework OpenGL -framework IOKit
+LIBS	:= -ldl -lglfw -L /opt/homebrew/Cellar/glfw/3.3.6/lib/ -pthread -lm $(MLX42_DIR)/libmlx42.a #-framework Cocoa -framework OpenGL -framework IOKit
 INCLUDES = -I . -I include -I $(FT_PRINTF_DIR) -I $(GET_NEXT_LINE_DIR) -I $(MLX42_DIR)/include/MLX42 #/Users/ybouhaik/Documents/FdF/libs/MLX42/include/MLX42/
 
 # COMMON_SRCS
-FDF_SRCS = src/fdf.c src/draw.c src/hooks.c 
+# FDF_SRCS = src/fdf.c src/draw.c src/hooks.c 
+FDF_SRCS = src/main.c src/read_file.c
 FDF_OBJS = $(FDF_SRCS:.c=.o)
 
 all: $(NAME)
@@ -63,7 +64,7 @@ $(FT_PRINTF):
 $(GET_NEXT_LINE):
 	@$(MAKE) -C $(GET_NEXT_LINE_DIR)
 
-$(MINILIBX):
+$(MLX42):
 	@$(MAKE) -C $(MLX42_DIR)
 
 %.o: %.c
@@ -96,7 +97,7 @@ norm:
 	@echo "$(GREEN)Completed!$(RESET)"
 	@echo
 	@echo "$(BLUE)$(DIM)SRC$(RESET)"
-	@norminette $(SRC) include/$(NAME).h
+	@norminette $(FDF_SRCS) include/$(NAME).h
 	@echo "$(GREEN)Completed!$(RESET)"
 ascii:
 	@echo "$(MAGENTA)$(BOLD)"
