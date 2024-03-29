@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
+#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/24 20:35:03 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/03/24 00:25:17 by yassine          ###   ########.fr        #
+#    Updated: 2024/02/25 19:19:52 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,61 +31,62 @@ UNDER	= \033[4m
 INVERT	= \033[7m
 DASH	= \033[9m
 
-NAME = fdf
-CC = gcc
-CFLAGS = -Werror -Wextra -Wall
-FT_PRINTF_DIR = libs/ft_printf
-FT_PRINTF = $(FT_PRINTF_DIR)/libftprintf.a
-GET_NEXT_LINE_DIR = libs/get_next_line
-GET_NEXT_LINE = $(GET_NEXT_LINE_DIR)/getnextline.a
-MLX42_DIR = libs/MLX42
-MLX42 = $(MLX42_DIR)/libmlx42.a
-LIBS	:= -ldl -lglfw -L /opt/homebrew/Cellar/glfw/3.3.6/lib/ -pthread -lm $(MLX42_DIR)/libmlx42.a #-framework Cocoa -framework OpenGL -framework IOKit
-INCLUDES = -I . -I include -I $(FT_PRINTF_DIR) -I $(GET_NEXT_LINE_DIR) -I $(MLX42_DIR)/include/MLX42 #/Users/ybouhaik/Documents/FdF/libs/MLX42/include/MLX42/
+framework= -framework OpenGL -framework AppKit
+NAME=fdf
+cc = gcc
+flags = -Wall -Wextra -Werror
+SRCS = src/main.c\
+	   src/draw.c\
+	   src/parsing.c\
+	   src/utils.c \
+	   src/hooks.c src/menu.c src/project.c src/utils2.c
+OBJS =$(SRCS:.c=.o)
+INCL= include/fdf.h
 
-# COMMON_SRCS
-# FDF_SRCS = src/fdf.c src/draw.c src/hooks.c 
-FDF_SRCS = src/main.c src/read_file.c
-FDF_OBJS = $(FDF_SRCS:.c=.o)
+GREY=$'\x1b[30m
+GREEN=$'\x1b[32m
+YELLOW=$'\x1b[33m
+BLUE=$'\x1b[34m
+PURPLE=$'\x1b[35m
+CYAN=$'\x1b[36m
+WHITE=$'\x1b[37m
 
-all: $(NAME)
 
-$(NAME): $(FDF_OBJS) $(FT_PRINTF) $(GET_NEXT_LINE) $(MLX42)
-	@clear
-	@echo
-	@$(CC) $(CFLAGS) $(FDF_OBJS) $(FT_PRINTF) $(GET_NEXT_LINE) $(MLX42) $(LIBS) $(INCLUDES) -o $(NAME) 
-	@echo "$(BLUE)Compiling FDF...$(RESET)"
-	@echo "$(GREEN)$(BOLD)COMPLETED$(RESET)"
+all:utils $(NAME)
+
+%.o: %.c $(INCL)
+	@gcc $(FLAGS) -c $< -o $@
+	@echo " $(CYAN)COMPILING $(YELLOW) $^ $(CYAN) to $(YELLOW)$@\n"
+
+$(NAME):$(OBJS) utils
+	@echo " \n$(BLUE)---------------------------------------------\n"
+	@echo " $(CYAN)LINKING$(YELLOW) $(OBJS) libft.a $(CYAN) to $(YELLOW) $(NAME)\n"
+	@make -C libs/ft_printf
+	@make -C libs/ft_printf/libft
+	@make -C libs/get_next_line
+	@make -C minilibx
+	@mv libs/ft_printf/libftprintf.a .
+	@mv libs/get_next_line/getnextline.a .
+	@mv libs/ft_printf/libft/libft.a .
+	@mv minilibx/libmlx.a .
+	@$(cc) $(flags) $(OBJS) $(framework) libmlx.a libft.a libftprintf.a getnextline.a -o $(NAME)
 	@echo "$(MAGENTA)$(ITALIC)FdF compiled!$(RESET)"
-	
-$(FT_PRINTF):
-	@$(MAKE) -C $(FT_PRINTF_DIR)
-
-$(GET_NEXT_LINE):
-	@$(MAKE) -C $(GET_NEXT_LINE_DIR)
-
-$(MLX42):
-	@$(MAKE) -C $(MLX42_DIR)
-
-%.o: %.c
-	@echo "$(BLUE)Compiling: $(RESET)"
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	rm -f $(FDF_OBJS)
 	@echo "$(YELLOW)Cleaning...$(RESET)"
-	@$(MAKE) -C $(FT_PRINTF_DIR) clean
-	@$(MAKE) -C $(GET_NEXT_LINE_DIR) clean
-	@$(MAKE) -C $(MLX42_DIR) clean
+	@$(MAKE) -C libs/ft_printf clean
+	@$(MAKE) -C libs/get_next_line clean
+	@$(MAKE) -C minilibx clean
+	@rm -f src/*.o
+	@rm -f *.a
 	
 
-
-fclean: clean
-	rm -f $(NAME)
-	@$(MAKE) -C $(FT_PRINTF_DIR) fclean
-	@$(MAKE) -C $(GET_NEXT_LINE_DIR) fclean
+fclean:clean
+	@/bin/rm -f $(NAME)
 	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
-re: fclean all
+
+re:fclean all
 
 norm:
 	@echo "$(BLUE)$(DIM)FT_PRINTF$(RESET)"
@@ -109,8 +110,9 @@ ascii:
 	@echo " ##             ##       ##       ##        "
 	@echo " ##             ##      ##        ##        "
 	@echo " ##             ##     ##         ##        "
-	@echo "                #######                     "
+	@echo " ##             #######           ##        "
 	@echo "                                            "
 	@echo "$(RESET)"
 
-.PHONY: all clean fclean re
+
+.PHONY: all utils clean fclean re

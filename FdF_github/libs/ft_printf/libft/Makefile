@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
+#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/13 11:41:20 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/03/23 22:47:13 by yassine          ###   ########.fr        #
+#    Updated: 2023/09/13 11:41:24 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_memset.c ft_strchr.c ft_strdup.c ft_strlcat.c ft_strlcpy.c ft_strlen.c \
 		ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_tolower.c ft_toupper.c ft_substr.c \
 		ft_strtrim.c ft_split.c ft_strjoin.c ft_substr.c ft_itoa.c ft_strmapi.c \
-		ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c
+		ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_round.c ft_atof.c \
 
 SRCS2 = ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c ft_lstadd_back_bonus.c \
 		ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
@@ -37,7 +37,7 @@ $(NAME): $(OBJS)
 bonus: $(OBJS) $(OBJS2)
 	ar -rcs  $(NAME) $(OBJS2)
 clean:
-	@rm -f $(OBJS) $(OBJS2)
+	rm -f $(OBJS) $(OBJS2)
 
 fclean: clean 
 	rm -f $(NAME)

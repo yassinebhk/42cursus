@@ -3,21 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:41:09 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/03/24 00:38:28 by yassine          ###   ########.fr       */
+/*   Updated: 2024/02/25 17:53:12 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include "MLX42.h"
-//# include "MLX42_Int.h"
-# include "MLX42_Input.h"
-# include "ft_printf.h"
-# include "get_next_line.h"
+# include "../libs/ft_printf/ft_printf.h"
+# include "../libs/get_next_line/get_next_line.h"
+# include "../minilibx/mlx.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdio.h>
@@ -26,131 +24,107 @@
 # include <sys/uio.h>
 # include <unistd.h>
 
-# define WIDTH 800
-# define HEIGHT 600
-# define BUFF_SIZE 4096
+# define R(a) (a) >> 16
+# define G(a) ((a) >> 8) & 0xFF
+# define B(a) (a) & 0xFF
+# define RGB(a, b, c) ((a) << 16) + ((b) << 8) + (c)
 
-# define WHITE 0xffffffff
-# define BLACK 0x00000000
-# define GREY 0xbebebeff
-# define BLUE 0xff0000ff
+# define WIDTH 2280
+# define HEIGHT 1800
+# define BUFF_SIZE 4096
+# define MENU_WIDTH 300
+# define MENU_HEIGTH 500
+# define BUF_SIZE 2048
+# define M_2PI 6.28318530718
+# define M_PI_6 0.52359877559
+# define M_PI_3 1.0471975512
+# define MAX_COLOR_HEX 16777215
+
+# define WHITE 0xffffff
+# define BLACK 0x000000
+# define DARK_BLUE 0x00008B
+# define LIGHT_BLUE 0xADD8E6
+# define DARK_GREEN 0x006400
+# define TURQUOISE 0x07EDED
+# define PINK 0xE5037E
+# define GREY 0xbebebe
+# define LIGHT_GREY 0xd3d3d3
+# define DARK_GREY 0xa9a9a9
+# define BLUE 0xff0000
+# define BLUE_SEA 0x2196f3
 # define CYAN 0xffff
-# define GREEN 0xff00
+# define GREEN_1 0xff00
+# define GREEN_LAND 0x0b6730
 # define YELLOW 0xffff00
 # define GOLD 0xffd700
 # define RED 0xff0000
+# define SILVER 0xc0c0c0
+# define MAROON 0x800000
+# define NAVY 0x000080
+# define OLIVE 0x808000
+# define TEAL 0x008080
+# define LIME 0x00ff00
+# define INDIGO 0x4b0082
+# define VIOLET 0xee82ee
+# define ORANGE 0xffa500
+# define PURPLE 0x800080
+# define BROWN 0xa52a2a
+# define BROWN_LAND 0xa39791
+# define DARK_BROWN 0x5A4309
+# define GREEN_2 0x006400
+# define WHITE_LAND 0xC4BDAC
+# define WHITE_SEA 0x00FFFF
+# define WHITE_MOUNTAIN 0x808080
 
-# define BUF_SIZE 2048
-# define M_PI_6 0.52359877559
-# define M_PI_3 1.0471975512
+typedef struct dot
+{
+	int		z;
+	int		color;
+}			t_dot;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}			t_img;
 
 typedef struct fdf
 {
-	int width;
-	int height;
-	int **z_matrix;
+	void	*mlx_ptr;
+	void	*win;
+	int		height;
+	int		width;
+	int		z_max;
+	int		z_min;
+	float	x;
+	float	x1;
+	float	y;
+	float	y1;
+	int		zoom;
+	int		color;
+	int		shift_x;
+	int		shift_y;
+	int		p;
+	float	anglex;
+	float	angley;
+	int		depth;
+	t_img	img;
+	t_dot	**z_matrix;
+}			t_fdf;
 
-	void *mlx_ptr;
-	void *win_ptr;
-}			fdf_t;
-
-
-/*******************************************/
-/*                                         */
-/*                 MATH                    */
-/*                                         */
-/*******************************************/
-/*
-		M_LOG2E         log2(e)
-		M_LOG10E        log10(e)
-		M_LN2           ln(2)
-		M_LN10          ln(10)
-		M_PI            pi
-		M_PI_2          pi / 2
-		M_PI_4          pi / 4
-		M_1_PI          1 / pi
-		M_2_PI          2 / pi
-		M_2_SQRTPI      2 / sqrt(pi)
-		M_SQRT2         sqrt(2)
-		M_SQRT1_2       sqrt(1/2)
-
-		These return a remainder of the division of x by y with an integral quotient.  remquo() additionally provides access to a few lower bits of the quotient.  They are correctly rounded.
-
-		double fdim(double, double)
-		double fmax(double, double)
-		double fmin(double, double)
-
-		fmax(x, y) and fmin(x, y) return the maximum and minimum of x and y,
-			respectively.  fdim(x,
-			y) returns the positive difference of x and y. All are correctly rounded.
-
-		double fma(double x, double y, double z)
-
-		fma(x, y, z) computes the value (x*y)
-			+ z as though without intermediate rounding.  It is correctly rounded.
-
-		double fabs(double)
-		double sqrt(double)
-		double cbrt(double)
-		double hypot(double, double)
-
-		fabs(x), sqrt(x), and cbrt(x) return the absolute value, square root,
-			and cube root of x, respectively.  hypot(x, y) returns sqrt(x*x
-			+ y*y).  fabs() and sqrt() are correctly rounded.
-
-		double exp(double)
-		double exp2(double)
-		double __exp10(double)
-		double expm1(double)
-
-		exp(x), exp2(x), __exp10(x), and expm1(x) return e**x, 2**x, 10**x,
-			and e**x - 1, respectively.
-
-		double log(double)
-		double log2(double)
-		double log10(double)
-		double log1p(double)
-
-		log(x), log2(x), and log10(x) return the natural, base-2,
-			and base-10 logarithms of x,
-			respectively.  log1p(x) returns the natural log of 1+x.
-
-		double logb(double)
-		int ilogb(double)
-
-		logb(x) and ilogb(x) return the exponent of x.
-
-		double modf(double, double *)
-		double frexp(double, int *)
-
-		modf(x,
-			&y) returns the fractional part of x and stores the integral part in y.  frexp(x,
-			&n) returns the mantissa of x and stores the exponent in n. They are correctly rounded.
-
-		double ldexp(double, int)
-		double scalbn(double, int)
-		double scalbln(double, long int)
-
-		ldexp(x, n), scalbn(x, n), and scalbln(x,
-			n) return x*2**n.  They are correctly rounded.
-
-		double pow(double, double)
-
-		pow(x,y) returns x raised to the power y.
-
-		double cos(double)
-		double sin(double)
-		double tan(double)
-
-		cos(x), sin(x), and tan(x) return the cosine, sine and tangent of x,
-			respectively.  Note that x is interpreted as specifying an angle in radians.
-*/
-
-typedef struct line_ecuation
+enum
 {
-	double	m;
-	double	n;
-}	line_t;
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
 
 /*******************************************/
 /*                                         */
@@ -158,13 +132,8 @@ typedef struct line_ecuation
 /*                                         */
 /*******************************************/
 
-fdf_t   ft_read_file (char *file);
-void	ft_draw_table(mlx_image_t *img);
-void	ft_draw_x(mlx_image_t *img, int i, int j, int jmax);
-void	ft_draw_y(mlx_image_t *img, int i, int imax, int j);
-void	ft_draw_number(mlx_image_t *img);
-void    ft_draw_axis(mlx_image_t *img);
-line_t  ft_line_ec(double x1, double y1, double x2, double y2);
+t_fdf		ft_read_file(char *file);
+void		ft_draw_line(t_fdf *fdf);
 
 /*******************************************/
 /*                                         */
@@ -172,13 +141,27 @@ line_t  ft_line_ec(double x1, double y1, double x2, double y2);
 /*                                         */
 /*******************************************/
 
-void	ft_my_keyhook(mlx_key_data_t keydata, void *param);
-void	ft_my_scrollhook(double xdelta, double ydelta, void *param);
-void	ft_my_mouse_hook(mouse_key_t button, action_t action,
-			modifier_key_t mods, mlx_t *param1);
-
-
-void	ft_error(void);
-
+int			mouse_press(int button, int x, int y, t_fdf *data);
+int			ft_my_keyhook(int keydata, t_fdf *param);
+void		ft_error(void);
+void		ft_check_args(int argc, char **argv);
+void		ft_get_dimensions(char *file, t_fdf *fdf);
+int			ft_get_width(char *file);
+int			ft_get_height(char *file);
+int			ft_num_words(char const *s, char c);
+void		ft_get_map(char *file, t_fdf *fdf);
+void		ft_menu(t_fdf *data);
+void		ft_isometric(float *x, float *y, int z, t_fdf *fdf);
+void		ft_scale(t_fdf *fdf);
+void		ft_bressenham(int x1, int y1, int x2, int y2, t_fdf *fdf);
+int			ft_get_color(t_fdf *fdf, int x, int y);
+void		ft_exit(t_fdf *param);
+float		ft_angle(float ang, float value);
+int			ft_is_num(char *str);
+int			ft_is_hex(char c);
+int			ft_putnbr_dec(char *hex);
+void		ft_change_color(t_fdf *param);
+int			projection(int a);
+void		ft_reset(t_fdf *param);
 
 #endif

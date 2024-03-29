@@ -88,13 +88,16 @@ int					ft_toupper(int c);
 */
 int					ft_tolower(int c);
 /**
- * @brief Converts the initial portion of the string pointed to
-		by str to int representation
+ * @brief Converts the string in a float number
  * @param str The string to convert
- * @returns If the argument is an upper-case letter,
-		returns the corresponding lower-case letter if there is one; otherwise,
-		the argument is returned unchanged
-*/
+ * @returns The converted integer
+ */
+double				ft_atof(const char *str);
+/**
+ * @brief Converts the string into a integer number
+ * @param str The string to convert
+ * @returns The converted integer
+ */
 int					ft_atoi(const char *str);
 /**
  * @brief Counts the numer of nodes of a linked list
@@ -102,6 +105,12 @@ int					ft_atoi(const char *str);
  * @returns The linked list size
  */
 int					ft_lstsize(t_list *lst);
+/**
+ * @brief Round a number
+ * @param num The number to round
+ * @returns The rounded number
+ */
+int					ft_round(double num);
 /**
  * @brief Compares byte string s1 against byte string s2.
 		Both strings are assumed to be n bytes long

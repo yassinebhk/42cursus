@@ -10,121 +10,79 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../include/fdf.h"
 
-line_t  ft_line_ec(double x1, double y1, double x2, double y2)
-{   
-    line_t line;
-
-    printf("\nx1: %f y1: %f x2: %f y2: %f\n", x1, y1, x2, y2);
-    line.m = (y2 - y1) / (x2 - x1);
-    line.n = y1 - line.m * x1;
-    return (line);
+void		ft_change_color(t_fdf *param)
+{
+	param->color += 1;
+	if (param->color > 2)
+		param->color = 0;
 }
 
-void    ft_draw_axis(mlx_image_t *img)
+static int	gradient(int startcolor, int endcolor, int len, int pix)
 {
-    int i;
-    double ypos;
-    line_t line;
+	double	increment[3];
+	int		new[3];
+	int		newcolor;
 
-    i = -1;
-    ypos = ((WIDTH / 2) * sin(M_PI_6)) / (sin(M_PI_3)) + HEIGHT / 2;
-    line = ft_line_ec(0, ypos, WIDTH / 2, HEIGHT / 2);
-    while (++i < WIDTH / 2)
-        mlx_put_pixel(img, i, line.m * i + line.n, 0x0000FFFF);
-    line = ft_line_ec(WIDTH / 2, HEIGHT / 2, WIDTH, ypos);
-    while (i < WIDTH)
-    {
-        mlx_put_pixel(img, i, line.m * i + line.n, 0x0000FFFF);
-        i++;
-    }
-    ft_draw_x(img, 400, 0, HEIGHT/2);
-
+	increment[0] = (double)((R(endcolor)) - (R(startcolor))) / (double)len;
+	increment[1] = (double)((G(endcolor)) - (G(startcolor))) / (double)len;
+	increment[2] = (double)((B(endcolor)) - (B(startcolor))) / (double)len;
+	new[0] = (R(startcolor)) + ft_round(pix * increment[0]);
+	new[1] = (G(startcolor)) + ft_round(pix * increment[1]);
+	new[2] = (B(startcolor)) + ft_round(pix * increment[2]);
+	newcolor = RGB(new[0], new[1], new[2]);
+	return (newcolor);
 }
 
-void	ft_draw_table(mlx_image_t *img)
+int	ft_get_color(t_fdf *fdf, int x, int y)
 {
-	int	i;
-	int	j;
+	int	mid_z;
+	int	len;
 
-	i = 0;
-	j = 0;
-	while (i < WIDTH)
+	len = fdf->z_max - fdf->z_min;
+	mid_z = ((float)fdf->z_max + (float)fdf->z_min) / 2;
+	if (fdf->z_matrix[y][x].color != -1)
+		return (fdf->z_matrix[y][x].color);
+	else if (fdf->color == 0)
+		if (fdf->z_matrix[y][x].z > mid_z)
+			return (gradient(BROWN_LAND, GREEN_LAND, len,
+					fdf->z_matrix[y][x].z));
+		else
+			return (gradient(BLUE_SEA, BROWN_LAND, len, fdf->z_matrix[y][x].z));
+	else if (fdf->color == 1)
+		if (fdf->z_matrix[y][x].z > mid_z)
+			return (gradient(PINK, PURPLE, len, fdf->z_matrix[y][x].z));
+		else
+			return (gradient(WHITE, PINK, len, fdf->z_matrix[y][x].z));
+	else if (fdf->color == 2)
 	{
-		j = 0;
-		while (j < HEIGHT)
+		if (fdf->z_matrix[y][x].z > mid_z)
+			return (gradient(VIOLET, GOLD, len, fdf->z_matrix[y][x].z));
+		else
+			return (gradient(NAVY, VIOLET, len, fdf->z_matrix[y][x].z));
+	}
+	return (0);
+}
+
+void	ft_draw_line(t_fdf *fdf)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < (*fdf).height)
+	{
+		x = 0;
+		while (x < (*fdf).width)
 		{
-			mlx_put_pixel(img, WIDTH - 1, j, 0xFFFFFFFF);
-			mlx_put_pixel(img, i, j, 0xFFFFFFFF);
-			j++;
+			if (x < (*fdf).width - 1)
+				ft_bressenham(x, y, (x + 1), y, fdf);
+			if (y < (*fdf).height - 1)
+				ft_bressenham(x, y, x, (y + 1), fdf);
+			x++;
 		}
-		i = i + 80;
+		y++;
 	}
-	j = 0;
-	while (j < HEIGHT)
-	{
-		i = 0;
-		while (i < WIDTH)
-		{
-			mlx_put_pixel(img, i, HEIGHT - 1, 0xFFFFFFFF);
-			mlx_put_pixel(img, i, j, 0xFFFFFFFF);
-			i++;
-		}
-		j = j + 60;
-	}
-}
-
-void	ft_draw_x(mlx_image_t *img, int i, int j, int jmax)
-{
-	while (j < jmax)
-	{
-        if (i == 400  && jmax == HEIGHT/2)
-            mlx_put_pixel(img, i, j, 0x0000FFFF);
-        else
-		    mlx_put_pixel(img, i, j, 0xFF000040);
-		j++;
-	}
-}
-
-void	ft_draw_y(mlx_image_t *img, int i, int imax, int j)
-{
-	while (i < imax)
-	{
-		mlx_put_pixel(img, i, j, 0xFF000004);
-		i++;
-	}
-}
-
-void	ft_draw_number(mlx_image_t *img)
-{
-	int	i;
-	int	j;
-
-	i = 81;
-	while (i < 160)
-	{
-		ft_draw_x(img, i, 61, 300);
-		ft_draw_x(img, i + 160, 61, HEIGHT - 60);
-		i++;
-	}
-	j = 241;
-	while (j < 300)
-	{
-		ft_draw_y(img, 160, 241, j);
-		j++;
-	}
-	ft_draw_y(img, 401, 720, 61);
-	ft_draw_y(img, 401, 720, 539);
-	ft_draw_y(img, 401, 640, 179);
-	ft_draw_y(img, 401, 640, 299);
-	ft_draw_y(img, 481, 720, 421);
-	ft_draw_y(img, 481, 720, 361);
-	ft_draw_x(img, 401, 61, 180);
-	ft_draw_x(img, 719, 61, 360);
-	ft_draw_x(img, 719, 421, 540);
-	ft_draw_x(img, 481, 361, 420);
-	ft_draw_x(img, 401, 301, 540);
-	ft_draw_x(img, 401, 421, 540);
-	ft_draw_x(img, 639, 181, 300);
+	ft_menu(fdf);
 }
