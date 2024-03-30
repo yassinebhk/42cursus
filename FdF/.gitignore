@@ -1,0 +1,7 @@
+*.o
+*.a
+fdf
+.DS_Store
+.vscode
+42MapGenerator
+atajos.txt
