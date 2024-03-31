@@ -30,7 +30,7 @@ void	ft_check_args(int argc, char **argv)
 		ft_printf("Too many arguments\n");
 		exit(EXIT_FAILURE);
 	}
-	else if (ft_strnstr(argv[1], "fdf", ft_strlen(argv[1])) == NULL)
+	else if (ft_strnstr(argv[1], ".fdf", ft_strlen(argv[1])) == NULL)
 	{
 		ft_printf("%s Invalid file extension\n", argv[1]);
 		exit(EXIT_FAILURE);
