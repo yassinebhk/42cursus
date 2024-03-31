@@ -1,0 +1,91 @@
+## Vscode Atajos
+
+Leaks : leaks -q -atExit -- ./name 
+
+En MAC Ctrl = Command
+
+- Mover linea - Alt + ↑ / ↓
+- Copiar linea - Shift + Alt + ↑ / ↓
+- Seleccionar siguiente aparición - Ctrl + D
+- Seleccionar todas las apariciones - Ctrl + Shift + L
+- Crear múltiples cursores - Ctrl + Alt+ ↑ / ↓
+- Selección multiple - Alt + Click
+- Mover bloque - Seleccionar .  Alt + ↑ / ↓
+- Copiar bloque - Seleccionar .  Shift + Alt + ↑ / ↓
+- Comentar linea - Ctrl + \ || esp(Ctrl + Shift + 7)
+- Comentar seleccion - Seleccionar .  Shift + Alt + A
+- Borrar linea seleccionada - Ctrl + Shift + K
+---
+---
++ Abrir/Crear archivo - Ctrl + click (sobre file)
++ Ojear definición codigo - Shift + F12 (sobre codigo)
++ Ir a la definición del codigo - F12 (sobre codigo)
+---
+---
+* Ocultar lateral -  Ctrl + B
+* Zen Mode -  Ctrl + K Z
+* Ocultar Mostrar terminal - Ctrl + ' || esp(Ctrl + ñ)
+* Nuevo terminal - Ctrl + Shift + ' || esp(Ctrl + Shift + ñ)
+* Cerrar tab - Ctrl + W 
+* Cerrar todas - Ctrl + K  Ctrl + W  
+* Reabrir anterior - Ctrl + Shift + T    
+* Cambiar de tab - Ctrl + TAB  
+* Cambiar a tab anterior - Ctrl + PG UP  
+* Cambiar a tab siguiente - Ctrl + PG DN   
+---
+---
+* Usar atajo Emmet -  Ctrl + SHIFT + P . Buscar Emmet...
+* Crear/Buscar tecla rapida - Ctrl + k && Ctrl + s
+---
+---
+- Ver definiciones ordenadas - Ctrl + P . @: ||  Ctrl + Shift o - . @
+- Ir a linea - Ctrl + G . numLinea || Ctrl + P . : . numLinea
+- Markdown Open Preview - Ctrl + Alt + P 
+- Markdown Open Preview to the side - Ctrl + K + V
+- Toggle Word Wrap -  Ctrl + Alt + W
+- Cambiar ocurencias simbolo - F2
+- Ir a Settings - Ctrl + ,
+---
+---
+
+-- HOOKS --
+
+Key	Event	 	Key	Event	 	Key	Event
+02	KeyPress	 	14	NoExpose	 	26	CirculateNotify
+03	KeyRelease	 	15	VisibilityNotify	 	27	CirculateRequest
+04	ButtonPress	 	16	CreateNotify	 	28	PropertyNotify
+05	ButtonRelease	 	17	DestroyNotify	 	29	SelectionClear
+06	MotionNotify	 	18	UnmapNotify	 	30	SelectionRequest
+07	EnterNotify	 	19	MapNotify	 	31	SelectionNotify
+08	LeaveNotify	 	20	MapRequest	 	32	ColormapNotify
+09	FocusIn	 	21	ReparentNotify	 	33	ClientMessage
+10	FocusOut	 	22	ConfigureNotify	 	34	MappingNotify
+11	KeymapNotify	 	23	ConfigureRequest	 	35	GenericEvent
+12	Expose	 	24	GravityNotify	 	36	LASTEvent
+13	GraphicsExpose	 	25	ResizeRequest	 
+
+Mask	Description	 	Mask	Description
+0L	NoEventMask	 	(1L<<12)	Button5MotionMask
+(1L<<0)	KeyPressMask	 	(1L<<13)	ButtonMotionMask
+(1L<<1)	KeyReleaseMask	 	(1L<<14)	KeymapStateMask
+(1L<<2)	ButtonPressMask	 	(1L<<15)	ExposureMask
+(1L<<3)	ButtonReleaseMask	 	(1L<<16)	VisibilityChangeMask
+(1L<<4)	EnterWindowMask	 	(1L<<17)	StructureNotifyMask
+(1L<<5)	LeaveWindowMask	 	(1L<<18)	ResizeRedirectMask
+(1L<<6)	PointerMotionMask	 	(1L<<19)	SubstructureNotifyMask
+(1L<<7)	PointerMotionHintMask	 	(1L<<20)	SubstructureRedirectMask
+(1L<<8)	Button1MotionMask	 	(1L<<21)	FocusChangeMask
+(1L<<9)	Button2MotionMask	 	(1L<<22)	PropertyChangeMask
+(1L<<10)	Button3MotionMask	 	(1L<<23)	ColormapChangeMask
+(1L<<11)	Button4MotionMask	 	(1L<<24)	OwnerGrabButtonMask
+
+-- Prototype of event functions
+
+Hooking event	code	Prototype
+ON_KEYDOWN	2	int (*f)(int keycode, void *param)
+ON_KEYUP*	3	int (*f)(int keycode, void *param)
+ON_MOUSEDOWN*	4	int (*f)(int button, int x, int y, void *param)
+ON_MOUSEUP	5	int (*f)(int button, int x, int y, void *param)
+ON_MOUSEMOVE	6	int (*f)(int x, int y, void *param)
+ON_EXPOSE*	12	int (*f)(void *param)
+ON_DESTROY	17	int (*f)(void *param)
