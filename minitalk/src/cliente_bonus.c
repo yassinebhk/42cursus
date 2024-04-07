@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cliente.c                                          :+:      :+:    :+:   */
+/*   cliente_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 14:20:32 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/07 23:10:09 by yassine          ###   ########.fr       */
+/*   Updated: 2024/04/07 23:57:18 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ static void	ft_exit(int a)
 	else if (a == 3)
 		write(1, "Demasiados argumentos\n", 23);
 	exit(1);
+}
+
+static void	handler(int signo)
+{
+	if (signo == SIGUSR1)
+		write(1, "1", 1);
+	else
+		write(1, "0", 1);
 }
 
 static void	ft_convert_to_binary(char *message, pid_t pid_server)
@@ -64,8 +72,11 @@ int	main(int argc, char **argv)
 	write(1, "Mensaje enviado: ", 18);
 	ft_putstr_fd(argv[2], 1);
 	write(1, "\n", 1);
+	signal(SIGUSR1, handler);
+	signal(SIGUSR2, handler);
 	ft_convert_to_binary(argv[2], pid_server);
 	ft_convert_to_binary("\n", pid_server);
-	atexit(leaks);
 	return (0);
 }
+
+	//atexit(leaks);

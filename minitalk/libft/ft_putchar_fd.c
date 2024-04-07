@@ -3,22 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:49:44 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/14 21:49:46 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:58:07 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putchar_fd(char c, int *res)
+int	ft_putchar_fd(char c, int fd)
 {
-	if (write(1, &c, sizeof(char)) == -1)
+	if (write(fd, &c, sizeof(char)) == -1)
 		return (0);
 	else
-	{
-		*res += 1;
 		return (1);
-	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:09:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/13 12:09:53 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/04/07 23:09:35 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ void				ft_putnbr_fd(int n, int fd);
  * @param c The character to sent
  * @param fd The file descriptor
  */
-int					ft_putchar_fd(char c, int *res);
+int					ft_putchar_fd(char c, int fd);
 /**
  * @brief Sends the string 's' to the file descriptor given as parameter
  * @param s The string to sent
@@ -261,7 +261,7 @@ int					ft_putchar_fd(char c, int *res);
  * @returns The number of bytes written or -1 if it's wasn't possible to
 			write
  */
-int					ft_putstr_fd(char *s, int *res);
+int					ft_putstr_fd(char *s, int fd);
 /**
  * @brief Sends the string 's' to the file descriptor given as parameter,
 		followed by a newline character
@@ -418,12 +418,11 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
  * @brief Simulate the funcion printf() from stdio.h
 	 * @param buff The string
 */
-int	ft_printf(char const *buff, ...);
+int					ft_printf(char const *buff, ...);
 /**
  * @brief Get next line from a file descriptor
 	 * @param fd The file descriptor
 */
-char	*get_next_line(int fd);
-
+char				*get_next_line(int fd);
 
 #endif
