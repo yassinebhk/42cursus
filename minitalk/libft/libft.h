@@ -255,6 +255,12 @@ void				ft_putnbr_fd(int n, int fd);
  */
 int					ft_putchar_fd(char c, int fd);
 /**
+ * @brief Sends the character 'c' to the file descriptor given as parameter
+ * @param c The character to sent
+ * @param fd The file descriptor
+ */
+int					ft_putchar2_fd(char c, int *res);
+/**
  * @brief Sends the string 's' to the file descriptor given as parameter
  * @param s The string to sent
  * @param fd The file descriptor
@@ -262,6 +268,14 @@ int					ft_putchar_fd(char c, int fd);
 			write
  */
 int					ft_putstr_fd(char *s, int fd);
+/**
+ * @brief Sends the string 's' to the file descriptor given as parameter
+ * @param s The string to sent
+ * @param fd The file descriptor
+ * @returns The number of bytes written or -1 if it's wasn't possible to
+			write
+ */
+int					ft_putstr2_fd(char *s, int *res);
 /**
  * @brief Sends the string 's' to the file descriptor given as parameter,
 		followed by a newline character

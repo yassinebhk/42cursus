@@ -63,11 +63,11 @@ static int	printf_num(char c, va_list arg, int *res)
 static int	format(char c, int *res, va_list arg)
 {
 	if (c == '%')
-		return (ft_putchar_fd('%', res));
+		return (ft_putchar2_fd('%', res));
 	else if (c == 'c')
-		return (ft_putchar_fd(va_arg(arg, int), res));
+		return (ft_putchar2_fd(va_arg(arg, int), res));
 	else if (c == 's')
-		return (ft_putstr_fd(va_arg(arg, char *), res));
+		return (ft_putstr2_fd(va_arg(arg, char *), res));
 	else
 		return (printf_num(c, arg, res));
 }

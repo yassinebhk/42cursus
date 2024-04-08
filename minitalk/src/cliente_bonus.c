@@ -20,20 +20,20 @@ static void	leaks(void)
 static void	ft_exit(int a)
 {
 	if (a == 0)
-		write(1, "Pid inválido\n", 15);
+		ft_printf("Pid inválido\n");
 	else if (a == 2 || a == 1)
-		write(1, "Faltan argumentos\n", 19);
+		ft_printf("Faltan argumentos\n");
 	else if (a == 3)
-		write(1, "Demasiados argumentos\n", 23);
+		ft_printf("Demasiados argumentos\n");
 	exit(1);
 }
 
 static void	handler(int signo)
 {
 	if (signo == SIGUSR1)
-		write(1, "1", 1);
+		ft_printf("1");
 	else
-		write(1, "0", 1);
+		ft_printf("0");
 }
 
 static void	ft_convert_to_binary(char *message, pid_t pid_server)
@@ -53,7 +53,7 @@ static void	ft_convert_to_binary(char *message, pid_t pid_server)
 				kill(pid_server, SIGUSR1);
 			else
 				kill(pid_server, SIGUSR2);
-			usleep(300);
+			usleep(400);
 		}
 	}
 }
@@ -69,13 +69,13 @@ int	main(int argc, char **argv)
 	pid_server = ft_atoi(argv[1]);
 	if (pid_server <= 1)
 		ft_exit(0);
-	write(1, "Mensaje enviado: ", 18);
-	ft_putstr_fd(argv[2], 1);
-	write(1, "\n", 1);
+	ft_printf("\n-------------------------------------------------------------\n");
+	ft_printf("\n[Mensaje enviado]\n\n%s\n", argv[2]);
+	ft_printf("---------------------------------------\n\n");
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
 	ft_convert_to_binary(argv[2], pid_server);
-	ft_convert_to_binary("\n", pid_server);
+	ft_convert_to_binary("\n------------------------------------------------\n\n", pid_server);
 	return (0);
 }
 

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_putchar2_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:49:44 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/07 22:58:07 by yassine          ###   ########.fr       */
+/*   Updated: 2023/09/14 21:49:46 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putchar_fd(char c, int fd)
+int	ft_putchar2_fd(char c, int *res)
 {
-	if (write(fd, &c, sizeof(char)) == -1)
-	{
-		write(1, "Error\n", 6);
+	if (write(1, &c, sizeof(char)) == -1)
 		return (0);
-	}
 	else
+	{
+		*res += 1;
 		return (1);
+	}
 }

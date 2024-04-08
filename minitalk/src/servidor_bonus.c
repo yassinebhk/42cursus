@@ -24,17 +24,11 @@ static void	sig_usr(int signo, siginfo_t *info, void *other)
 
 	(void)other;
 	if (signo == SIGUSR1)
-		number += (1 << cont_bits);
+		number |= (1 << cont_bits);
 	cont_bits--;
 	if (cont_bits == -1)
 	{
-		if (!ft_putchar_fd((char)number, 1))
-			exit(1);
-		if (number == 0)
-		{
-			write(1, "\n", 1);
-			exit(0);
-		}
+		ft_printf("%c", number);
 		cont_bits = 7;
 		number = 0;
 	}
@@ -51,16 +45,16 @@ int	main(void)
 
 	sa.sa_sigaction = sig_usr;
 	sa.sa_flags = SA_SIGINFO;
-	write(1, "Mi pid es: ", 12);
-	ft_putnbr_fd(getpid(), 1);
-	write(1, "\nEsperando mensaje...\n", 23);
-	write(1, "--------------------------------\n", 34);
+	ft_printf("\n--------------------\n");
+	ft_printf("PID: %d\n", getpid());
+	ft_printf("--------------------\n");
+	ft_printf("\nMensajes recibidos...\n\n");
+	ft_printf("--------------------\n");
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
-	{
 		pause();
-	}
-	atexit(leaks);
 	return (0);
 }
+
+	//atexit(leaks);
