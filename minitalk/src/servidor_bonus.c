@@ -44,7 +44,8 @@ int	main(void)
 	struct sigaction	sa;
 
 	sa.sa_sigaction = sig_usr;
-	sa.sa_flags = SA_SIGINFO;
+	sa.sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
+	sigemptyset(&sa.sa_mask);
 	ft_printf("\n--------------------\n");
 	ft_printf("PID: %d\n", getpid());
 	ft_printf("--------------------\n");
