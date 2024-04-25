@@ -69,16 +69,12 @@ int	main(int argc, char **argv)
 	pid_server = ft_atoi(argv[1]);
 	if (pid_server <= 1)
 		ft_exit(0);
-	ft_printf("\n-----------------------------------------------\
-	--------------\n");
+	ft_printf("\n--------------------\n");
 	ft_printf("\n[Mensaje enviado]\n\n%s\n", argv[2]);
-	ft_printf("---------------------------------------\n\n");
+	ft_printf("--------------------\n\n");
 	signal(SIGUSR1, handler);
 	signal(SIGUSR2, handler);
 	ft_convert_to_binary(argv[2], pid_server);
-	ft_convert_to_binary("\n--------------------------------------\
-	----------\n\n",
-		pid_server);
 	return (0);
 }
 

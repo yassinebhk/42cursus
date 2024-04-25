@@ -19,11 +19,9 @@ static void	leaks(void)
 
 static void	sig_usr(int signo)
 {
-	static int	cont_bits;
-	static int	number;
+	static int	cont_bits = 7;
+	static int	number = 0;
 
-	cont_bits = 7;
-	number = 0;
 	if (signo == SIGUSR1)
 		number += (1 << cont_bits);
 	cont_bits--;

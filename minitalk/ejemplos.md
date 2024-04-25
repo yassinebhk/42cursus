@@ -70,3 +70,4 @@ por ejemplo, hacer algunos reintentos y luego salirte del programa.
 Esto técnica es muy útil cuando llamas al open() de fifos, con un read(), pause(), etc.
 
 */
+

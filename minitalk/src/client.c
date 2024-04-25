@@ -56,19 +56,15 @@ int	main(int argc, char **argv)
 	int		i;
 
 	i = -1;
-	pid_server = ft_atoi(argv[1]);
 	if (argc != 3)
 		ft_exit(argc);
+	pid_server = ft_atoi(argv[1]);
 	if (pid_server <= 1)
 		ft_exit(0);
-	ft_printf("\n------------------------------------------\
-	-------------------\n");
+	ft_printf("\n------------------------------------------\n");
 	ft_printf("\n[Mensaje enviado]\n\n%s\n", argv[2]);
-	ft_printf("---------------------------------------\n\n");
+	ft_printf("\n---------------------------------------\n\n");
 	ft_convert_to_binary(argv[2], pid_server);
-	ft_convert_to_binary("\n----------------------------------\
-	--------------\n\n",
-		pid_server);
 	return (0);
 }
 // atexit(leaks);
