@@ -19,9 +19,11 @@ static void	leaks(void)
 
 static void	sig_usr(int signo, siginfo_t *info, void *other)
 {
-	static int	cont_bits = 7;
-	static int	number = 0;
+	static int	cont_bits;
+	static int	number;
 
+	cont_bits = 7;
+	number = 0;
 	(void)other;
 	if (signo == SIGUSR1)
 		number |= (1 << cont_bits);
@@ -58,4 +60,4 @@ int	main(void)
 	return (0);
 }
 
-	//atexit(leaks);
+// atexit(leaks);

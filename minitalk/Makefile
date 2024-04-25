@@ -34,63 +34,63 @@ UNDER	= \033[4m
 INVERT	= \033[7m
 DASH	= \033[9m
 
-NAME_SERVIDOR					:= servidor
-NAME_CLIENTE					:= cliente
-NAME_SERVIDOR_BONUS				:= servidor_bonus
-NAME_CLIENTE_BONUS				:= cliente_bonus
+NAME_SERVER					    := server
+NAME_CLIENT					    := client
+NAME_SERVER_BONUS				:= server_bonus
+NAME_CLIENT_BONUS				:= client_bonus
 cc 								:= gcc
 flags 							:= -g -Wall -Wextra -Werror
-SRCS_CLIENTE 					:= src/cliente.c 
-SRCS_SERVIDOR 					:= src/servidor.c
-SRCS_CLIENTE_BONUS 				:= src/cliente_bonus.c 
-SRCS_SERVIDOR_BONUS				:= src/servidor_bonus.c
-OBJS_SERVIDOR					:= $(SRCS_SERVIDOR:.c=.o)
-OBJS_CLIENTE					:= $(SRCS_CLIENTE:.c=.o)
-OBJS_SERVIDOR_BONUS				:= $(SRCS_SERVIDOR_BONUS:.c=.o)
-OBJS_CLIENTE_BONUS				:= $(SRCS_CLIENTE_BONUS:.c=.o)
+SRCS_CLIENT 					:= src/client.c 
+SRCS_SERVER 					:= src/server.c
+SRCS_CLIENT_BONUS 				:= src/client_bonus.c 
+SRCS_SERVER_BONUS				:= src/server_bonus.c
+OBJS_SERVER					    := $(SRCS_SERVER:.c=.o)
+OBJS_CLIENT					    := $(SRCS_CLIENT:.c=.o)
+OBJS_SERVER_BONUS				:= $(SRCS_SERVER_BONUS:.c=.o)
+OBJS_CLIENT_BONUS				:= $(SRCS_CLIENT_BONUS:.c=.o)
 INCL							:= include/.h
 
-all: $(NAME_SERVIDOR) $(NAME_CLIENTE)
-bonus: $(NAME_SERVIDOR_BONUS) $(NAME_CLIENTE_BONUS)
+all: $(NAME_SERVER) $(NAME_CLIENT)
+bonus: $(NAME_SERVER_BONUS) $(NAME_CLIENT_BONUS)
 
 %.o: %.c $(INCL)
 	@gcc $(FLAGS) -c $< -o $@
 	@echo " $(CYAN)COMPILING $(YELLOW) $^ $(CYAN) to $(YELLOW)$@\n"
 
-$(NAME_SERVIDOR):$(OBJS_SERVIDOR)
+$(NAME_SERVER):$(OBJS_SERVER)
 	@echo "\n $(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_SERVIDOR) libft.a $(CYAN) to $(YELLOW) $(NAME_SERVIDOR)\n"
+	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_SERVER) libft.a $(CYAN) to $(YELLOW) $(NAME_SERVER)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS_SERVIDOR) libft.a -o $(NAME_SERVIDOR)
+	@$(cc) $(flags) $(OBJS_SERVER) libft.a -o $(NAME_SERVER)
 	@echo "$(MAGENTA)$(ITALIC) compiled!$(RESET)"
 
-$(NAME_CLIENTE):$(OBJS_CLIENTE)
+$(NAME_CLIENT):$(OBJS_CLIENT)
 	@echo " \n$(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_CLIENTE) libft.a $(CYAN) to $(YELLOW) $(NAME_CLIENTE)\n"
+	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_CLIENT) libft.a $(CYAN) to $(YELLOW) $(NAME_CLIENT)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS_CLIENTE) libft.a -o $(NAME_CLIENTE)
+	@$(cc) $(flags) $(OBJS_CLIENT) libft.a -o $(NAME_CLIENT)
 	@echo "$(MAGENTA)$(ITALIC) compiled!$(RESET)"
 
-$(NAME_SERVIDOR_BONUS):$(OBJS_SERVIDOR_BONUS)
+$(NAME_SERVER_BONUS):$(OBJS_SERVER_BONUS)
 	@echo " \n$(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_SERVIDOR_BONUS) libft.a $(CYAN) to $(YELLOW) $(NAME_SERVIDOR_BONUS)\n"
+	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_SERVER_BONUS) libft.a $(CYAN) to $(YELLOW) $(NAME_SERVER_BONUS)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS_SERVIDOR_BONUS) libft.a -o $(NAME_SERVIDOR_BONUS)
+	@$(cc) $(flags) $(OBJS_SERVER_BONUS) libft.a -o $(NAME_SERVER_BONUS)
 	@echo "$(MAGENTA)$(ITALIC) compiled!$(RESET)"
 
-$(NAME_CLIENTE_BONUS):$(OBJS_CLIENTE_BONUS)
+$(NAME_CLIENT_BONUS):$(OBJS_CLIENT_BONUS)
 	@echo " \n$(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_CLIENTE_BONUS) libft.a $(CYAN) to $(YELLOW) $(NAME_CLIENTE_BONUS)\n"
+	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_CLIENT_BONUS) libft.a $(CYAN) to $(YELLOW) $(NAME_CLIENT_BONUS)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS_CLIENTE_BONUS) libft.a -o $(NAME_CLIENTE_BONUS)
+	@$(cc) $(flags) $(OBJS_CLIENT_BONUS) libft.a -o $(NAME_CLIENT_BONUS)
 	@echo "$(MAGENTA)$(ITALIC) compiled!$(RESET)"
 
 clean:
-	rm -f $(OBJS_CLIENTE) $(OBJS_SERVIDOR)
+	rm -f $(OBJS_CLIENT) $(OBJS_SERVER)
 	@echo "$(YELLOW)Cleaning...$(RESET)"
 	@$(MAKE) -C libft clean
 	@rm -f src/*.o
@@ -98,10 +98,10 @@ clean:
 	
 
 fclean:clean
-	@/bin/rm -f $(NAME_CLIENTE)
-	@/bin/rm -f $(NAME_SERVIDOR)
-	@/bin/rm -f $(NAME_CLIENTE_BONUS)
-	@/bin/rm -f $(NAME_SERVIDOR_BONUS)
+	@/bin/rm -f $(NAME_CLIENT)
+	@/bin/rm -f $(NAME_SERVER)
+	@/bin/rm -f $(NAME_CLIENT_BONUS)
+	@/bin/rm -f $(NAME_SERVER_BONUS)
 	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
 
 re:fclean all
@@ -116,20 +116,5 @@ norm:
 	@echo "$(BLUE)$(DIM)SRC$(RESET)"
 	@norminette src/*.c include/*.h
 	@echo "$(GREEN)Completed!$(RESET)"
-
-ascii:
-	@echo "$(MAGENTA)$(BOLD)"
-	@echo "                                            "
-	@echo " #########      #########         ######### "
-	@echo " ##             ##      ##        ##        "
-	@echo " ##             ##       ##       ##        "
-	@echo " #########      ##        ##      ######### "
-	@echo " ##             ##       ##       ##        "
-	@echo " ##             ##      ##        ##        "
-	@echo " ##             ##     ##         ##        "
-	@echo " ##             #######           ##        "
-	@echo "                                            "
-	@echo "$(RESET)"
-
 
 .PHONY: all utils clean fclean re
