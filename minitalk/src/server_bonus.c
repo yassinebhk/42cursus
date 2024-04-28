@@ -12,11 +12,6 @@
 
 #include "../include/servidor.h"
 
-static void	leaks(void)
-{
-	system("leaks server");
-}
-
 static void	sig_usr(int signo, siginfo_t *info, void *other)
 {
 	static int	cont_bits = 7;
@@ -49,15 +44,12 @@ int	main(void)
 	ft_printf("\n--------------------\n");
 	ft_printf("PID: %d\n", getpid());
 	ft_printf("--------------------\n");
-	ft_printf("\nMensajes recibidos...\n\n");
+	ft_printf("\nReceived messages...\n\n");
 	ft_printf("--------------------\n");
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
-	{
 		pause();
-	}
 	return (0);
 }
 
-// atexit(leaks);
