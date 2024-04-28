@@ -23,7 +23,6 @@ int main (int argc, char **argv)
     if (argc < 2)
         exit(1);
     ft_check_args(argc, argv);
-    ft_printf("\nArguments check ✅\n");
     atexit(leaks);
     return (0);
 }
