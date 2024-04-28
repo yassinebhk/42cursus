@@ -24,7 +24,7 @@ long	ft_atoi_mod(const char *nptr, int *error)
 	int		i;
 
 	i = 0;
-    *error = 0;
+	*error = 0;
 	while (ft_isspace(nptr[i]))
 		++i;
 	sign = 1;
@@ -34,7 +34,7 @@ long	ft_atoi_mod(const char *nptr, int *error)
 	num = 0;
 	while (ft_isdigit(nptr[i]))
 	{
-        *error= 1;
+		*error = 1;
 		num *= 10;
 		num += nptr[i] - '0';
 		++i;
@@ -56,7 +56,7 @@ int	ft_strchr_mod(int *s, int pos, int c)
 	return (0);
 }
 
-int ft_is_integer(char *str)
+int	ft_is_integer(char *str)
 {
 	while (*str)
 	{
@@ -66,4 +66,3 @@ int ft_is_integer(char *str)
 	}
 	return (0);
 }
-

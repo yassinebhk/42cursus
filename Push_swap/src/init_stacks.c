@@ -1,51 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   init_stacks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/27 12:34:22 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/27 12:34:24 by ybouhaik         ###   ########.fr       */
+/*   Created: 2024/04/28 20:25:03 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/04/28 20:25:04 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
 
-void	ft_exit(void)
+t_node *ft_new_node(int value)
 {
-	ft_printf("Error\n");
-	exit(1);
+    t_node *stack;
+
+    stack = (t_node *)malloc (sizeof(t_node));
+    stack->before = stack;
+    stack->next = stack;
+    stack->cost = -1;
+    stack->index = -1;
+    stack->pos = -1;
+    stack->value = value;
+    return (stack);
 }
 
-void	ft_exit_str(int *str)
+void    ft_init_stacks(t_node **stack_a, t_node **stack_b)
 {
-	free(str);
-	ft_printf("Error\n");
-	exit(1);
-}
-
-void	ft_exit_mtx(char **mtx)
-{
-	while (mtx)
-	{
-		free(*mtx);
-		mtx++;
-	}
-	free(mtx);
-	ft_printf("Error\n");
-	exit(1);
-}
-
-void	ft_exit_str_and_mtx(int *str, char **mtx, int pos)
-{
-	free(str);
-	while (mtx[pos])
-	{
-		free(mtx[pos]);
-		pos++;
-	}
-	free(mtx);
-	ft_printf("Error\n");
-	exit(1);
+    *stack_a = ft_new_node(0);
+    *stack_b = ft_new_node(0);
 }

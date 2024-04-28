@@ -1,51 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/27 12:34:22 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/27 12:34:24 by ybouhaik         ###   ########.fr       */
+/*   Created: 2024/04/28 21:11:02 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/04/28 21:11:03 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
 
-void	ft_exit(void)
+void    ft_free_stack(t_node *stack)
 {
-	ft_printf("Error\n");
-	exit(1);
+    t_node *tmp;
+
+    tmp = stack;
+	while (stack->next != tmp)
+    {
+        free(stack);
+		stack = stack->next;
+    }
+    free(stack);
 }
 
-void	ft_exit_str(int *str)
+void    ft_free_all(t_node *stack_a, t_node *stack_b, int *list)
 {
-	free(str);
-	ft_printf("Error\n");
-	exit(1);
-}
-
-void	ft_exit_mtx(char **mtx)
-{
-	while (mtx)
-	{
-		free(*mtx);
-		mtx++;
-	}
-	free(mtx);
-	ft_printf("Error\n");
-	exit(1);
-}
-
-void	ft_exit_str_and_mtx(int *str, char **mtx, int pos)
-{
-	free(str);
-	while (mtx[pos])
-	{
-		free(mtx[pos]);
-		pos++;
-	}
-	free(mtx);
-	ft_printf("Error\n");
-	exit(1);
+    ft_free_stack(stack_a);
+    ft_free_stack(stack_b);
+    free(list);
 }

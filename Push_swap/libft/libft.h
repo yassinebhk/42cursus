@@ -24,6 +24,15 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct s_vbs
+{
+	int		i;
+	int		pos;
+	int		ini;
+	int		size;
+	char	**palabra;
+}			t_vbs;
+
 /**
  * @brief Tests for any printing character, including space
 		(` ').  The value of the argument must be representable as an unsigned
@@ -98,7 +107,7 @@ double				ft_atof(const char *str);
  * @param str The string to convert
  * @returns The converted integer
  */
-long					ft_atoi(const char *str);
+long				ft_atoi(const char *str);
 /**
  * @brief Counts the numer of nodes of a linked list
  * @param lst The linked list
@@ -399,7 +408,7 @@ size_t				ft_strlcpy(char *dst, const char *src, size_t size);
  * @param src The string source
  * @returns The concatenated srting
 */
-char	*ft_strcat(char *dest, char *src);
+char				*ft_strcat(char *dest, char *src);
 /**
  * @brief Copy and concatenate strings
 		with the same input parameters and output result as snprintf(3)
@@ -438,13 +447,13 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 /**
  * @brief Simulate the funcion printf() from stdio.h
-	 * @param buff The string
-*/
+ * @param buff The string
+ */
 int					ft_printf(char const *buff, ...);
 /**
  * @brief Get next line from a file descriptor
-	 * @param fd The file descriptor
-*/
+ * @param fd The file descriptor
+ */
 char				*get_next_line(int fd);
 
 #endif

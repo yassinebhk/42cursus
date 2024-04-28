@@ -42,7 +42,7 @@ NAME				:= push_swap
 NAME_BONUS			:= push_swap_bonus
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror
-SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c
+SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c src/init_stacks.c src/free.c src/fill_stack.c
 SRCS_BONUS 			:= src/push_swap.c
 OBJS 				:=$(SRCS:.c=.o)
 OBJS_BONUS 			:=$(SRCS_BONUS:.c=.o)

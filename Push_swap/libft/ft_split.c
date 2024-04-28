@@ -48,7 +48,7 @@ static char	*fill_word(char *palabra, char *s, int ini, int pos)
 }
 
 static int	find_pos(char *palabra, char c, int *size, int *ini)
-{	
+{
 	int	i;
 
 	i = *ini + *size;
@@ -77,18 +77,9 @@ static void	ft_free(char **s)
 	free(s);
 }
 
-struct		s_vbs
-{
-	int		i;
-	int		pos;
-	int		ini;
-	int		size;
-	char	**palabra;
-};
-
 char	**ft_split(char const *s, char c)
 {
-	struct s_vbs	a;
+	t_vbs	a;
 
 	a.i = 0;
 	a.size = 0;
@@ -111,4 +102,3 @@ char	**ft_split(char const *s, char c)
 	a.palabra[a.i] = NULL;
 	return (a.palabra);
 }
-
