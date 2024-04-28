@@ -42,23 +42,28 @@ long	ft_atoi_mod(const char *nptr, int *error)
 	return ((num * sign));
 }
 
-char	*ft_strjoin_mod(char const *s1, char const *s2, int mlc)
+int	ft_strchr_mod(int *s, int pos, int c)
 {
-	char	*s;
-	int		i;
+	int	i;
 
 	i = 0;
-	s = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!s)
-		return (NULL);
-	while (*(s1 + i) != '\0')
+	while (i < pos)
 	{
-		*(s + i) = *(s1 + i);
+		if (c == s[i])
+			return (1);
 		i++;
 	}
-	*(s + i) = '\0';
-	s = ft_strcat(s, (char *)s2);
-    if (mlc)
-	    free((char *)s1);
-	return (s);
+	return (0);
 }
+
+int ft_is_integer(char *str)
+{
+	while (*str)
+	{
+		if (*str >= '0' && *str <= '9')
+			return (1);
+		str++;
+	}
+	return (0);
+}
+

@@ -18,10 +18,9 @@ void ft_exit()
     exit(1);
 }
 
-void ft_exit_str(char *str, int flag)
+void ft_exit_str(int *str)
 {
-    if (flag)
-        free(str);
+    free(str);
     ft_printf("Error\n");
     exit(1);
 }
@@ -32,6 +31,19 @@ void ft_exit_mtx(char **mtx)
     {
         free(*mtx);
         mtx++;
+    }
+    free(mtx);
+    ft_printf("Error\n");
+    exit(1);
+}
+
+void ft_exit_str_and_mtx(int *str, char **mtx, int pos)
+{
+    free(str);
+    while (mtx[pos])
+    {
+        free(mtx[pos]);
+        pos++;
     }
     free(mtx);
     ft_printf("Error\n");

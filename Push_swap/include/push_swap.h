@@ -70,10 +70,9 @@ long	ft_atoi_mod(const char *nptr, int *error);
 /**
  * @brief End the program after free the memory allocated in the string 
  * @param str The string
- * @param flag The flag that indicates if there is memory allocated
  * @returns Terminate the program by printing "Error\n"
 */
-void ft_exit_str(char *str, int flag);
+void ft_exit_str(int *str);
 /**
  * @brief End the program after free the memory allocated in the matrix 
  * @param mitx The matrix
@@ -81,16 +80,29 @@ void ft_exit_str(char *str, int flag);
 */
 void ft_exit_mtx(char **mtx);
 /**
- * @brief Using malloc, creates an array of strings made up by separating
-		the string s in subtrings using the character 'c' as delimiter. It also
-        free the memory of the string s1 if it's allocated
-		The array has to finish with a NULL pointer
- * @param s The string to separe
- * @param c The character using as dellimiter
- * @returns The array of strings resulting from the separation. Other
-		-wise, returns NULL if malloc fails
+ * @brief End the program after free the memory allocated in the string and in the matrix (starting
+ * in the position pos)
+ * @param str The string
+ * @param mtx The matrix
+ * @param pos The position in the matrix
+ * @returns Terminate the program by printing "Error\n"
 */
-char	*ft_strjoin_mod(char const *s1, char const *s2, int mlc);
+void ft_exit_str_and_mtx(int *str, char **mtx, int pos);
+/**
+ * @brief Locates the first occurrence of c in the string pointed to by s
+		`\0', the functions locate the terminating `\0'
+ * @param s The string to look into
+ * @param pos The length of the string
+ * @param c The integer fo look for
+ * @returns 1 if it appears. Either 0
+*/
+int	ft_strchr_mod(int *s, int pos, int c);
+/**
+ * @brief Check if there is any number in a string
+ * @param str The string to look into
+ * @returns 1 if it appears. Either 0
+*/
+int ft_is_integer(char *str);
 
 
 # endif
