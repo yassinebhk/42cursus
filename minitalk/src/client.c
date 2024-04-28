@@ -12,19 +12,14 @@
 
 #include "../include/cliente.h"
 
-static void	leaks(void)
-{
-	system("leaks client");
-}
-
 static void	ft_exit(int a)
 {
 	if (a == 0)
-		ft_printf("Pid inválido\n");
+		ft_printf("Invalid PID\n");
 	else if (a == 2 || a == 1)
-		ft_printf("Faltan argumentos\n");
+		ft_printf("Insufficient arguments\n");
 	else if (a > 3)
-		ft_printf("Demasiados argumentos: [PID_SERVER] [MESSAGE]\n");
+		ft_printf("Too much arguments: [PID_SERVER] [MESSAGE]\n");
 	exit(1);
 }
 
@@ -62,9 +57,8 @@ int	main(int argc, char **argv)
 	if (pid_server <= 1)
 		ft_exit(0);
 	ft_printf("\n------------------------------------------\n");
-	ft_printf("\n[Mensaje enviado]\n\n%s\n", argv[2]);
+	ft_printf("\n[Sent message]\n\n%s\n", argv[2]);
 	ft_printf("\n---------------------------------------\n\n");
 	ft_convert_to_binary(argv[2], pid_server);
 	return (0);
 }
-// atexit(leaks);
