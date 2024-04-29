@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/27 12:16:37 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/04/29 18:58:35 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@
 
 /**
  * @brief Node struct
- * @param value Value of the node
+ * @param value The value of the node
  * @param cost The cost to reach the top of the list
- * @param pos The position of the node in the list
+ * @param pos The relative position of the node in the list
  * @param index Index that should take based on his value
  * @param next The next node
  * @param before The previous node
@@ -142,12 +142,84 @@ void    ft_free_all(t_node *stack_a, t_node *stack_b, int *list);
  */
 t_node *ft_new_node(int value);
 /**
+ * @brief Gives the last node of the linked list
+ * @param stack_a The head of the linked list
+ * @returns The last node
+ */
+t_node	*ft_last_node(t_node *stack_a);
+/**
  * @brief Fill the stack_a
  * @param stack_a Stack_a
  * @param list The list of integer numbers
  * @param length The length of the list
  */
 void    ft_fill_stack_a(t_node **stack_a, int *list, int length);
+/**
+ * @brief Calculates the length of a linked list
+ * @param stack The head of the linked list
+ * @returns The length of the list
+ */
+int ft_len_list(t_node *stack);
+/**
+ * @brief Removes the first element of the list
+ * @param stack The head of the linked list
+ * @returns The new list
+ */
+t_node  *ft_pop(t_node *stack);
+/**
+ * @brief Adds one node at the top of the linked list
+ * @param stack The head of the linked list
+ * @param new_node The new node
+ * @returns The new list
+ */
+t_node  *ft_add_top(t_node *stack, t_node *new_node);
 
+/**********************************************
+ *                                             *
+ *                                             *
+ *                  MOVEMENTS                  *
+ *                                             *
+ *                                             *
+ * *********************************************/
+
+/**
+ * @brief Exchange the first two positions of the stack_a
+ * @param stack_a The linked list
+ */
+void    sa(t_node **stack_a);
+/**
+ * @brief Exchange the first two positions of the stack_b
+ * @param stack_b The linked list
+ */
+void    sb(t_node **stack_b);
+/**
+ * @brief Exchanges the first two positions of both stacks
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    ss(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Carry out the action of swap
+ * @param stack The linked list
+ */
+void    swap(t_node **stack);
+/**
+ * @brief Moves the first element of stack_b to stack_a
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    pa(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Moves the first element of stack_a to stack_b
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    pb(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Carriy out the action of push
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    push(t_node **stack_a, t_node **stack_b, char c);
 
 #endif

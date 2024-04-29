@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/27 12:09:53 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/04/27 12:10:02 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/04/29 17:40:55 by yassine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ NAME				:= push_swap
 NAME_BONUS			:= push_swap_bonus
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror
-SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c src/init_stacks.c src/free.c src/fill_stack.c
+SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c src/swap.c  src/rotate.c\
+						src/init_stacks.c src/free.c src/fill_stack.c src/list_utils.c src/push.c 
 SRCS_BONUS 			:= src/push_swap.c
 OBJS 				:=$(SRCS:.c=.o)
 OBJS_BONUS 			:=$(SRCS_BONUS:.c=.o)
