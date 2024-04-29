@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:42 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/29 22:08:23 by yassine          ###   ########.fr       */
+/*   Updated: 2024/04/29 23:59:13 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,29 @@ int	main(int argc, char **argv)
     pb(&stack_a, &stack_b);
     pb(&stack_a, &stack_b);
     pb(&stack_a, &stack_b);
+    pb(&stack_a, &stack_b);
     pa(&stack_a, &stack_b);
     sb(&stack_b);
     pa(&stack_a, &stack_b);
+    pa(&stack_a, &stack_b);
+    ss(&stack_a, &stack_b);
+    ra(&stack_a);    
+    rr(&stack_a, &stack_b);
+    rra(&stack_a);
+    rrr(&stack_a, &stack_b);
+    pb(&stack_a, &stack_b);
+    ss(&stack_a, &stack_b);
+    rr(&stack_a, &stack_b);
+    pb(&stack_a, &stack_b);
+    pb(&stack_a, &stack_b);
+    pb(&stack_a, &stack_b);
+    pb(&stack_a, &stack_b);
+    sa(&stack_a);
+    ra(&stack_a);    
+    rra(&stack_a);
+
     length = ft_len_list(stack_b);
+    ft_printf("\n|----------------------|\n\n");
     while (++i < length)
     {
         ft_printf("stack_b value: %d\n", stack_b->value);
@@ -51,12 +70,13 @@ int	main(int argc, char **argv)
 
     i = -1;
     length = ft_len_list(stack_a);
+    ft_printf("\n|----------------------|\n\n");
     while (++i < length)
     {
         ft_printf("stack_a value: %d\n", stack_a->value);
         stack_a = stack_a->next;
     }
-
+    ft_printf("\n|----------------------|\n\n");
     
     /***********************************************************/
 

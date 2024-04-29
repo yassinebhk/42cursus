@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/29 18:58:35 by yassine          ###   ########.fr       */
+/*   Updated: 2024/04/29 23:24:57 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,49 @@ void    pb(t_node **stack_a, t_node **stack_b);
  * @param stack_b The linked list
  */
 void    push(t_node **stack_a, t_node **stack_b, char c);
+/**
+ * @brief Scroll up the elements of the stack_a
+ * @param stack_a The linked list
+ */
+void    ra(t_node **stack_a);
+/**
+ * @brief Scroll up the elements of the stack_b
+ * @param stack_b The linked list
+ */
+void    rb(t_node **stack_b);
+/**
+ * @brief Scroll up the elements of both stacks
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    rr(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Carry out the action of rotate
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    rotate(t_node **stack);
+/**
+ * @brief Scroll down the elements of the stack_a
+ * @param stack_a The linked list
+ */
+void    rra(t_node **stack_a);
+/**
+ * @brief Scroll down the elements of the stack_b
+ * @param stack_b The linked list
+ */
+void    rrb(t_node **stack_b);
+/**
+ * @brief Scroll down the elements of both stacks
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    rrr(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Carry out the action of rotate reverse
+ * @param stack_a The linked list
+ * @param stack_b The linked list
+ */
+void    rotate_reverse(t_node **stack);
 
 #endif

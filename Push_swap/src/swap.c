@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 09:48:31 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/29 19:22:33 by yassine          ###   ########.fr       */
+/*   Updated: 2024/04/29 22:47:13 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,22 @@ void    swap(t_node **stack)
     t_node *last_node;
     
     tmp1 = (*stack);
-    tmp2 = (*stack)->before;
-    last_node = ft_last_node(*stack);
-    (*stack) = (*stack)->next;
-    tmp1->next = (*stack)->next;
-    tmp1->before = (*stack);
-    (*stack)->next = tmp1;
-    (*stack)->before = tmp2;
-    last_node->next = (*stack);
+    if (ft_len_list(*stack) == 2)
+    {
+        tmp2 = tmp1;
+        last_node = tmp1;; 
+    }
+    else
+    {
+        tmp2 = (*stack)->before;
+        last_node = ft_last_node(*stack); 
+    }
+    (*stack) = (*stack)->next; 
+    tmp1->next = (*stack)->next; 
+    tmp1->before = (*stack); 
+    (*stack)->next = tmp1; 
+    (*stack)->before = tmp2; 
+    last_node->next = (*stack); 
 }
 
 void    sa(t_node **stack_a)
@@ -49,15 +57,11 @@ void    sb(t_node **stack_b)
 
 void    ss(t_node **stack_a, t_node **stack_b)
 {
-    if (ft_len_list(*stack_b) > 1)
+    if (ft_len_list(*stack_b) > 1 && ft_len_list(*stack_a) > 1)
     {
         swap(stack_b);
-        ft_printf("sb\n");
-    }
-    if (ft_len_list(*stack_a) > 1)
-    {
         swap(stack_a);
-        ft_printf("sa\n");
+        ft_printf("ss\n");
     }
 }
 
