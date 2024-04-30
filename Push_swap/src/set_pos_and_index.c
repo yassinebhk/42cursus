@@ -37,37 +37,42 @@ t_node  *ft_set_pos(t_node *stack)
 
 t_node  *ft_set_index(t_node *stack)
 {
-    int     len;
-    int     index;
-    int     i;
-    int     value;
+    t_node  *act;
     t_node  *tmp;
+    int     len;
+    int     j;
+    int     i;
 
-    index = 0;
-    tmp = stack;
-    value = INT_MAX;
+    j = -1;
+    act = stack;
     len = ft_len_list(stack);
-    while (++index <= len)
+    while (++j < len)
     {
-        i = -1;
+        i = 0;
+        tmp = act->next;
+        act->index = 1;
         while (++i < len)
         {
-            if (tmp->value <= value)
-            {
-                tmp->index = index;
-                value = tmp->value;
-            }
+            if (act->value > tmp->value)
+                act->index++;
             tmp = tmp->next;
-        }               
+        }   
+        act = act->next;            
     }
     return (stack);
 }
 
 void    ft_set_pos_and_inex(t_node **stack_a, t_node **stack_b)
 {
-    *stack_a = ft_set_pos(*stack_b);
-    *stack_b = ft_set_pos(*stack_a);
-    *stack_a = ft_set_index(*stack_a);
-    *stack_b = ft_set_index(*stack_b);
+    if (*stack_a != NULL)
+    {
+        *stack_a = ft_set_pos(*stack_a);
+        *stack_a = ft_set_index(*stack_a);
+    }
+    if (*stack_b != NULL)
+    {
+        *stack_b = ft_set_pos(*stack_b);
+        *stack_b = ft_set_index(*stack_b);
+    }
 }
 

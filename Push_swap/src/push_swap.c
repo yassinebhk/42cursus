@@ -48,6 +48,7 @@ int	main(int argc, char **argv)
     pb(&stack_a, &stack_b);
     pb(&stack_a, &stack_b);
     rrr(&stack_a, &stack_b);  
+    ft_set_pos_and_inex(&stack_a, &stack_b);
     int i = -1;
     length = ft_len_list(stack_a);
     ft_printf("\n|--------  stack_a ---------|\n\n");
