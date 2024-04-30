@@ -18,8 +18,13 @@ void    ft_free_stack(t_node *stack)
 
     tmp = stack;
     //ft_printf("\n\n len %d\n\n", ft_len_list(stack));
-    if (ft_len_list(stack) == 0)
+    if (stack == NULL)
         return ;
+    if (ft_len_list(stack) == 1)
+    {
+        free(stack);
+        return ;
+    }
 	while (stack->next != tmp)
     {
         free(stack);
@@ -31,6 +36,7 @@ void    ft_free_stack(t_node *stack)
 void    ft_free_all(t_node *stack_a, t_node *stack_b, int *list)
 {
     ft_free_stack(stack_b);
+    ft_printf("Entro a liberar stack_a\n");
     ft_free_stack(stack_a);
     free(list);
 }

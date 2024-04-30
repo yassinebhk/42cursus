@@ -1,6 +1,7 @@
 import graphviz
 
 # /bin/python3 /home/yassine/Documents/Github/Push_swap/state_diagram.py
+# /usr/local/bin/python3 state_diagram.py
 
 class Node:
     def __init__(self, value):

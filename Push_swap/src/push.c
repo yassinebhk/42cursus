@@ -40,7 +40,7 @@ void    pa(t_node **stack_a, t_node **stack_b)
     }
 }
 
-void    pb(t_node **stack_a, t_node **stack_b)
+void     pb(t_node **stack_a, t_node **stack_b)
 {   
     if (ft_len_list(*stack_a) > 0)
     {

@@ -29,5 +29,5 @@ t_node *ft_new_node(int value)
 void    ft_init_stacks(t_node **stack_a, t_node **stack_b)
 {
     *stack_a = ft_new_node(0);
-    *stack_b = ft_new_node(0);
+    *stack_b = NULL;
 }

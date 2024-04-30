@@ -15,7 +15,7 @@
 void    rotate(t_node **stack)
 {
     (*stack) = (*stack)->next;
-    ft_printf("\n rotate: %d %d\n\n", (*stack)->value, (*stack)->before->value);
+    //ft_printf("\n rotate: %d %d\n\n", (*stack)->value, (*stack)->before->value);
 
 }
 

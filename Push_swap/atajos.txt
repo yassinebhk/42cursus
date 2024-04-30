@@ -46,3 +46,10 @@ En MAC Ctrl = Command
 - Cambiar ocurencias simbolo - F2
 - Ir a Settings - Ctrl + ,
 ---
+
+
+lldb nombre_ejectuable args ("-3" mejor)
+b main (si quiere breakpoint en el main)
+run 
+
+valgrind --leak-check=full ./push_swap 3

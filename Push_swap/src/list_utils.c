@@ -18,10 +18,9 @@ int ft_len_list(t_node *stack)
     t_node  *tmp;
 
     len = 1;
-    if(stack->pos == -1)
+    if(!stack || stack->pos == -1)
         return (0);
     tmp = stack;
-    //ft_printf("Value: %d Value_next: %d %p %p %p %p\n", stack->value, stack->next->value, stack->before, stack, stack->next, stack->next->next);
 	while (tmp->next != stack)
     {
 		tmp = tmp->next;
@@ -41,8 +40,8 @@ t_node  *ft_pop(t_node *stack)
     if (ft_len_list(stack) == 1)
     {
         free(stack);
-        stack->pos = -1;
-        return(stack);
+        stack = NULL;
+        return(NULL);
     }
     last_node = ft_last_node(stack);
     stack = stack->next;
@@ -60,7 +59,6 @@ t_node  *ft_add_top(t_node *stack, t_node *new_node)
     int     length;
     
     length = ft_len_list(stack);
-    //ft_printf("\n length: %d\n", length);
     if (length == 0)
     {
         new_node->pos = 0;
