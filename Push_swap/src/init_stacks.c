@@ -12,22 +12,22 @@
 
 #include "../include/push_swap.h"
 
-t_node *ft_new_node(int value)
+t_node	*ft_new_node(int value)
 {
-    t_node *stack;
+	t_node	*stack;
 
-    stack = (t_node *)malloc (sizeof(t_node));
-    stack->before = stack;
-    stack->next = stack;
-    stack->cost = -1;
-    stack->index = -1;
-    stack->pos = -1;
-    stack->value = value;
-    return (stack);
+	stack = (t_node *)malloc(sizeof(t_node));
+	stack->before = stack;
+	stack->next = stack;
+	stack->cost = -1;
+	stack->index = -1;
+	stack->pos = -1;
+	stack->value = value;
+	return (stack);
 }
 
-void    ft_init_stacks(t_node **stack_a, t_node **stack_b)
+void	ft_init_stacks(t_node **stack_a, t_node **stack_b)
 {
-    *stack_a = ft_new_node(0);
-    *stack_b = NULL;
+	*stack_a = ft_new_node(0);
+	*stack_b = NULL;
 }

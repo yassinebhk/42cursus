@@ -12,41 +12,39 @@
 
 #include "../include/push_swap.h"
 
-void    rotate(t_node **stack)
+void	rotate(t_node **stack)
 {
-    (*stack) = (*stack)->next;
-    //ft_printf("\n rotate: %d %d\n\n", (*stack)->value, (*stack)->before->value);
-
+	(*stack) = (*stack)->next;
 }
 
-void    ra(t_node **stack_a)
+void	ra(t_node **stack_a)
 {
-    if (ft_len_list(*stack_a) == 1)
-        ft_printf("ra\n");
-    else if (ft_len_list(*stack_a) > 1)
-    {
-        rotate(stack_a);
-        ft_printf("ra\n");
-    }
+	if (ft_len_list(*stack_a) == 1)
+		ft_printf("ra\n");
+	else if (ft_len_list(*stack_a) > 1)
+	{
+		rotate(stack_a);
+		ft_printf("ra\n");
+	}
 }
 
-void    rb(t_node **stack_b)
+void	rb(t_node **stack_b)
 {
-    if (ft_len_list(*stack_b) == 1)
-        ft_printf("rb\n");
-    else if (ft_len_list(*stack_b) > 1)
-    {
-        rotate(stack_b);
-        ft_printf("rb\n");
-    }
+	if (ft_len_list(*stack_b) == 1)
+		ft_printf("rb\n");
+	else if (ft_len_list(*stack_b) > 1)
+	{
+		rotate(stack_b);
+		ft_printf("rb\n");
+	}
 }
 
-void    rr(t_node **stack_a, t_node **stack_b)
+void	rr(t_node **stack_a, t_node **stack_b)
 {
-    if (ft_len_list(*stack_b) > 1 && ft_len_list(*stack_a) > 1)
-    {
-        rotate(stack_b);
-        rotate(stack_a);
-        ft_printf("rr\n");
-    }
+	if (ft_len_list(*stack_b) > 1 && ft_len_list(*stack_a) > 1)
+	{
+		rotate(stack_b);
+		rotate(stack_a);
+		ft_printf("rr\n");
+	}
 }

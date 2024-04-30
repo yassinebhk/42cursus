@@ -22,7 +22,7 @@ void    swap(t_node **stack)
     if (ft_len_list(*stack) == 2)
     {
         tmp2 = tmp1;
-        last_node = tmp1;; 
+        last_node = tmp1;
     }
     else
     {
