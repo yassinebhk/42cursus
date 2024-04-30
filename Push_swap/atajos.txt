@@ -1,0 +1,48 @@
+## Vscode Atajos
+
+Leaks : leaks -q -atExit -- ./name 
+
+En MAC Ctrl = Command
+
+- Mover linea - Alt + ↑ / ↓
+- Copiar linea - Shift + Alt + ↑ / ↓
+- Seleccionar siguiente aparición - Ctrl + D
+- Seleccionar todas las apariciones - Ctrl + Shift + L
+- Crear múltiples cursores - Ctrl + Alt+ ↑ / ↓
+- Selección multiple - Alt + Click
+- Mover bloque - Seleccionar .  Alt + ↑ / ↓
+- Copiar bloque - Seleccionar .  Shift + Alt + ↑ / ↓
+- Comentar linea - Ctrl + \ || esp(Ctrl + Shift + 7)
+- Comentar seleccion - Seleccionar .  Shift + Alt + A
+- Borrar linea seleccionada - Ctrl + Shift + K
+---
+---
++ Abrir/Crear archivo - Ctrl + click (sobre file)
++ Ojear definición codigo - Shift + F12 (sobre codigo)
++ Ir a la definición del codigo - F12 (sobre codigo)
+---
+---
+* Ocultar lateral -  Ctrl + B
+* Zen Mode -  Ctrl + K Z
+* Ocultar Mostrar terminal - Ctrl + ' || esp(Ctrl + ñ)
+* Nuevo terminal - Ctrl + Shift + ' || esp(Ctrl + Shift + ñ)
+* Cerrar tab - Ctrl + W 
+* Cerrar todas - Ctrl + K  Ctrl + W  
+* Reabrir anterior - Ctrl + Shift + T    
+* Cambiar de tab - Ctrl + TAB  
+* Cambiar a tab anterior - Ctrl + PG UP  
+* Cambiar a tab siguiente - Ctrl + PG DN   
+---
+---
+* Usar atajo Emmet -  Ctrl + SHIFT + P . Buscar Emmet...
+* Crear/Buscar tecla rapida - Ctrl + k && Ctrl + s
+---
+---
+- Ver definiciones ordenadas - Ctrl + P . @: ||  Ctrl + Shift o - . @
+- Ir a linea - Ctrl + G . numLinea || Ctrl + P . : . numLinea
+- Markdown Open Preview - Ctrl + Alt + P 
+- Markdown Open Preview to the side - Ctrl + K + V
+- Toggle Word Wrap -  Ctrl + Alt + W
+- Cambiar ocurencias simbolo - F2
+- Ir a Settings - Ctrl + ,
+---
