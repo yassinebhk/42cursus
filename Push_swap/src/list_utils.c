@@ -72,5 +72,6 @@ t_node	*ft_add_top(t_node *stack, t_node *new_node)
 	stack = new_node;
 	stack->pos = length;
 	last_node->next = stack;
+	(stack)->next->before = stack;
 	return (stack);
 }

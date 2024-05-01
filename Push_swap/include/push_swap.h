@@ -60,7 +60,7 @@ typedef struct s_node
 /**********************************************
  *                                             *
  *                                             *
- *                  FUNCTIONS                  *
+ *                  PARSING                    *
  *                                             *
  *                                             *
  * *********************************************/
@@ -123,6 +123,15 @@ int					ft_is_integer(char *str);
  * @param stack_a Stack_a
  * @param stack_b Stack_b
  */
+
+/**********************************************
+ *                                             *
+ *                                             *
+ *                   STACKS                    *
+ *                                             *
+ *                                             *
+ * *********************************************/
+
 void				ft_init_stacks(t_node **stack_a, t_node **stack_b);
 /**
  * @brief Free the node
@@ -269,7 +278,7 @@ void				rotate_reverse(t_node **stack);
 /**********************************************
  *                                             *
  *                                             *
- *                Pos and index                *
+ *            Position and index               *
  *                                             *
  *                                             *
  * *********************************************/
@@ -297,7 +306,7 @@ t_node				*ft_set_index(t_node *stack);
 /**********************************************
  *                                             *
  *                                             *
- *                Pos and index                *
+ *                 Algorithm                   *
  *                                             *
  *                                             *
  * *********************************************/
@@ -307,6 +316,23 @@ t_node				*ft_set_index(t_node *stack);
  * @param stack_a The linked list a
  * @param stack_b The linked list b
  */
-void    ft_algorithm(t_node **stack_a, t_node **stack_b);
+void				ft_algorithm(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Algorithm that sorts two nodes
+ * @param stack_a The linked list a
+ * @param stack_b The linked list b
+ */
+void				ft_two_nodes(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Algorithm that sorts three nodes
+ * @param stack_a The linked list a
+ * @param stack_b The linked list b
+ */
+void				ft_three_nodes(t_node **stack_a, t_node **stack_b);
+/**
+ * @brief Calculates the costs of each node of the linked list
+ * @param stack The linked list
+ */
+void				ft_set_costs(t_node **stack);
 
 #endif

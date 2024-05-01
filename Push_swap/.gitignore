@@ -1,6 +1,7 @@
-*.a
-*.DS_Store
-*.swp
-*.swo
-*.dSym
-*.vscode
+.a
+.o
+.DS_Store
+.swp
+.swo
+.dSym
+.vscode

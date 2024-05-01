@@ -43,7 +43,8 @@ NAME_BONUS			:= push_swap_bonus
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror
 SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c src/swap.c  src/rotate.c\
-						src/algorithm.c src/set_pos_and_index.c src/rotate_reverse.c src/init_stacks.c src/free.c src/fill_stack.c src/list_utils.c src/push.c 
+						src/algorithm.c src/set_pos_and_index.c src/rotate_reverse.c src/init_stacks.c\
+						src/free.c src/fill_stack.c src/list_utils.c src/push.c src/get_costs.c
 SRCS_BONUS 			:= src/push_swap.c
 OBJS 				:=$(SRCS:.c=.o)
 OBJS_BONUS 			:=$(SRCS_BONUS:.c=.o)
