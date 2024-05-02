@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 17:41:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/29 23:44:22 by yassine          ###   ########.fr       */
+/*   Updated: 2024/05/02 00:25:58 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	rotate(t_node **stack)
 {
 	(*stack) = (*stack)->next;
+
 }
 
 void	ra(t_node **stack_a)

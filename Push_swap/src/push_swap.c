@@ -6,16 +6,16 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:42 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/30 11:56:11 by yassine          ###   ########.fr       */
+/*   Updated: 2024/05/02 09:32:44 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
 
-static void	leaks(void)
-{
-	system("leaks push_swap");
-}
+// static void	leaks(void)
+// {
+// 	system("leaks push_swap");
+// }
 
 int	main(int argc, char **argv)
 {
@@ -57,17 +57,17 @@ int	main(int argc, char **argv)
 		ft_printf("stack_a | pos: %d | stack_a value: %d | index: %d | cost: %d\n", stack_a->pos, stack_a->value, stack_a->index, stack_a->cost); 
 		stack_a = stack_a->next;
 	}
-	ft_printf("\n|------------------------|\n\n");
+	ft_printf("\n|--------------------------|\n\n");
 	i = -1;
 	length = ft_len_list(stack_b);
-	ft_printf("\n|------- stack_b --------|\n\n");
+	ft_printf("\n|-------- stack_b ---------|\n\n");
 	while (++i < length)
 	{
 		ft_printf("stack_b | pos: %d | stack_b value: %d | index: %d | cost: %d\n",
 			stack_b->pos, stack_b->value, stack_b->index, stack_b->cost);
 		stack_b = stack_b->next;
 	}
-	ft_printf("\n|------------------------|\n\n");
+	ft_printf("\n|--------------------------|\n\n");
 	// int i = -1;
 	// sa(&stack_a);
 	// pb(&stack_a, &stack_b);
@@ -112,6 +112,6 @@ int	main(int argc, char **argv)
 	// ft_printf("\n|----------------------|\n\n");
 	/***********************************************************/
 	ft_free_all(stack_a, stack_b, list);
-	atexit(leaks);
+	// atexit(leaks);
 	return (0);
 }
