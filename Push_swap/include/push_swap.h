@@ -321,8 +321,9 @@ void				ft_algorithm(t_node **stack_a, t_node **stack_b);
  * @brief Algorithm that sorts two nodes
  * @param stack_a The linked list a
  * @param stack_b The linked list b
+ * @param flag If flag its 0, we sort the stack_a; otherwise, stack_b
  */
-void				ft_two_nodes(t_node **stack_a, t_node **stack_b);
+void	ft_two_nodes(t_node **stack_a, t_node **stack_b, int flag);
 /**
  * @brief Algorithm that sorts three nodes
  * @param stack_a The linked list a
