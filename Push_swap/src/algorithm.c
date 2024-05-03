@@ -311,17 +311,17 @@ void	ft_push_ordered(t_node **stack_a, t_node **stack_b)
 	int i;
 
 	i = -1;
-	ft_printf("\n|--------------------------|\n\n");
-	int j = -1;
-	int lengt = ft_len_list(*stack_b);
-	ft_printf("\n|-------- stack_b ---------|\n\n");
-	while (++j < lengt)
-	{
-		ft_printf("stack_b | puntero %p | pos: %d | stack_b value: %d | index: %d | cost: %d\n",
-			(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
-		(*stack_b) = (*stack_b)->next;
-	}
-	ft_printf("\n|--------------------------|\n\n");
+	// ft_printf("\n|--------------------------|\n\n");
+	// int j = -1;
+	// int lengt = ft_len_list(*stack_b);
+	// ft_printf("\n|-------- stack_b ---------|\n\n");
+	// while (++j < lengt)
+	// {
+	// 	ft_printf("stack_b | puntero %p | pos: %d | stack_b value: %d | index: %d | cost: %d\n",
+	// 		(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
+	// 	(*stack_b) = (*stack_b)->next;
+	// }
+	// ft_printf("\n|--------------------------|\n\n");
 	ft_order_reverse(stack_b);
 	length = ft_len_list(*stack_b);
 	while (++i < length)
