@@ -54,7 +54,6 @@ void	ft_set_costs(t_node **stack)
 	act = *stack;
 	length = ft_len_list(*stack);
 
-
 	while (++i < length)
 	{
 	    //ft_printf(" length: %d pos: %d\n", length, act->pos);

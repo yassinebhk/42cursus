@@ -329,7 +329,7 @@ void	ft_two_nodes(t_node **stack_a, t_node **stack_b, int flag);
  * @param stack_a The linked list a
  * @param stack_b The linked list b
  */
-void				ft_three_nodes(t_node **stack_a, t_node **stack_b);
+void				ft_three_nodes(t_node **stack, t_node **stack_aux);
 /**
  * @brief Calculates the costs of each node of the linked list
  * @param stack The linked list

@@ -26,12 +26,12 @@ typedef struct s_list
 
 typedef struct s_vbs
 {
-	int		i;
-	int		pos;
-	int		ini;
-	int		size;
-	char	**palabra;
-}			t_vbs;
+	int				i;
+	int				pos;
+	int				ini;
+	int				size;
+	char			**palabra;
+}					t_vbs;
 
 /**
  * @brief Tests for any printing character, including space
@@ -455,5 +455,11 @@ int					ft_printf(char const *buff, ...);
  * @param fd The file descriptor
  */
 char				*get_next_line(int fd);
+/**
+ * @brief Calculates the absolute value of a number
+ * @param x The number
+ * @returns x if x is positive, -x otherwise.
+ */
+long				ft_abs(long x);
 
 #endif

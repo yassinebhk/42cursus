@@ -12,10 +12,10 @@
 
 #include "../include/push_swap.h"
 
-// static void	leaks(void)
-// {
-// 	system("leaks push_swap");
-// }
+static void	leaks(void)
+{
+	system("leaks push_swap");
+}
 
 int	main(int argc, char **argv)
 {
@@ -54,7 +54,7 @@ int	main(int argc, char **argv)
 	ft_printf("\n|--------  stack_a ---------|\n\n");
 	while (++i < length)
 	{
-		ft_printf("stack_a | pos: %d | stack_a value: %d | index: %d | cost: %d\n", stack_a->pos, stack_a->value, stack_a->index, stack_a->cost); 
+		ft_printf("stack_a | puntero %p | pos: %d | stack_a value: %d | index: %d | cost: %d\n", stack_a, stack_a->pos, stack_a->value, stack_a->index, stack_a->cost); 
 		stack_a = stack_a->next;
 	}
 	ft_printf("\n|--------------------------|\n\n");
@@ -63,8 +63,8 @@ int	main(int argc, char **argv)
 	ft_printf("\n|-------- stack_b ---------|\n\n");
 	while (++i < length)
 	{
-		ft_printf("stack_b | pos: %d | stack_b value: %d | index: %d | cost: %d\n",
-			stack_b->pos, stack_b->value, stack_b->index, stack_b->cost);
+		ft_printf("stack_b | puntero %p | pos: %d | stack_b value: %d | index: %d | cost: %d\n",
+			stack_b, stack_b->pos, stack_b->value, stack_b->index, stack_b->cost);
 		stack_b = stack_b->next;
 	}
 	ft_printf("\n|--------------------------|\n\n");
@@ -112,6 +112,6 @@ int	main(int argc, char **argv)
 	// ft_printf("\n|----------------------|\n\n");
 	/***********************************************************/
 	ft_free_all(stack_a, stack_b, list);
-	// atexit(leaks);
+	atexit(leaks);
 	return (0);
 }

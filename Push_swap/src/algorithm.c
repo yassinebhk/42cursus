@@ -29,45 +29,49 @@ static void ft_update_before(t_node **stack)
 	}
 }
 
-void	ft_two_nodes(t_node **stack, t_node **stack_b, int flag)
+void	ft_two_nodes(t_node **stack_a, t_node **stack_b, int flag)
 {
 	if (flag == 0)
 	{
-		if ((*stack)->index > (*stack)->next->index)
-			sa(stack);
+		if ((*stack_a)->index > (*stack_a)->next->index)
+			sa(stack_a);
 	}
 	else
 	{
 		if ((*stack_b)->index > (*stack_b)->next->index)
 			sa(stack_b);
 	}
-	ft_set_pos_and_inex(stack, stack_b);
-	ft_update_before(stack);
+	ft_set_pos_and_inex(stack_a, stack_b);
+	ft_set_costs(stack_a);
+	ft_update_before(stack_a);
+	if (ft_len_list(*stack_b) > 1)
+		ft_update_before(stack_b);
 }
 
-void	ft_three_nodes(t_node **stack, t_node **stack_b)
+void	ft_three_nodes(t_node **stack, t_node **stack_aux)
 {
 	if ((*stack)->index > (*stack)->next->index)
 	{
 		sa(stack);
-		ft_set_pos_and_inex(stack, stack_b);
+		ft_set_pos_and_inex(stack, stack_aux);
 		ft_update_before(stack);
 	}
 	if ((*stack)->index > (*stack)->next->next->index)
 	{
 		rra(stack);
-		ft_set_pos_and_inex(stack, stack_b);
+		ft_set_pos_and_inex(stack, stack_aux);
 		ft_update_before(stack);
 	}
 	if ((*stack)->next->index > (*stack)->next->next->index)
 	{
 		rra(stack);
-		ft_set_pos_and_inex(stack, stack_b);
+		ft_set_pos_and_inex(stack, stack_aux);
 		ft_update_before(stack);
 		sa(stack);
-		ft_set_pos_and_inex(stack, stack_b);
+		ft_set_pos_and_inex(stack, stack_aux);
 		ft_update_before(stack);
 	}
+	ft_set_costs(stack);
 }
 
 void	ft_check_low_index(t_node **stack, t_node **stack_b)
@@ -177,7 +181,7 @@ void ft_make_mvts(t_node **stack, t_node **stack_b, int flag)
 	}
 }
 
-void ft_trunc_three_nodes(t_node **stack, t_node **stackux)
+void ft_trunc_three_nodes(t_node **stack, t_node **stackaux)
 {	
 	int cont;
 	t_node *list_three;
@@ -188,88 +192,24 @@ void ft_trunc_three_nodes(t_node **stack, t_node **stackux)
 	list_three = *stack;
 	if (ft_len_list(*stack) > 3)
 	{	
-
-
-		// int	i = -1;
-		// int length = ft_len_list(list_three);
-		// ft_printf("\n|-------- list_three before anything ---------|\n\n");
-    	// ft_printf("\n\n PUNTEROS: %p %p %p %p %p %p %p\n\n", list_three, list_three->before, list_three->before->before, list_three->before->before->before, list_three->before->before->before->before, list_three->before->before->before->before->before, list_three->before->before->before->before->before->before); 
-		// while (++i < length)
-		// {
-		// 	ft_printf("list_three | puntero %p | pos: %d | value: %d | index: %d | cost: %d\n", (list_three), (list_three)->pos, (list_three)->value, (list_three)->index, (list_three)->cost); 
-		// 	(list_three) = (list_three)->next;
-		// }
-		// ft_printf("\n|--------------------------|\n\n");
-
-
-
 		last_node = (*stack)->before;
 		fourth_node = list_three->next->next->next;
 		list_three->next->next->next = *stack;
 		list_three->before = fourth_node->before;
-		ft_three_nodes(&list_three, stackux);
-		ft_set_costs(&list_three);
-		ft_set_pos_and_inex(&list_three, stackux);
-                
-		// i = -1;
-		// length = ft_len_list(list_three);
-		// ft_printf("\n|-------- list_three after order ---------|\n\n");
-		// while (++i < length)
-		// {
-		// 	ft_printf("list_three | puntero %p | pos: %d | value: %d | index: %d | cost: %d\n", list_three, (list_three)->pos, (list_three)->value, (list_three)->index, (list_three)->cost); 
-		// 	(list_three) = (list_three)->next;
-		// }
-    	// ft_printf("\n\n PUNTEROS STACK: %p %p %p %p %p %p %p\n", list_three, list_three->before, list_three->before->before, list_three->before->before->before, list_three->before->before->before->before, list_three->before->before->before->before->before, list_three->before->before->before->before->before->before); 
-		// ft_printf("\n|--------------------------|\n\n");
-
-		
-
-
+		ft_three_nodes(&list_three, stackaux);
+		ft_set_pos_and_inex(&list_three, stackaux);
 		*stack = list_three;
 		(*stack)->next->next->next = fourth_node;
 		fourth_node->before = (*stack)->next->next;
 		(*stack)->before = last_node;
 		last_node->next = *stack;
-		ft_set_pos_and_inex(stack, stackux);
-
-
-
-		// ft_printf("\n|--------------------------|\n\n");
-		// i = -1;
-		// length = ft_len_list(*stack);
-		// ft_printf("\n|-------- stack after link ---------|\n\n");
-		// while (++i < length)
-		// {
-		// 	ft_printf("(*stack) | puntero %p | pos: %d | (*stack) value: %d | index: %d | cost: %d\n", (*stack),
-		// 		(*stack)->pos, (*stack)->value, (*stack)->index, (*stack)->cost);
-		// 	(*stack) = (*stack)->next;
-		// }
-    	// ft_printf("\n\n\n PUNTEROS BEFORE: %p %p %p %p %p %p %p %p %p\n\n\n", (*stack), (*stack)->before, (*stack)->before->before, (*stack)->before->before->before, (*stack)->before->before->before->before, (*stack)->before->before->before->before->before, (*stack)->before->before->before->before->before->before, (*stack)->before->before->before->before->before->before->before, (*stack)->before->before->before->before->before->before->before->before); 
-		// ft_printf(" PUNTEROS NEXT: %p %p %p %p %p %p %p %p %p\n\n\n", (*stack), (*stack)->next, (*stack)->next->next, (*stack)->next->next->next, (*stack)->next->next->next->next, (*stack)->next->next->next->next->next, (*stack)->next->next->next->next->next->next, (*stack)->next->next->next->next->next->next->next, (*stack)->next->next->next->next->next->next->next->next); 
-		// ft_printf("Next->before: %p", (*stack)->next->before);
-		// ft_printf("\n|--------------------------|\n\n");
-
-
-		ft_set_costs(stack);
-
-		// ft_printf("\n\n He salido del ft_set_costs \n\n");
-		// i = -1;
-		// length = ft_len_list(*stack);
-		// ft_printf("\n|--------  stack after update ---------|\n\n");
-		// while (++i < length)
-		// {
-		// 	ft_printf("stack | puntero %p | pos: %d | stack value: %d | index: %d | cost: %d\n", (*stack), (*stack)->pos, (*stack)->value, (*stack)->index, (*stack)->cost); 
-		// 	(*stack) = (*stack)->next;
-		// }
-		// ft_printf("\n|--------------------------|\n\n");
-
-		
+		ft_set_pos_and_inex(stack, stackaux);
 	}
 	else
-		ft_three_nodes(stack, stackux);
+		ft_three_nodes(stack, stackaux);
 }
 
-void ft_look_for_highest(t_node **stack, t_node **stackux)
+void ft_look_for_highest(t_node **stack, t_node **stackaux)
 {
 	int		max_abs;
 	int		max_rel;
@@ -277,126 +217,148 @@ void ft_look_for_highest(t_node **stack, t_node **stackux)
 
 	tmp = (*stack);
 	ft_find_maxs(&max_abs, &max_rel, *stack);
-	// tmp->next->value != max_rel || tmp->next->next->value != max_abs
 	int i =0;
 	while (tmp->next->value != max_rel || tmp->next->next->value != max_abs)
 	{
-		ft_trunc_three_nodes(stack, stackux);
-		// ft_printf("\n\n Values after trunc: %d %d\n", (*stack)->next->value, (*stack)->next->next->value);
-    	// ft_printf("\n\n\n PUNTEROS: %p %p %p %p %p %p %p\n\n\n", (*stack), (*stack)->before, (*stack)->before->before, (*stack)->before->before->before, (*stack)->before->before->before->before, (*stack)->before->before->before->before->before, (*stack)->before->before->before->before->before->before); 
+		ft_trunc_three_nodes(stack, stackaux);
 		if ((*stack)->next->value == max_rel && (*stack)->next->next->value == max_abs)
 			break ;
 		ra(stack);
-		ft_set_pos_and_inex(stack, stackux);
+		ft_set_pos_and_inex(stack, stackaux);
 		tmp = *stack;	
-
-		// int	i = -1;
-		// int length = ft_len_list((*stack));
-		// ft_printf("\n|--------  stack new iter ---------|\n\n");
-		// while (++i < length)
-		// {
-		// 	ft_printf("stack | puntero %p | pos: %d | stack value: %d | index: %d | cost: %d\n", (*stack), (*stack)->pos, (*stack)->value, (*stack)->index, (*stack)->cost); 
-		// 	(*stack) = (*stack)->next;
-		// }
-		// ft_printf("\n|--------------------------|\n\n");
-	
 	}
 }
 
-void 	ft_set_highest_first(t_node **stack, t_node **stack_b, int flag)
+void 	ft_set_highest_first(t_node **stack_a, t_node **stack_b, int flag)
 {
-	t_node	*tmp;
-
-	if (flag == 0)
-		ft_look_for_highest(stack, stack_b);
+	if (!flag)
+		ft_look_for_highest(stack_a, stack_b);
 	else
-		ft_look_for_highest(stack_b, stack);
-
+		ft_look_for_highest(stack_b, stack_a);
 }
 
-void	ft_order_list(t_node **stack, t_node **stack_b, int flag)
+void	ft_order_list(t_node **stack_a, t_node **stack_b, int flag)
 {
 	int		max_abs;
 	int		max_rel;
 
-	ft_find_maxs(&max_abs, &max_rel, *stack);
-
-
-	// ft_printf("Max_abs = %d\n", max_abs);
-	// ft_printf("Max_rel = %d\n", max_rel);
-	// int	i = -1;
-	// int length = ft_len_list(*stack);
-	// ft_printf("\n|-------- *stack before ---------|\n\n");
-	// while (++i < length)
-	// {
-	// 	ft_printf("list_three | puntero %p | pos: %d | value: %d | index: %d | cost: %d\n", (*stack), (*stack)->pos, (*stack)->value, (*stack)->index, (*stack)->cost); 
-	// 	(*stack) = (*stack)->next;
-	// }
-	// ft_printf("\n|--------------------------|\n\n");
-
-
-	ft_set_highest_first(stack, stack_b, flag);
-	//ft_printf("He salido del set high\n");
-	ft_make_mvts(stack, stack_b, flag);
-
-
-
-	// i = -1;
-	// length = ft_len_list((*stack));
-	// ft_printf("\n|--------  stack mvts ---------|\n\n");
-	// while (++i < length)
-	// {
-	// 	ft_printf("stack | puntero %p | pos: %d | stack value: %d | index: %d | cost: %d\n", (*stack), (*stack)->pos, (*stack)->value, (*stack)->index, (*stack)->cost); 
-	// 	(*stack) = (*stack)->next;
-	// }
-	// ft_printf("\n|--------------------------|\n\n");
-
-
-
-	while(!ft_is_ordered(*stack))
+	ft_find_maxs(&max_abs, &max_rel, *stack_a);
+	ft_set_highest_first(stack_a, stack_b, flag);
+	ft_make_mvts(stack_a, stack_b, flag);
+	while(!ft_is_ordered(*stack_a))
 	{
-		if ((*stack)->value == max_abs && (*stack)->next->value == max_rel) 
+		if ((*stack_a)->value == max_abs && (*stack_a)->next->value == max_rel) 
 		{
-			sa(stack);
-			ra(stack);
+			sa(stack_a);
+			ra(stack_a);
 		}
 		else
-			ft_two_nodes(stack, stack_b, flag);
-		ra(stack);   
-		ft_set_pos_and_inex(stack, stack_b);
+			ft_two_nodes(stack_a, stack_b, flag);
+		ra(stack_a);   
+		ft_set_pos_and_inex(stack_a, stack_b);
 	}                  
 }
 
-void	ft_general(t_node **stack, t_node **stack_b)
+void	ft_order_list_b(t_node **stack_a, t_node **stack_b, int flag)
+{
+	int		max_abs;
+	int		max_rel;
+
+	ft_find_maxs(&max_abs, &max_rel, *stack_b);
+	ft_set_highest_first(stack_a, stack_b, flag);
+	ft_make_mvts(stack_a, stack_b, flag);
+	while(!ft_is_ordered(*stack_b))
+	{
+		if ((*stack_b)->value == max_abs && (*stack_b)->next->value == max_rel) 
+		{
+			sb(stack_b);
+			rb(stack_b);
+		}
+		else
+			ft_two_nodes(stack_a, stack_b, flag);
+		rb(stack_b);   
+		ft_set_pos_and_inex(stack_a, stack_b);
+	}
+	(*stack_b)->before = ft_last_node(*stack_b);
+}
+
+void	ft_order_reverse(t_node **stack_b)
+{
+	t_node	*ini;
+	t_node	*end;
+	int length;
+	int tmp;
+	int i;
+
+	i = -1;
+	ini = *stack_b;
+	end = (*stack_b)->before;
+	length = ft_len_list(*stack_b);
+	while (++i < (int)(length / 2))
+	{
+		tmp = ini->value;
+		ini->value = end->value;
+		end->value = tmp;
+		ini = ini->next;
+		end = end->before;
+	}
+}
+
+void	ft_push_ordered(t_node **stack_a, t_node **stack_b)
+{	
+	t_node	*tmp;
+	int length;
+	int i;
+
+	i = -1;
+	ft_printf("\n|--------------------------|\n\n");
+	int j = -1;
+	int lengt = ft_len_list(*stack_b);
+	ft_printf("\n|-------- stack_b ---------|\n\n");
+	while (++j < lengt)
+	{
+		ft_printf("stack_b | puntero %p | pos: %d | stack_b value: %d | index: %d | cost: %d\n",
+			(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
+		(*stack_b) = (*stack_b)->next;
+	}
+	ft_printf("\n|--------------------------|\n\n");
+	ft_order_reverse(stack_b);
+	length = ft_len_list(*stack_b);
+	while (++i < length)
+		pa(stack_a, stack_b);
+}
+
+
+void	ft_general(t_node **stack_a, t_node **stack_b)
 {	
 	int		cont;
 	t_node	*head;
 	
 	cont = 0;
-	ft_check_low_index(stack, stack_b);
-	ft_set_costs(stack);
+	ft_check_low_index(stack_a, stack_b);
+	ft_set_costs(stack_a);
 	ft_set_costs(stack_b);
-	head = *stack;
-	if (ft_len_list(*stack) == 2)
-		ft_two_nodes(stack, stack_b, 0);
-	if (ft_len_list(*stack_b) == 2)
-		ft_two_nodes(stack, stack_b, 1);
+	head = *stack_a;
+	if (ft_len_list(*stack_a) == 2)
+		ft_two_nodes(stack_a, stack_b, 0);
 	else
-	{
-		ft_order_list(stack, stack_b, 0);
-		ft_order_list(stack, stack_b, 1); //UTILIZAR FUNCION ABS
-	}
-	ft_set_pos_and_inex(stack, stack_b);
-	ft_set_costs(stack);
+		ft_order_list(stack_a, stack_b, 0);
+	if (ft_len_list(*stack_b) == 2)
+		ft_two_nodes(stack_a, stack_b, 1);
+	else
+		ft_order_list_b(stack_a, stack_b, 1);
+	ft_push_ordered(stack_a, stack_b);
+	ft_set_pos_and_inex(stack_a, stack_b);
+	ft_set_costs(stack_a);
 	ft_set_costs(stack_b);
 }
 
-void	ft_algorithm(t_node **stack, t_node **stack_b)
+void	ft_algorithm(t_node **stack_a, t_node **stack_b)
 {
-	if (ft_len_list(*stack) == 2)
-		ft_two_nodes(stack, stack_b, 0);
-	else if (ft_len_list(*stack) == 3)
-		ft_three_nodes(stack, stack_b);
+	if (ft_len_list(*stack_a) == 2)
+		ft_two_nodes(stack_a, stack_b, 0);
+	else if (ft_len_list(*stack_a) == 3)
+		ft_three_nodes(stack_a, stack_b);
 	else
-		ft_general(stack, stack_b);
+		ft_general(stack_a, stack_b);
 }
