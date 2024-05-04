@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 13:17:46 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/27 13:17:47 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/05/04 10:35:30 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int	ft_is_integer(char *str)
 {
 	while (*str)
 	{
-		if (*str >= '0' && *str <= '9')
-			return (1);
+		if (*str < '0' || *str > '9')
+			return (0);
 		str++;
 	}
-	return (0);
+	return (1);
 }

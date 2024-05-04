@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:34:22 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/27 12:34:24 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/05/04 10:30:26 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	ft_exit(void)
 {
-	ft_printf("Error\n");
+	write(2, "Error\n", 6);
 	exit(1);
 }
 
 void	ft_exit_str(int *str)
 {
 	free(str);
-	ft_printf("Error\n");
+	write(2, "Error\n", 6);
 	exit(1);
 }
 
@@ -33,7 +33,7 @@ void	ft_exit_mtx(char **mtx)
 		mtx++;
 	}
 	free(mtx);
-	ft_printf("Error\n");
+	write(2, "Error\n", 6);
 	exit(1);
 }
 
@@ -46,6 +46,6 @@ void	ft_exit_str_and_mtx(int *str, char **mtx, int pos)
 		pos++;
 	}
 	free(mtx);
-	ft_printf("Error\n");
+	write(2, "Error\n", 6);
 	exit(1);
 }
