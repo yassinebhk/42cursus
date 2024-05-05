@@ -32,13 +32,15 @@ long	ft_atoi_mod(const char *nptr, int *error)
 		if (nptr[i++] == '-')
 			sign = -1;
 	num = 0;
-	while (ft_isdigit(nptr[i]))
+	while (nptr[i] && ft_isdigit(nptr[i]))
 	{
 		*error = 1;
 		num *= 10;
 		num += nptr[i] - '0';
 		++i;
 	}
+	if (nptr[i] && !ft_isdigit(nptr[i]))
+		*error = 0;
 	return ((num * sign));
 }
 
@@ -60,7 +62,7 @@ int	ft_is_integer(char *str)
 {
 	while (*str)
 	{
-		if (*str < '0' || *str > '9')
+		if ((*str < '0' || *str > '9') && *str != '-' && *str != '+')
 			return (0);
 		str++;
 	}
