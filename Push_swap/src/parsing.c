@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:31:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/05/04 10:39:29 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/20 19:49:39 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ static int	*ft_fill_list(int *list, char **split, int *pos)
 	return (list);
 }
 
+void ft_repeated_numbers(int *list, int length)
+{
+	int i;
+	int j;
+	
+	i = -1;
+	while (++i < length)
+	{
+		j = i + 1;
+		while (j < length)
+		{
+			if (list[i] == list[j])
+				ft_exit();
+			j++;
+		}
+	}
+}
+
 static int	*ft_get_args(int argc, char **argv, int length)
 {
 	char	**split;
@@ -53,6 +71,7 @@ static int	*ft_get_args(int argc, char **argv, int length)
 		list = ft_fill_list(list, split, &pos);
 		free(split);
 	}
+	ft_repeated_numbers(list, length);
 	return (list);
 }
 

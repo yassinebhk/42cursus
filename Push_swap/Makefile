@@ -6,7 +6,7 @@
 #    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/27 12:09:53 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/04/30 12:36:58 by yassine          ###   ########.fr        #
+#    Updated: 2024/07/20 16:03:51 by yassine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,13 +30,6 @@ ITALIC	= \033[3m
 UNDER	= \033[4m
 INVERT	= \033[7m
 DASH	= \033[9m
-GREY=$'\x1b[30m
-GREEN=$'\x1b[32m
-YELLOW=$'\x1b[33m
-BLUE=$'\x1b[34m
-PURPLE=$'\x1b[35m
-CYAN=$'\x1b[36m
-WHITE=$'\x1b[37m
 
 NAME				:= push_swap
 NAME_BONUS			:= push_swap_bonus
@@ -56,11 +49,11 @@ bonus: $(NAME_BONUS)
 
 %.o: %.c $(INCL)
 	@gcc $(FLAGS) -c $< -o $@
-	@echo " $(CYAN)COMPILING $(YELLOW) $^ $(CYAN) to $(YELLOW)$@\n"
+	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
 
 $(NAME):$(OBJS) utils
 	@echo "\n $(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS) libft.a $(CYAN) to $(YELLOW) $(NAME)\n"
+	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS) libft.a $(CYAN) to $(YELLOW)$(ITALIC) $(NAME)\n"
 	@make -C libft
 	@mv libft/libft.a .
 	@$(cc) $(flags) $(OBJS) libft.a -o $(NAME)
@@ -68,14 +61,14 @@ $(NAME):$(OBJS) utils
 
 $(NAME_BONUS):$(OBJS_BONUS) utils
 	@echo "\n $(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW) $(SRCS_BONUS) libft.a $(CYAN) to $(YELLOW) $(NAME_BONUS)\n"
+	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS_BONUS) libft.a $(CYAN) to $(ITALIC)$(YELLOW) $(NAME_BONUS)\n"
 	@make -C libft
 	@mv libft/libft.a .
 	@$(cc) $(flags) $(OBJS_BONUS) libft.a -o $(NAME_BONUS)
 	@echo "$(MAGENTA)$(ITALIC)Push-swap compiled!$(RESET)"
 
 clean:
-	rm -f $(FDF_OBJS)
+	@rm -f $(FDF_OBJS)
 	@echo "$(YELLOW)Cleaning...$(RESET)"
 	@$(MAKE) -C libft clean
 	@rm -f src/*.o

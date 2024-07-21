@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_stacks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 20:25:03 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/28 20:25:04 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/07/20 20:52:20 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_node	*ft_new_node(int value)
 	stack->cost = -1;
 	stack->index = -1;
 	stack->pos = -1;
+	stack->cost_change = -1;
 	stack->value = value;
 	return (stack);
 }

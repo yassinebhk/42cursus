@@ -11,7 +11,7 @@ En MAC Ctrl = Command
 - Crear múltiples cursores - Ctrl + Alt+ ↑ / ↓
 - Selección multiple - Alt + Click
 - Mover bloque - Seleccionar .  Alt + ↑ / ↓
-- Copiar bloque - Seleccionar .  Shift + Alt + ↑ / ↓
+- Copiar bloque - Seleccionar .  Shift + Alt + ↑mm / ↓
 - Comentar linea - Ctrl + \ || esp(Ctrl + Shift + 7)
 - Comentar seleccion - Seleccionar .  Shift + Alt + A
 - Borrar linea seleccionada - Ctrl + Shift + K

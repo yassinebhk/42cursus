@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 13:17:46 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/05/04 10:35:30 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/20 18:32:13 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ft_is_integer(char *str)
 {
 	while (*str)
 	{
-		if ((*str < '0' || *str > '9') && *str != '-' && *str != '+')
+		if ((*str < '0' || *str > '9') && *str != '-' && *str != '+' && *str != ' ')
 			return (0);
 		str++;
 	}

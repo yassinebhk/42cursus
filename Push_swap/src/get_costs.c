@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_costs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 15:59:52 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/05/01 15:59:53 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:01:00 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,6 @@ static int  ft_cost(t_node *head, t_node *act, int direcction)
     int cost;
 
     cost = 0;
-
-    //ft_printf("\n\n PUNTEROS: %p %p %p %p %p %p %p %p\n", head, act, act->before, act->before->before, act->before->before->before, act->before->before->before->before, act->before->before->before->before->before, act->before->before->before->before->before->before); 
-    //ft_printf("\n\n PUNTEROS: %p %p %p %p %p %p %p %p\n", head, act, act->next, act->next->next, act->next->next->next, act->next->next->next->next, act->next->next->next->next->next, act->next->next->next->next->next->next); 
-
-    //ft_printf("\n|--------------------------|\n\n");
     if (!direcction)
     {   
         while(act != head)
@@ -46,11 +41,9 @@ void	ft_set_costs(t_node **stack)
 {
 	t_node	*act;
 	int		length;
-	int		cost;
 	int		i;
 
 	i = -1;
-	cost = 0;
 	act = *stack;
 	length = ft_len_list(*stack);
 
