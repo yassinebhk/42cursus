@@ -1,9 +1,40 @@
+## Ubuntu atajos
+
+Ctrl + w : cerrar pestaña
+Ctrl + t : abrir pestaña
+Ctrl + n : nueva ventana
+Control+Alt+T: Abrir terminal.
+Control+Alt+Supr: Cerrar sesión.
+
+Super: Ver todas las ventanas.
+Super+D: Minimizar todas las ventanas.
+Super+D: Minimizar la ventana activa.
+Super+Flechas: Gestionar ventanas.
+Super+A: Ver el menú de aplicaciones.
+Super+L: Bloquear pantalla.
+Super+Page Up/Down: Cambiar de escritorio.
+
+
+Alt+F4: Cerrar la ventana activa.
+Alt+Tab: Cambiar a la ventana siguiente.
+Alt+Shift+Tab: Cambiar a la ventana anterior.
+Alt+Tecla arriba Tab: Cambiar a la ventana de la misma aplicación anterior.
+Alt+Shift+Tecla arriba Tab: Cambiar a la ventana de la misma aplicación anterior.
+Alt+Print: Capturar ventana.
+
+
+Shift+Super+Page Up/Down: Cambiar ventana de escritorio.
+Shift+Control+C: Copiar texto de un terminal.
+Shift+Control+V: Pegar texto en una terminal.
+Shift+Print: Capturar area.
+
+Print: Capturar pantalla.
+
 ## Vscode Atajos
 
 Leaks : leaks -q -atExit -- ./name 
 
-En MAC Ctrl = Command
-
+- Moverte por archivos abiertos - Ctrl + tab
 - Mover linea - Alt + ↑ / ↓
 - Copiar linea - Shift + Alt + ↑ / ↓
 - Seleccionar siguiente aparición - Ctrl + D

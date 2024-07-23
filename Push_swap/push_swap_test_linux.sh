@@ -909,7 +909,7 @@ if [ $S == "OK" ]; then
 else
 	printf "${RED}12.[KO]${DEF_COLOR}";
 fi
-ARG="1 2 4 3";
+ARG="3 2 1";
 N=$(./push_swap $ARG | wc -l)
 if [ $N -lt 13 ]; then
 	printf "${GREEN}13.[OK] ${DEF_COLOR}";
