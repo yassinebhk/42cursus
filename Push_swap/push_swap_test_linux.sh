@@ -3461,7 +3461,17 @@ if [ $res_1 == $val ]; then
 fi
 if [ $res_2 != 0 ]; then
 printf	"${WHITE}\nTest ${DEF_COLOR}${YELLOW}[4/5] ${WHITE}$res_2/$val"
-fi
+fi	// int	i = -1;
+	// length = ft_len_list(stack_a);
+	// //ft_printf("\n|--------  stack_a ---------|\n\n");
+	// ft_printf("\n");
+	// while (++i < length)
+	// {
+	// 	//ft_printf("stack_a | puntero %p | pos: %d | stack_a value: %d | index: %d | cost: %d\n", stack_a, stack_a->pos, stack_a->value, stack_a->index, stack_a->cost); 
+	// 	ft_printf("%d ", stack_a->value);
+	// 	stack_a = stack_a->next;
+	// }
+	// ft_printf("\n");
 if [ $res_3 != 0 ]; then
 printf	"${WHITE}\nTest ${DEF_COLOR}${RED}[3/5] ${WHITE}$res_3/$val"
 fi
