@@ -6,15 +6,29 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:42 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/23 21:44:30 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/24 19:51:19 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
 
-static void	leaks(void)
+void	ft_close_ordered(int *str, t_node **stack_a)
 {
-	system("leaks push_swap");
+	free(str);
+	free(*stack_a);
+	exit(1);
+}
+
+int ft_is_ordered(int *list, int length)
+{
+	int i = -1;
+
+	while (++i < length - 1)
+	{
+		if (list[i] > list[i + 1])
+			return (1);
+	}
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -24,10 +38,14 @@ int	main(int argc, char **argv)
 	t_node	*stack_a;
 	t_node	*stack_b;
 
-	ft_init_stacks(&stack_a, &stack_b);
 	if (argc < 2)
 		exit(1);
+	else if (argc == 2 && ft_strlen(argv[1]) == 0)
+		ft_exit();
+	ft_init_stacks(&stack_a, &stack_b);
 	list = ft_check_args(argc, argv, &length);
+	if (!ft_is_ordered(list, length))
+		ft_close_ordered(list, &stack_a);
 	ft_fill_stack_a(&stack_a, list, length);
 	ft_set_pos_and_inex(&stack_a, &stack_b);
 	
@@ -88,6 +106,5 @@ int	main(int argc, char **argv)
 	// }
 	// ft_printf("\n");
 	ft_free_all(stack_a, stack_b, list);
-	//atexit(leaks);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/20 20:52:05 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/24 19:35:44 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ typedef struct s_node
  * @returns The string of integer numbers given as parameter
  */
 int					*ft_check_args(int argc, char **argv, int *length);
+/**
+ * @brief End the program and free the stack_a
+ * @param The linked list A
+ */
+void ft_exit_node(t_node **stack_a);
 /**
  * @brief End the program
  */

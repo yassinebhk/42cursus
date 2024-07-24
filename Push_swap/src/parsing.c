@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:31:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/23 20:12:39 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/24 19:35:30 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ int	*ft_check_args(int argc, char **argv, int *length)
 {
 	int	*list;
 
-	if (argc == 2 && ft_strlen(argv[1]) == 0)
-		ft_exit();
 	*length = ft_get_length(argc, argv);
 	list = ft_get_args(argc, argv, *length);
 	return (list);
