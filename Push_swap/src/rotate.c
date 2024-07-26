@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 17:41:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/25 00:24:16 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/26 23:07:30 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	rotate(t_node **stack)
 {
 	(*stack) = (*stack)->next;
-
 }
 
 void	ra(t_node **stack_a)
@@ -51,5 +50,5 @@ void	rr(t_node **stack_a, t_node **stack_b)
 	else if (ft_len_list(*stack_b) > 1)
 		rb(stack_b);
 	else if (ft_len_list(*stack_a) > 1)
-	ra(stack_a);
+		ra(stack_a);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yassine <yassine@student.42.fr>            +#+  +:+       +#+         #
+#    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/27 12:09:53 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/07/20 16:03:51 by yassine          ###   ########.fr        #
+#    Updated: 2024/07/26 22:04:02 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror
 SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c src/swap.c  src/rotate.c\
 						src/algorithm.c src/set_pos_and_index.c src/rotate_reverse.c src/init_stacks.c\
-						src/free.c src/fill_stack.c src/list_utils.c src/push.c src/get_costs.c
+						src/cost_change.c src/mvts_stack_a.c src/mvts_stack_b.c src/two_and_three_nodes.c src/free.c src/fill_stack.c src/list_utils.c src/push.c src/get_costs.c
 SRCS_BONUS 			:= src/push_swap.c
 OBJS 				:=$(SRCS:.c=.o)
 OBJS_BONUS 			:=$(SRCS_BONUS:.c=.o)

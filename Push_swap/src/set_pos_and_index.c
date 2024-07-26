@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_pos_and_index.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/30 11:57:08 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/30 12:39:50 by yassine          ###   ########.fr       */
+/*   Created: 2024/07/26 21:44:48 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/07/26 21:44:49 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

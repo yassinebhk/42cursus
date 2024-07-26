@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/27 12:16:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/24 19:35:44 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/26 23:20:22 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int					*ft_check_args(int argc, char **argv, int *length);
  * @brief End the program and free the stack_a
  * @param The linked list A
  */
-void ft_exit_node(t_node **stack_a);
+void				ft_exit_node(t_node **stack_a);
 /**
  * @brief End the program
  */
@@ -329,7 +329,7 @@ void				ft_algorithm(t_node **stack_a, t_node **stack_b);
  * @param stack_b The linked list b
  * @param flag If flag its 0, we sort the stack_a; otherwise, stack_b
  */
-void	ft_two_nodes(t_node **stack_a, t_node **stack_b, int flag);
+void				ft_two_nodes(t_node **stack_a, t_node **stack_b, int flag);
 /**
  * @brief Algorithm that sorts three nodes
  * @param stack_a The linked list a
@@ -341,23 +341,52 @@ void				ft_three_nodes(t_node **stack, t_node **stack_aux);
  * @param stack_a The linked list a
  * @param stack_b The linked list b
  */
-void	ft_general(t_node **stack_a, t_node **stack_b);
+void				ft_general(t_node **stack_a, t_node **stack_b);
 /**
- * @brief Push to the stack_b the nodes that have an index lower than half of the list
+
+	* @brief Push to the stack_b the nodes 
+	that have an index lower than half of the list
  * @param stack_a The linked list a
  * @param stack_b The linked list b
  */
 void				ft_check_low_index(t_node **stack, t_node **stack_b);
 /**
- * @brief Calculates the costs to reach the top of the list of each node of the linked list
+
+	* @brief Calculates the costs to reach the top of 
+	the list of each node of the linked list
  * @param stack The linked list
  */
 void				ft_set_costs(t_node **stack);
 /**
- * @brief Push to the stack_b the nodes that have an index lower than half of the list
+ * @brief Makes the mvts to sort the stack_b
+ * @param stack_a The linked list a
+ * @param stack_b The linked list b
+ * @param flag If flag its 0, we make rb mvts; otherwise, rrb mvts
+ * @param best_index The best index to move
+ */
+void				ft_mvts_b(t_node **stack_a, t_node **stack_b, int flag,
+						t_node *best_index);
+/**
+ * @brief Makes the mvts to sort the stack_a
+ * @param stack_a The linked list a
+ * @param stack_b The linked list b
+ * @param flag If flag its 0, we make ra mvts; otherwise, rra mvts
+ * @param best_index The best index to move
+ */
+void				ft_mvts_a(t_node **stack_a, t_node **stack_b, int flag,
+						t_node *best_index);
+/**
+ * @brief Calculates the cost change from one node to another
+ * @param stack_aux The destination list
+ * @param stack The source list
+ * @return
+ */
+t_node				*ft_cost_change(t_node *stack_aux, t_node **stack);
+/**
+ * @brief Updates the parameters of the nodes
  * @param stack_a The linked list a
  * @param stack_b The linked list b
  */
-void	ft_order_list(t_node **stack_a, t_node **stack_b, int flag);
+void				ft_update_parameters(t_node **stack_a, t_node **stack_b);
 
 #endif

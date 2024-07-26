@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/27 12:31:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/24 19:35:30 by yassine          ###   ########.fr       */
+/*   Created: 2024/07/26 21:44:24 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/07/26 21:44:28 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ static int	*ft_fill_list(int *list, char **split, int *pos)
 	return (list);
 }
 
-void ft_repeated_numbers(int *list, int length)
+void	ft_repeated_numbers(int *list, int length)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	i = -1;
 	while (++i < length)
 	{
