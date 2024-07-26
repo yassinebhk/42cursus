@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 22:29:22 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/07/23 21:34:05 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/25 01:06:57 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,6 @@ void ft_update_parameters(t_node **stack_a, t_node **stack_b)
 	ft_set_costs(stack_b);
 }
 
-int ft_is_ordered_a(t_node *stack)
-{
-	t_node *head;
-	
-	while (stack->next != head)
-	{
-		if (stack->value > stack->next->value)
-			return (0);
-		stack = stack->next;
-	}
-	return (1);
-}
 
 t_node *ft_get_lowest_node(t_node *stack_b)
 {
@@ -185,16 +173,45 @@ t_node *ft_cost_change(t_node *stack_aux, t_node **stack)
 
 void    ft_mvts_a(t_node **stack_a, t_node **stack_b, int flag, t_node *best_index)
 {	
-	int cont;
+	// int cost;
+	// int cost_copy;
+	// int cost_change;
 	
-	cont = 0;
+	// cost_copy = best_index->cost;
+	// cost = best_index->cost;
+	// cost_change = best_index->cost;
+    // if (!flag)
+    // {
+	// 	while((--cost_change - cost_copy) > 0 && --(cost) >= 0)
+    //     {
+    //         rr(stack_a, stack_b);
+    //         ft_update_parameters(stack_a, stack_b);
+    //     }
+	// 	while((cost_change - cost_copy) > 0)
+    //     {
+
+    //         rb(stack_b);
+    //         ft_update_parameters(stack_a, stack_b);
+	// 		cost_change--;
+    //     }
+    //     while((cost) >= 0)
+    //     {
+    //         ra(stack_a);
+    //         ft_update_parameters(stack_a, stack_b);
+	// 		cost--;
+    //     }
+	// 	pb(stack_a, stack_b);
+	// 	ft_update_parameters(stack_a, stack_b);
+
+    // }
+	
+	
     if (!flag)
     {
 		while((--best_index->cost_change - best_index->cost) > 0)
         {
             rb(stack_b);
             ft_update_parameters(stack_a, stack_b);
-			cont ++;
         }
         while(--(best_index->cost) >= 0)
         {
@@ -203,10 +220,7 @@ void    ft_mvts_a(t_node **stack_a, t_node **stack_b, int flag, t_node *best_ind
         }
 		pb(stack_a, stack_b);
 		ft_update_parameters(stack_a, stack_b);
-		// while (--cont >= 0)
-		// 	rrb(stack_b);
 		ft_update_parameters(stack_a, stack_b);
-
     }
     else
     { 
@@ -214,7 +228,6 @@ void    ft_mvts_a(t_node **stack_a, t_node **stack_b, int flag, t_node *best_ind
         {
             rb(stack_b);
             ft_update_parameters(stack_a, stack_b);
-			cont ++;
         }
         while(--(best_index->cost) >= 0)
         {
@@ -222,9 +235,6 @@ void    ft_mvts_a(t_node **stack_a, t_node **stack_b, int flag, t_node *best_ind
             ft_update_parameters(stack_a, stack_b);
         }
 	    pb(stack_a, stack_b);
-		ft_update_parameters(stack_a, stack_b);
-		// while (--cont >= 0)
-		// 	rrb(stack_b);
 		ft_update_parameters(stack_a, stack_b);
     }
 }
@@ -237,7 +247,6 @@ void	ft_check_low_index(t_node **stack_a, t_node **stack_b)
 	pb(stack_a, stack_b);
 	pb(stack_a, stack_b);
 	ft_update_parameters(stack_a, stack_b);
-	//ft_three_nodes(stack_b, stack_a);
 	while (ft_len_list((*stack_a))> 3)
     {
 
@@ -319,11 +328,32 @@ void	ft_check_low_index(t_node **stack_a, t_node **stack_b)
 	// 		(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
 	// 	(*stack_b) = (*stack_b)->next;
 	// }
-	// ft_printf("\n|--------------------------|\n\n");
+	// ft_printf("\n|--------------------------|\n");
 
 
 		
     }
+
+	// int i = -1;
+	// int length = ft_len_list((*stack_a));
+	// ft_printf("\n|after mvts --------  (*stack_a) ---------|\n\n");
+	// while (++i < length)
+	// {
+	// 	ft_printf("(*stack_a) | puntero %p | pos: %d | (*stack_a) value: %d | index: %d | cost: %d\n", (*stack_a), (*stack_a)->pos, (*stack_a)->value, (*stack_a)->index, (*stack_a)->cost); 
+	// 	(*stack_a) = (*stack_a)->next;
+	// }
+	// ft_printf("\n|--------------------------|\n\n");
+	// i = -1;
+	// length = ft_len_list((*stack_b));
+	// ft_printf("\n|-------- (*stack_b) ---------|\n\n");
+	// while (++i < length)
+	// {
+	// 	ft_printf("(*stack_b) | puntero %p | pos: %d | (*stack_b) value: %d | index: %d | cost: %d\n",
+	// 		(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
+	// 	(*stack_b) = (*stack_b)->next;
+	// }
+
+	
 	ft_update_parameters(stack_a, stack_b);
 	if (ft_len_list((*stack_a)) == 3)
 		ft_three_nodes(stack_a, stack_b);
@@ -331,70 +361,45 @@ void	ft_check_low_index(t_node **stack_a, t_node **stack_b)
 		ft_two_nodes(stack_a, stack_b, 0);
 }
 
-t_node *ft_first_index(t_node *stack_a)
+void ft_mvts_0(t_node **stack_a, t_node **stack_b, int cost, int cost_change)
 {
-    int len;
-    t_node *tmp;
-
-    tmp = stack_a;
-    len = ft_len_list(tmp);
-    while (--len >= 0)
-    {
-        if (tmp->index == 1)
-            return (tmp);
-        tmp = tmp->next;
-    }
-    return (NULL);
-}
-
-void    ft_common_mvts(t_node **stack_a, t_node **stack_b, int flag, int cost)
-{
-    if (!flag)
-    {
-        while(--cost >= 0)
-        {
-            if ((*stack_b)->index < (*stack_b)->next->index)
-                rr(stack_a, stack_b);
-            else
-                ra(stack_a);
-            ft_set_pos_and_inex(stack_a, stack_b);
-        }
-    }
-    else
-    { 
-        while(--cost >= 0)
-        {
-            if ((*stack_b)->index < (*stack_b)->before->index)
-                rrr(stack_a, stack_b);
-            else
-                rra(stack_a);
-            ft_set_pos_and_inex(stack_a, stack_b);
-        }
-    }
-}
+	// int coste;
+	// coste = cost;
+	
+	// while((--cost_change - coste) > 0 && --(cost) >= 0)
+	// {
+	// 	rr(stack_a, stack_b);
+	// 	ft_update_parameters(stack_a, stack_b);
+	// }
+	// while((cost_change - coste) > 0)
+	// {
+	// 	ra(stack_a);
+	// 	ft_update_parameters(stack_a, stack_b);
+	// 	cost_change--;
+	// }
+	// while((cost) >= 0)
+	// {
+	// 	rb(stack_b);
+	// 	ft_update_parameters(stack_a, stack_b);
+	// 	cost--;
+	// }
+	// pa(stack_a, stack_b);
+	// ft_update_parameters(stack_a, stack_b);
 
 
-void ft_mvts_0(t_node **stack_a, t_node **stack_b, t_node *best_index)
-{
-	int cont;
-
-	cont = 0;
-	while((--best_index->cost_change - best_index->cost) > 0)
+	
+	while((--cost_change - cost) > 0)
 	{
 		ra(stack_a);
 		ft_update_parameters(stack_a, stack_b);
-		cont ++;
 	}
-	while(--(best_index->cost) >= 0)
+	while(--(cost) >= 0)
 	{
 		rb(stack_b);
 		ft_update_parameters(stack_a, stack_b);
 	}
 	pa(stack_a, stack_b);
 	ft_update_parameters(stack_a, stack_b);
-	// while (--cont >= 0)
-	// 	rra(stack_a);
-	//ft_update_parameters(stack_a, stack_b);
 }
 
 void ft_mvts_1(t_node **stack_a, t_node **stack_b, int cost_change, int cost)
@@ -417,48 +422,56 @@ void ft_mvts_1(t_node **stack_a, t_node **stack_b, int cost_change, int cost)
 	}
 	pa(stack_a, stack_b);
 	ft_update_parameters(stack_a, stack_b);
-	cont = -1;
-	// while (++cont < len - cost_change + 2 + cost)
-	// 	ra(stack_a);
-	//ft_update_parameters(stack_a, stack_b);
 }
 
-void ft_mvts_2(t_node **stack_a, t_node **stack_b, t_node *best_index)
+void ft_mvts_2(t_node **stack_a, t_node **stack_b, int cost_change, int cost)
 {
-	//int cont;
+	// int coste;
+	// coste = cost;
+	
+	// while((--cost_change - coste) > 0 && --(cost) >= 0)
+	// {
+	// 	rrr(stack_a, stack_b);
+	// 	ft_update_parameters(stack_a, stack_b);
+	// }
+	// while((cost_change - coste) > 0)
+	// {
+	// 	rra(stack_a);
+	// 	ft_update_parameters(stack_a, stack_b);
+	// 	cost_change--;
+	// }
+	// while((cost) >= 0)
+	// {
+	// 	rrb(stack_b);
+	// 	ft_update_parameters(stack_a, stack_b);
+	// 	cost--;
+	// }
+	// pa(stack_a, stack_b);
+	// ft_update_parameters(stack_a, stack_b);
 
-	//cont = 0;
-	while((--best_index->cost_change - best_index->cost) > 0)
+
+	
+	while((--cost_change - cost) > 0)
 	{
 		rra(stack_a);
 		ft_update_parameters(stack_a, stack_b);
-		//cont ++;
 	}
-	while(--(best_index->cost) >= 0)
+	while(--(cost) >= 0)
 	{
 		rrb(stack_b);
 		ft_update_parameters(stack_a, stack_b);
 	}
 	pa(stack_a, stack_b);
 	ft_update_parameters(stack_a, stack_b);
-	// while (--cont >= 0)
-	// 	ra(stack_a);
-	//ft_update_parameters(stack_a, stack_b);
 }
 
 void ft_mvts_3(t_node **stack_a, t_node **stack_b, int cost_change, int cost)
 {
-	// int cont;
-	// int len;
-
-	// cont = -1;
-	
 	while((--cost_change - cost) > 0)
 	{	
 		ra(stack_a);
 		ft_update_parameters(stack_a, stack_b);
 	}
-	// cont = -1;
 	while(--cost >= 0)
 	{
 		rrb(stack_b);
@@ -466,16 +479,10 @@ void ft_mvts_3(t_node **stack_a, t_node **stack_b, int cost_change, int cost)
 	}
 	pa(stack_a, stack_b);
 	ft_update_parameters(stack_a, stack_b);
-	//cont = -1;
-	// while (++cont < len - cost_change + 2 + cost)
-	// 	rra(stack_a);
-	//ft_update_parameters(stack_a, stack_b);
 }
 
 void    ft_mvts_b(t_node **stack_a, t_node **stack_b, int flag, t_node *best_index)
 {	
-	// if (best_index->value == 16)
-	// 	ft_printf("\n\n OJOOOO change cost: %d cost: %d flag: %d\n\n", best_index->cost_change, best_index->cost, flag);
 	if (best_index->cost_change == 1)
 		pa(stack_a, stack_b);
 	else if (best_index->cost_change == 2 && ft_len_list(*stack_b) == best_index->pos && best_index->pos > 1)
@@ -486,7 +493,7 @@ void    ft_mvts_b(t_node **stack_a, t_node **stack_b, int flag, t_node *best_ind
     else if (!flag)
     {
         if (best_index->cost_change - best_index->cost <= (int)(ft_len_list(*stack_a) / 2 + 1))
-			ft_mvts_0(stack_a, stack_b, best_index);
+			ft_mvts_0(stack_a, stack_b, best_index->cost, best_index->cost_change);
 		else
 			ft_mvts_1(stack_a, stack_b, best_index->cost_change, best_index->cost);
     }
@@ -495,34 +502,11 @@ void    ft_mvts_b(t_node **stack_a, t_node **stack_b, int flag, t_node *best_ind
         if (best_index->cost_change - best_index->cost < (int)(ft_len_list(*stack_a) / 2))
 			ft_mvts_3(stack_a, stack_b, best_index->cost_change, best_index->cost);
 		else
-			ft_mvts_2(stack_a, stack_b, best_index);
+			ft_mvts_2(stack_a, stack_b, best_index->cost_change, best_index->cost);
     }
 	ft_update_parameters(stack_a, stack_b);
 }
 
-// void	ft_put_greatest3(t_node **stack_a, t_node **stack_b)
-// {
-//     int cost;
-//     t_node *first_index;
-
-//     while(ft_len_list(*stack_a) > 3)
-//     {        
-//         first_index = ft_first_index(*stack_a);
-//         cost = first_index->cost;
-//         if ((*stack_a)->index == 1)
-//             pb(stack_a, stack_b);
-//         else
-//         {
-//             if (first_index->pos <= (int)(ft_len_list(*stack_a) / 2) + 1) //ra
-//                 ft_common_mvts(stack_a, stack_b, 0, cost);
-//             else
-//                 ft_common_mvts(stack_a, stack_b, 1, cost);
-//             pb(stack_a, stack_b);        
-//         }
-// 		ft_update_parameters(stack_a, stack_b);
-//     }
-//     ft_three_nodes(stack_a, stack_b);
-// }
 
 void	ft_push_ordered(t_node **stack_a, t_node **stack_b)
 {	
@@ -606,7 +590,7 @@ void	ft_push_ordered(t_node **stack_a, t_node **stack_b)
 	// 		(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
 	// 	(*stack_b) = (*stack_b)->next;
 	// }
-	// ft_printf("\n|--------------------------|\n\n");
+	// ft_printf("\n|--------------------------|\n");
 
 	// int	i = -1;
 	// int length = ft_len_list((*stack_a));
@@ -702,17 +686,11 @@ void	ft_general(t_node **stack_a, t_node **stack_b)
 	// 		(*stack_b), (*stack_b)->pos, (*stack_b)->value, (*stack_b)->index, (*stack_b)->cost);
 	// 	(*stack_b) = (*stack_b)->next;
 	// }
-	// ft_printf("\n|--------------------------|\n\n");
+	// ft_printf("\n\n\n\n|---------STACK_B------------|\n\n\n\n");
 
 
 
 
-
-	
-	// if (ft_len_list(*stack_a) == 2)
-	// 	ft_two_nodes(stack_a, stack_b, 0);
-	// else
-    //     ft_put_greatest3(stack_a, stack_b);
 
 
 	ft_push_ordered(stack_a, stack_b);

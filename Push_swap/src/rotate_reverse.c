@@ -6,7 +6,7 @@
 /*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:19:30 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/29 23:51:36 by yassine          ###   ########.fr       */
+/*   Updated: 2024/07/25 00:49:18 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,8 @@ void	rrr(t_node **stack_a, t_node **stack_b)
 		rotate_reverse(stack_a);
 		ft_printf("rrr\n");
 	}
+	else if (ft_len_list(*stack_b) > 1)
+		rrb(stack_b);
+	else if (ft_len_list(*stack_a) > 1)
+		rra(stack_a);
 }

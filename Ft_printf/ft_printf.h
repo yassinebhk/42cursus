@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:03:52 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/24 18:03:54 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/07/20 12:54:14 by yassine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include "libft/libft.h"
+# include "Libft/libft.h"
 # include <limits.h>
 # include <stdarg.h>
 # include <stdlib.h>
