@@ -16,7 +16,7 @@ void	ft_close_ordered(int *str, t_node **stack_a)
 {
 	free(str);
 	free(*stack_a);
-	exit(1);
+	exit(0);
 }
 
 int	ft_is_ordered(int *list, int length)
@@ -54,55 +54,3 @@ int	main(int argc, char **argv)
 	ft_free_all(stack_a, stack_b, list);
 	return (0);
 }
-
-// int	i = -1;
-// length = ft_len_list(stack_a);
-// //ft_printf("\n|--------  stack_a ---------|\n\n");
-// while (++i < length)
-// {
-// 	//ft_printf("stack_a | puntero %p | pos: %d | stack_a value: %d | index:
-//%d | cost: %d\n", stack_a, stack_a->pos, stack_a->value,
-// stack_a->index, stack_a->cost);
-// 	ft_printf("%d ", stack_a->value);
-// 	stack_a = stack_a->next;
-// }
-// ft_printf("\n|--------------------------|\n\n");
-
-// int i = -1;
-// length = ft_len_list(stack_a);
-// ft_printf("\n|--------  stack_a ---------|\n\n");
-// while (++i < length)
-// {
-// 	ft_printf("stack_a | puntero %p | pos: %d | stack_a value: %d | index:
-//%d | cost: %d\n", stack_a, stack_a->pos, stack_a->value,
-// stack_a->index, stack_a->cost);
-// 	stack_a = stack_a->next;
-// }
-// ft_printf("\n|--------------------------|\n\n");
-// i = -1;
-// length = ft_len_list(stack_b);
-// ft_printf("\n|-------- stack_b ---------|\n\n");
-// while (++i < length)
-// {
-// 	ft_printf("stack_b | puntero %p | pos: %d | stack_b value: %d | index:
-//%d | cost: %d\n",
-// 		stack_b, stack_b->pos, stack_b->value, stack_b->index,
-// stack_b->cost);
-// 	stack_b = stack_b->next;
-// }
-// ft_printf("\n|--------------------------|\n\n");
-
-/***********************************************************/
-// int	i = -1;
-// length = ft_len_list(stack_a);
-// //ft_printf("\n|--------  stack_a ---------|\n\n");
-// ft_printf("\n");
-// while (++i < length)
-// {
-// 	//ft_printf("stack_a | puntero %p | pos: %d | stack_a value: %d | index:
-//%d | cost: %d\n", stack_a, stack_a->pos, stack_a->value,
-// stack_a->index, stack_a->cost);
-// 	ft_printf("%d ", stack_a->value);
-// 	stack_a = stack_a->next;
-// }
-// ft_printf("\n");
