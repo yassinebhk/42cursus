@@ -32,15 +32,12 @@ INVERT	= \033[7m
 DASH	= \033[9m
 
 NAME				:= push_swap
-NAME_BONUS			:= push_swap_bonus
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror
 SRCS 				:= src/push_swap.c src/parsing.c src/errors.c src/utils.c src/swap.c  src/rotate.c\
 						src/algorithm.c src/set_pos_and_index.c src/rotate_reverse.c src/init_stacks.c\
 						src/cost_change.c src/mvts_stack_a.c src/mvts_stack_b.c src/two_and_three_nodes.c src/free.c src/fill_stack.c src/list_utils.c src/push.c src/get_costs.c
-SRCS_BONUS 			:= src/push_swap.c
 OBJS 				:=$(SRCS:.c=.o)
-OBJS_BONUS 			:=$(SRCS_BONUS:.c=.o)
 INCL				:= include/push_swap.h
 
 all:utils $(NAME)
@@ -51,20 +48,12 @@ bonus: $(NAME_BONUS)
 	@gcc $(FLAGS) -c $< -o $@
 	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
 
-$(NAME):$(OBJS) utils
+$(NAME):$(OBJS)
 	@echo "\n $(BLUE)---------------------------------------------\n"
 	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS) libft.a $(CYAN) to $(YELLOW)$(ITALIC) $(NAME)\n"
 	@make -C libft
 	@mv libft/libft.a .
 	@$(cc) $(flags) $(OBJS) libft.a -o $(NAME)
-	@echo "$(MAGENTA)$(ITALIC)Push-swap compiled!$(RESET)"
-
-$(NAME_BONUS):$(OBJS_BONUS) utils
-	@echo "\n $(BLUE)---------------------------------------------\n"
-	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS_BONUS) libft.a $(CYAN) to $(ITALIC)$(YELLOW) $(NAME_BONUS)\n"
-	@make -C libft
-	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS_BONUS) libft.a -o $(NAME_BONUS)
 	@echo "$(MAGENTA)$(ITALIC)Push-swap compiled!$(RESET)"
 
 clean:
@@ -76,7 +65,6 @@ clean:
 	
 fclean:clean
 	@/bin/rm -f $(NAME)
-	@/bin/rm -f $(NAME_BONUS)
 	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
 
 re:fclean all
@@ -90,4 +78,4 @@ norm:
 	@norminette src/*.c include/$(NAME).h
 	@echo "$(GREEN)Completed!$(RESET)"
 
-.PHONY: all utils clean fclean re
+.PHONY: all clean fclean re
