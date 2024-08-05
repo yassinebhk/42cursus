@@ -1,0 +1,5 @@
+*.vscode
+philo
+*.o
+*.out
+*.dSYM
