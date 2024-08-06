@@ -1,20 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/05 19:40:01 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/06 18:31:28 by ybouhaik         ###   ########.fr       */
+/*   Created: 2024/08/06 18:33:11 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/08/06 18:34:33 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int main (int argc, char **argv)
+long	ft_atoi(char *str)
 {
-    if (!check_args(argc, argv))
-		return (1);
-    return (0);
+	long	num;
+	int		cont;
+
+	cont = 1;
+	num = 0;
+	while (((*str >= 9 && *str <= 13) || *str == 32) && *str != '\0')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			cont *= -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9' && *str != '\0')
+	{
+		num *= 10;
+		num += *str - '0';
+		str++;
+	}
+	return (num * cont);
 }

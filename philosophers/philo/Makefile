@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/05 19:40:05 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/05 21:48:39 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/06 18:32:07 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,9 @@ RED		= \033[31;1m
 
 NAME 	= philo
 cc		= gcc
-flags	= -Wall -Wextra -Werror -fsanitize=address
-SRCS	= src/philo.c
-OBJS	= $(SRCS: .c = .o)
+flags	= -Wall -Wextra -Werror -g -fsanitize=address
+SRCS	= src/philo.c src/parsing.c src/utils.c 
+OBJS	= $(SRCS:.c=.o)
 INC		= include/philo.h
 
 all: $(NAME)
@@ -46,11 +46,11 @@ clean:
 	@rm -f src/*.o
 	@rm -f *.a
 	
-fclean:clean
+fclean: clean
 	@/bin/rm -f $(NAME)
 	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
 
-re:fclean all
+re: fclean all
 
 norm:
 	@echo "$(BLUE)$(DIM)SRC$(RESET)"
