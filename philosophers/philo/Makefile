@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/05 19:40:05 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/08 13:13:33 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/08 17:45:41 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ RED		= \033[31;1m
 
 NAME 	= philo
 cc		= gcc
-flags	= -Wall -Wextra -Werror -pthread #-g -fsanitize=address
+flags	= -Wall -Wextra -Werror -pthread -g -fsanitize=address
 SRCS	= src/main.c src/parsing.c src/utils.c src/init_table.c src/init_philo.c \
 			src/routine.c
 
