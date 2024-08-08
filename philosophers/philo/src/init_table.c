@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 20:32:29 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/07 18:45:06 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:08:39 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	init_table(t_table *table, int argc, char **argv)
 	table->time_die = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);
 	table->time_sleep = ft_atoi(argv[4]);
+	table->start_sim = 0;
+	table->end_sim = 0;
 	if (argc == 6)
 		table->n_times_eat = ft_atoi(argv[5]);
 	else

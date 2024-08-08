@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 23:50:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/07 18:40:55 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:24:03 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,41 +34,53 @@ typedef struct s_table	t_table;
 
 typedef struct s_fork
 {
-	int				id;
-	pthread_mutex_t	forks;
+	int					id;
+	pthread_mutex_t		forks;
 
-}					t_fork;
+}						t_fork;
 
 typedef struct s_philo
 {
-	int				id;
-	int				times_eat;
-	int				died;
-	int				thinking;
-	int				eating;
-	pthread_t		thread_id;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	t_table			*table;
-}					t_philo;
+	int					id;
+	int					times_eat;
+	int					died;
+	int					thinking;
+	int					eating;
+	pthread_t			thread_id;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
+	t_table				*table;
+}						t_philo;
 
 typedef struct s_table
 {
-	int				n_philo;
-	int				time_die;
-	int				time_eat;
-	int				time_sleep;
-	int				n_times_eat;
-	t_fork			*t_forks;
-	t_philo			*philosopher;
-}					t_table;
+	int					n_philo;
+	int					time_die;
+	int					time_eat;
+	int					time_sleep;
+	int					n_times_eat;
+	int					end_sim;
+	long					start_sim;
+	t_fork				*t_forks;
+	t_philo				*philosopher;
+	pthread_t			monitor;
+}						t_table;
 
 /***************************************
 				UTILS
 ***************************************/
 
-long				ft_atoi(char *str);
-
+long					ft_atoi(char *str);
+/**
+ * @brief Gives the current time in ms
+ * @returns The current time in ms
+ */
+long					get_time_in_ms(void);
+/**
+ * @brief Use the usleep function with exact time
+ * @param time Time to sleep
+ */
+void					ft_usleep(int time);
 /***************************************
 				PARSING
 ***************************************/
@@ -82,7 +94,7 @@ long				ft_atoi(char *str);
  * @param argv The content of each argument
  * @returns 1 if the condition its true, otherwise 0
  */
-int					check_args(int argc, char **argv);
+int						check_args(int argc, char **argv);
 
 /***************************************
 			INITIALIZATION
@@ -97,7 +109,7 @@ int					check_args(int argc, char **argv);
  * @param argv The content of each argument
  * @returns 1 if there is no problem, otherwise 1
  */
-int					init_table(t_table *table, int argc, char **argv);
+int						init_table(t_table *table, int argc, char **argv);
 
 /**
  * @brief Initializates each philosopher
@@ -105,5 +117,16 @@ int					init_table(t_table *table, int argc, char **argv);
  * @param table The table
  * @returns 1 if there is no problem, otherwise 1
  */
-int	init_philo(t_philo *philo, t_table *table);
+int						init_philo(t_philo *philo, t_table *table);
 #endif
+
+/***************************************
+				ROUTINE
+***************************************/
+
+/**
+ * @brief Sets the routine of each philosopher
+ * @param philo Each philosopher
+ * @returns NULL if there is any problem; otherwise, a pointer different to NULL
+ */
+void					*philo_routine(void *arg);
