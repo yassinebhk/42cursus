@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 19:40:01 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/10 20:47:02 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:57:26 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main (int argc, char **argv)
 	if (!init_table(&table, argc, argv))
 		return (1);
 	if ((table).n_philo == 0)
-		return (0);
+		return (free(table.forks), 1);
 	if (!init_philo(philo, &table))
 		return (1);
 	if (!init_dinner(&table))
