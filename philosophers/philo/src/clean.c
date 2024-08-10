@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/05 19:40:01 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/10 17:06:43 by ybouhaik         ###   ########.fr       */
+/*   Created: 2024/08/08 18:20:13 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/08/09 21:57:26 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int main (int argc, char **argv)
+void	clean(t_table *table)
 {
-	t_table table;
-	t_philo *philo;
-	
-	philo = NULL;
-	if (!check_args(argc, argv))
-		return (1);
-	if (!init_table(&table, argc, argv))
-		return (1);
-	if ((table).n_philo == 0)
-		return (0);
-	if (!init_philo(philo, &table))
-		return (1);
-	if (!init_dinner(&table))
-		return (1);
-	clean(&table);
-	return (0);
+	free(table->philosopher);
+	free(table->forks);
 }
