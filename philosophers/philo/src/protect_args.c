@@ -6,16 +6,16 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:21:04 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/09 21:57:06 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:08:34 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
-long	get_meals_count (t_philo philo)
+long	get_meals_count(t_philo philo)
 {
-	long meals_count;
-	
+	long	meals_count;
+
 	if (pthread_mutex_lock(&philo.philo_mutex))
 	{
 		printf("\n❌ meals count mutex lock failed.\n\n");
@@ -30,10 +30,10 @@ long	get_meals_count (t_philo philo)
 	return (meals_count);
 }
 
-long	get_last_meal (t_philo philo)
+long	get_last_meal(t_philo philo)
 {
-	long last_meal;
-	
+	long	last_meal;
+
 	if (pthread_mutex_lock(&philo.philo_mutex))
 	{
 		printf("\n❌ last meal mutex lock failed.\n\n");
@@ -48,19 +48,77 @@ long	get_last_meal (t_philo philo)
 	return (last_meal);
 }
 
-long	set_dead (t_table *table, int dead, int pos)
+long	set_dead(t_table *table, int dead, int pos)
 {
-	printf("%ld %d has died\n", get_time_in_ms() - table->start_sim,
-		table->philosopher[pos].id);
+	if (!set_print(get_time_in_ms() - table->start_sim,
+			table->philosopher[pos].id, "has died", table))
+		return (0);
 	if (pthread_mutex_lock(&table->dead_mutex) != 0)
 	{
 		printf("\n❌ last meal mutex lock failed.\n\n");
-		return (-1);
-	}	
-	table->dead = dead;
+		return (0);
+	}
+	table->end_sim = dead;
 	if (pthread_mutex_unlock(&table->dead_mutex) != 0)
 	{
 		printf("\n❌ last meal  mutex unlock failed.\n\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	get_end_sim(t_philo philo)
+{
+	int	end;
+
+	if (pthread_mutex_lock(&philo.philo_mutex))
+	{
+		printf("\n❌ end sim mutex lock failed.\n\n");
 		return (-1);
 	}
+	end = philo.table->end_sim;
+	if (pthread_mutex_unlock(&philo.philo_mutex))
+	{
+		printf("\n❌ end sim mutex unlock failed.\n\n");
+		return (-1);
+	}
+	return (end);
 }
+
+int	set_print(long time, int id, char *s, t_table *table)
+{
+	if (pthread_mutex_lock(&table->print_mutex) != 0)
+	{
+		printf("\n❌ print mutex lock failed.\n\n");
+		clean(table);
+		return (0);
+	}
+	printf("%ld %d %s\n", time, id, s);
+	if (pthread_mutex_unlock(&table->print_mutex) != 0)
+	{
+		printf("\n❌ print mutex unlock failed.\n\n");
+		clean(table);
+		return (0);
+	}
+	return (1);
+}
+
+
+int	print(char *s, t_table *table)
+{
+	if (pthread_mutex_lock(&table->print_mutex) != 0)
+	{
+		printf("\n❌ print mutex lock failed.\n\n");
+		clean(table);
+		return (0);
+	}
+	printf("%s", s);
+	if (pthread_mutex_unlock(&table->print_mutex) != 0)
+	{
+		printf("\n❌ print mutex unlock failed.\n\n");
+		clean(table);
+		return (0);
+	}
+	return (1);
+}
+

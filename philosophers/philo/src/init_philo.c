@@ -6,11 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 20:44:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/10 17:17:26 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:47:30 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 int	init_thread_philo(t_philo *philo, t_table *table)
 {
@@ -26,7 +26,7 @@ int	init_thread_philo(t_philo *philo, t_table *table)
 		if (pthread_create(&philo[pos].thread_id, NULL, func,
 				(void *)&philo[pos]))
 		{
-			printf("\n❌ pthread_create failed.\n\n");
+			print("\n❌ pthread_create failed.\n\n", table);
 			clean(table);
 			return (0);
 		}
@@ -43,7 +43,7 @@ int	thread_join_philo(t_table *table)
 	{
 		if (pthread_join(table->philosopher[pos].thread_id, NULL))
 		{
-			printf("\n❌ pthread_join failed.\n\n");
+			print("\n❌ pthread_join failed.\n\n", table);
 			clean(table);
 			return (0);
 		}
@@ -66,11 +66,20 @@ static int	init_args(t_philo *philo, t_table *table, int pos)
 	}
 	if (pthread_mutex_init(&philo->philo_mutex, NULL))
 	{
-		printf("\n❌ philo mutex init failed.\n\n");
+		print("\n❌ philo mutex init failed.\n\n", table);
 		clean(table);
 		return (0);
 	}
 	return (1);
+}
+
+void print_philo(t_philo *philo)
+{
+	int pos = -1;
+	while(++pos < philo->table->n_philo)
+	{
+		printf("Philo: %d %ld %d\n", philo[pos].id, philo[pos].last_meal, philo[pos].meals_count);
+	}
 }
 
 int	init_philo(t_philo *philo, t_table *table)
@@ -81,12 +90,12 @@ int	init_philo(t_philo *philo, t_table *table)
 	philo = (t_philo *)malloc((table->n_philo) * sizeof(t_philo));
 	if (!philo)
 	{
-		printf("\n❌ Malloc failed.\n\n");
+		print("\n❌ Malloc failed.\n\n", table);
 		return (0);
 	}
 	while (++pos < table->n_philo)
 	{
-		if (!init_args(philo, table, pos))
+		if (!init_args(&philo[pos], table, pos))
 			return (0);
 	}
 	table->philosopher = philo;

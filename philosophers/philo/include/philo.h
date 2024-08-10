@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 23:50:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/09 22:12:48 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:41:39 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int					id;
-	int					last_meal;
+	long				last_meal;
 	int					meals_count;
 	pthread_t			thread_id;
 	pthread_mutex_t		philo_mutex;
@@ -58,13 +58,12 @@ typedef struct s_table
 	int					time_eat;
 	int					time_sleep;
 	int					n_times_eat;
-	int					dead;
 	int					end_sim;
 	long				start_sim;
 	t_philo				*philosopher;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		dead_mutex;
-	pthread_mutex_t		print;
+	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		monitor;
 }						t_table;
 
@@ -155,7 +154,7 @@ int						init_monitor(t_table *table);
  * @param table The table
  * @returns 1 if there is no problem, otherwise 1
  */
-int	init_dinner(t_table *table);
+int						init_dinner(t_table *table);
 /***************************************
 				PROTECTION
 ***************************************/
@@ -163,6 +162,9 @@ int	init_dinner(t_table *table);
 long					get_last_meal(t_philo philo);
 long					get_meals_count(t_philo philo);
 long					set_dead(t_table *table, int dead, int pos);
+int						get_end_sim(t_philo philo);
+int						set_print(long time, int id, char *s, t_table *table);
+int						print(char *s, t_table *table);
 
 /***************************************
 				ROUTINE

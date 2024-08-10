@@ -6,11 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 20:32:29 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/09 22:02:59 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:20:10 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 int	init_table(t_table *table, int argc, char **argv)
 {
@@ -46,6 +46,12 @@ int	init_table(t_table *table, int argc, char **argv)
 	if (pthread_mutex_init(&table->dead_mutex, NULL))
 	{
 		printf("\n❌ dead mutex init failed.\n\n");
+		clean(table);
+		return (0);
+	}
+	if (pthread_mutex_init(&table->print_mutex, NULL))
+	{
+		printf("\n❌ print mutex init failed.\n\n");
 		clean(table);
 		return (0);
 	}

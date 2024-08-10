@@ -6,11 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:51:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/06 18:38:13 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:20:28 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 
 /**
  * @brief Prints an error message for each parsing error
