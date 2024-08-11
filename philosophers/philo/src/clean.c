@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 18:20:13 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/10 20:20:33 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:00:42 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,19 @@
 
 void	clean(t_table *table)
 {
-	free(table->philosopher);
+	int i;
+
+	i = 0;
+	while (i < table->n_philo)
+	{
+		pthread_mutex_destroy(table->philosopher[i].left_fork);
+		pthread_mutex_destroy(table->philosopher[i].right_fork);
+		pthread_mutex_destroy(&table->philosopher[i].philo_mutex);
+		i++;
+	}
+	pthread_mutex_destroy(&table->monitor);
+	pthread_mutex_destroy(&table->dead_mutex);
+	pthread_mutex_destroy(&table->print_mutex);
 	free(table->forks);
+	free(table->philosopher);
 }

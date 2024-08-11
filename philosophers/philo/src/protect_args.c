@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:21:04 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/10 21:08:34 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:36:15 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ int	get_end_sim(t_philo philo)
 {
 	int	end;
 
-	if (pthread_mutex_lock(&philo.philo_mutex))
+	if (pthread_mutex_lock(&philo.table->dead_mutex))
 	{
 		printf("\n❌ end sim mutex lock failed.\n\n");
 		return (-1);
 	}
 	end = philo.table->end_sim;
-	if (pthread_mutex_unlock(&philo.philo_mutex))
+	if (pthread_mutex_unlock(&philo.table->dead_mutex))
 	{
 		printf("\n❌ end sim mutex unlock failed.\n\n");
 		return (-1);
@@ -93,7 +93,17 @@ int	set_print(long time, int id, char *s, t_table *table)
 		clean(table);
 		return (0);
 	}
-	printf("%ld %d %s\n", time, id, s);
+	if (!strcmp(s, "is thinking"))
+		printf("\033[34;1m%ld %d %s\n", time, id, s);
+	else if (!strcmp(s, "is sleeping"))
+		printf("\033[0;90m%ld %d %s\n", time, id, s);
+	else if (!strcmp(s, "is eating"))
+		printf("\033[32;1m%ld %d %s\n", time, id, s);
+	else if (!strcmp(s, "has died"))
+		printf("\033[31;1m%ld %d %s\n", time, id, s);
+	else
+		printf("\033[37;1m%ld %d %s\n", time, id, s);
+
 	if (pthread_mutex_unlock(&table->print_mutex) != 0)
 	{
 		printf("\n❌ print mutex unlock failed.\n\n");
