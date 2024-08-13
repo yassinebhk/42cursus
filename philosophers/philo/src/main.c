@@ -6,17 +6,29 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 19:40:01 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/11 13:48:30 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:00:26 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int main (int argc, char **argv)
+int	init_dinner(t_table *table)
 {
-	t_table table;
-	t_philo *philo;
-	
+	table->start_sim = get_time_in_ms();
+	if (!init_thread_philo(table->philosopher, table))
+		return (0);
+	if (!init_monitor(table))
+		return (0);
+	if (!thread_join_philo(table))
+		return (0);
+	return (1);
+}
+
+int	main(int argc, char **argv)
+{
+	t_table	table;
+	t_philo	*philo;
+
 	philo = NULL;
 	if (!check_args(argc, argv))
 		return (1);

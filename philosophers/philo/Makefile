@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/05 19:40:05 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/11 15:39:15 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/13 13:44:56 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ NAME 	= philo
 cc		= gcc
 flags	= -Wall -Wextra -Werror -pthread -g -Iinclude -fsanitize=address
 SRCS	= src/main.c src/parsing.c src/utils.c src/init_table.c src/init_philo.c \
-			src/routine.c src/clean.c src/protect_args.c
+			src/routine.c src/clean.c src/protect_args.c src/monitor.c src/print.c
 
 OBJS	= $(SRCS:.c=.o)
 INC		= include/philo.h

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 23:50:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/13 13:03:39 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:50:26 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_table
 				UTILS
 ***************************************/
 
-long				ft_atoi(char *str);
+long					ft_atoi(char *str);
 /**
  * @brief Gives the current time in ms
  * @returns The current time in ms
@@ -167,7 +167,7 @@ int						set_print(long time, int id, char *s, t_table *table);
 int						print(char *s, t_table *table);
 
 /***************************************
-				ROUTINE
+					PHILO
 ***************************************/
 
 /**
@@ -184,11 +184,22 @@ void					*philo_routine(void *arg);
  */
 void					*one_philo_routine(void *arg);
 
+/***************************************
+					MONITORR
+***************************************/
+
 /**
  * @brief Sets the routine of the monitor
  * @param arg The monitor
  * @returns NULL
  */
 void					*monitor_routine(void *arg);
+
+/**
+ * @brief Creates the monitor's pthread
+ * @param arg The table
+ * @returns 1 if there is no problem, otherwise 1
+ */
+int						init_monitor(t_table *table);
 
 #endif

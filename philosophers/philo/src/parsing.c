@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 12:51:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/13 13:06:04 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:27:55 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ static int	valid_format(int argc, char **argv);
 static void	print_parsing_error(int flag, int argc)
 {
 	if (flag == 1)
-		printf("\n🚩 -> The number of arguments (%d) is not enough (%d).\n\n", argc, 5);
+		printf("\n🚩 -> The number of arguments (%d) is not enough (%d).\n\n",
+			argc, 5);
 	else if (flag == 2)
-		printf("\n🚩 -> The number of arguments (%d) exceeds the maximum (%d).\n\n",
+		printf("\n🚩\
+			-> The number of arguments (%d) exceeds the maximum (%d).\n\n",
 			argc, 6);
 	else if (flag == 3)
-		printf("\n🏁 -> Argument %d contains no numerical characters.\n\n", argc);
+		printf("\n🏁 -> Argument %d contains no numerical characters.\n\n",
+			argc);
 	else if (flag == 4)
 		printf("\n🏁 -> Argument %d exceeds INT_MAX.\n\n", argc);
 }

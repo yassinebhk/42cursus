@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 20:44:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/11 15:53:51 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:49:26 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,15 @@ static int	init_args(t_philo *philo, t_table *table, int pos)
 	return (1);
 }
 
-void print_philo(t_philo *philo)
+void	print_philo(t_philo *philo)
 {
-	int pos = -1;
-	while(++pos < philo->table->n_philo)
+	int	pos;
+
+	pos = -1;
+	while (++pos < philo->table->n_philo)
 	{
-		printf("Philo: %d %ld %d\n", philo[pos].id, philo[pos].last_meal, philo[pos].meals_count);
+		printf("Philo: %d %ld %d\n", philo[pos].id, philo[pos].last_meal,
+			philo[pos].meals_count);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 18:20:13 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/11 14:00:42 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:51:20 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	clean(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < table->n_philo)
