@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:20:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/13 14:00:35 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:08:12 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*one_philo_routine(void *arg)
 	return (NULL);
 }
 
-int	check_end(t_philo *philo, int flag)
+static int	check_end(t_philo *philo, int flag)
 {
 	if ((philo->meals_count == philo->table->n_times_eat
 			|| philo->table->end_sim == 1 || !set_print(get_time_in_ms()
@@ -53,7 +53,7 @@ int	check_end(t_philo *philo, int flag)
 	return (1);
 }
 
-int	eat(t_philo *philo)
+static int	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	if (!check_end(philo, 1))
@@ -76,7 +76,7 @@ int	eat(t_philo *philo)
 	return (1);
 }
 
-int	check_end2(t_philo *philo, char *s)
+static int	check_end2(t_philo *philo, char *s)
 {
 	if (philo->meals_count == philo->table->n_times_eat
 		|| get_end_sim(*philo) == 1 || !set_print(get_time_in_ms()

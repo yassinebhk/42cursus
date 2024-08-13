@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 23:50:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/13 13:50:26 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:07:50 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,11 @@ long					get_time_in_ms(void);
 void					ft_usleep(int time);
 
 /**
- * @brief Free the table and the philosophers
+ * @brief Free the table and the philosophers and destroy the mutexs
  * @param table The table
  */
 void					clean(t_table *table);
+
 /***************************************
 				PARSING
 ***************************************/
@@ -159,11 +160,52 @@ int						init_dinner(t_table *table);
 				PROTECTION
 ***************************************/
 
+/**
+ * @brief Gets the last meal of the philosopher
+ * @param philo The philosopher
+ * @returns The last meal
+ */
 long					get_last_meal(t_philo philo);
+
+/**
+ * @brief Gets the meals_count of the philosopher
+ * @param philo The philosopher
+ * @returns The meals_count
+ */
 long					get_meals_count(t_philo philo);
+
+/**
+ * @brief Sets the dead flag of the table
+ * @param table The table
+ * @param dead The dead status
+ * @param pos The philosopher position
+ * @returns 1 if there is no problem, otherwise 1
+ */
 long					set_dead(t_table *table, int dead, int pos);
+
+/**
+ * @brief Gets the end sim flag of the philosopher
+ * @param philo The philosopher
+ * @returns 1 if there is no problem, otherwise 1
+ */
 int						get_end_sim(t_philo philo);
+
+/**
+ * @brief Prints the status message of each philospher 
+ * @param time The current time
+ * @param id The philosopher id
+ * @param s The message status
+ * @param table The table
+ * @returns 1 if there is no problem, otherwise 1
+ */
 int						set_print(long time, int id, char *s, t_table *table);
+
+/**
+ * @brief Prints a message safely 
+ * @param s The message
+ * @param table The table
+ * @returns 1 if there is no problem, otherwise 1
+ */
 int						print(char *s, t_table *table);
 
 /***************************************
