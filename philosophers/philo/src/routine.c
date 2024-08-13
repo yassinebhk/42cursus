@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:20:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/13 14:08:12 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 16:46:02 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,18 @@ void	*one_philo_routine(void *arg)
 
 static int	check_end(t_philo *philo, int flag)
 {
-	if ((philo->meals_count == philo->table->n_times_eat
+	if (flag == 1 && (philo->meals_count == philo->table->n_times_eat
 			|| philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 				- philo->table->start_sim, philo->id, "has taken a fork",
-				philo->table)) && flag == 1)
+				philo->table)))
 	{
 		pthread_mutex_unlock(philo->left_fork);
 		return (0);
 	}
-	else if ((philo->meals_count == philo->table->n_times_eat
+	else if (flag == 2 && (philo->meals_count == philo->table->n_times_eat
 			|| philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 				- philo->table->start_sim, philo->id, "has taken a fork",
-				philo->table)) && flag == 2)
+				philo->table)))
 	{
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
@@ -62,7 +62,6 @@ static int	eat(t_philo *philo)
 	if (!check_end(philo, 2))
 		return (0);
 	philo->meals_count++;
-	philo->last_meal = get_time_in_ms();
 	if (philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 			- philo->table->start_sim, philo->id, "is eating", philo->table))
 	{
@@ -71,6 +70,7 @@ static int	eat(t_philo *philo)
 		return (0);
 	}
 	ft_usleep(philo->table->time_eat);
+	philo->last_meal = get_time_in_ms();
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	return (1);
@@ -101,10 +101,10 @@ void	*philo_routine(void *arg)
 				set_dead(philo->table, 1, philo->id - 1);
 			return (NULL);
 		}
-		if (!check_end2(philo, "is sleeping"))
+		if (get_end_sim(*philo) == 1 || !check_end2(philo, "is sleeping"))
 			return (NULL);
 		ft_usleep(philo->table->time_sleep);
-		if (!check_end2(philo, "is thinking"))
+		if (get_end_sim(*philo) == 1 || !check_end2(philo, "is thinking"))
 			return (NULL);
 	}
 	return (NULL);
