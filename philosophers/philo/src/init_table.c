@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 20:32:29 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/10 20:20:10 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:36:02 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	init_table(t_table *table, int argc, char **argv)
 	if (argc == 6)
 		table->n_times_eat = ft_atoi(argv[5]);
 	else
-		table->n_times_eat = -1;
+		table->n_times_eat = -10;
 	table->forks = (pthread_mutex_t *)malloc((table->n_philo)
 			* sizeof(pthread_mutex_t));
 	if (!table->forks)

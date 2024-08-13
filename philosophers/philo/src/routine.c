@@ -6,11 +6,24 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:20:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/13 12:32:33 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:54:07 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	meals_completed(t_table *table)
+{
+	int pos;
+
+	pos = -1;
+	while (++pos < table->n_philo)
+	{
+		if (table->philosopher[pos].meals_count != table->n_times_eat)
+			return (0);
+	}
+	return (1);
+}
 
 void	*monitor_routine(void *arg)
 {
@@ -24,14 +37,17 @@ void	*monitor_routine(void *arg)
 		while (++pos < table->n_philo)
 		{
 			if (get_meals_count(table->philosopher[pos]) == table->n_times_eat)
-				break ;
-			if (table->time_die < get_time_in_ms()
+				 ;
+			else if (table->time_die < get_time_in_ms()
 				- get_last_meal(table->philosopher[pos]) - table->start_sim)
 			{
 				set_dead(table, 1, pos);
 				break ;
 			}
 		}
+		if (meals_completed(table))
+			break ;
+		//printf("hola");
 	}
 	return (NULL);
 }
@@ -78,7 +94,8 @@ void	*one_philo_routine(void *arg)
 int	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
-	if (philo->table->end_sim == 1 || !set_print(get_time_in_ms()
+	if (philo->meals_count == philo->table->n_times_eat
+		|| philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 			- philo->table->start_sim, philo->id, "has taken a fork",
 			philo->table))
 	{
@@ -91,16 +108,16 @@ int	eat(t_philo *philo)
 			philo->table))
 	{
 		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);		
+		pthread_mutex_unlock(philo->right_fork);
 		return (0);
 	}
-	philo->meals_count++;               
-	philo->last_meal = get_time_in_ms(); 
+	philo->meals_count++;
+	philo->last_meal = get_time_in_ms();
 	if (philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 			- philo->table->start_sim, philo->id, "is eating", philo->table))
 	{
 		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);		
+		pthread_mutex_unlock(philo->right_fork);
 		return (0);
 	}
 	ft_usleep(philo->table->time_eat);
@@ -120,16 +137,17 @@ void	*philo_routine(void *arg)
 	{
 		if (get_end_sim(*philo) == 1 || !eat(philo))
 		{
-			if (get_end_sim(*philo) != 1)
+			if (get_end_sim(*philo) != 1
+				&& philo->meals_count != philo->table->n_times_eat)
 				set_dead(philo->table, 1, philo->id - 1);
 			return (NULL);
 		}
-		if (get_end_sim(*philo) == 1 || !set_print(get_time_in_ms()
+		if (philo->meals_count == philo->table->n_times_eat || get_end_sim(*philo) == 1 || !set_print(get_time_in_ms()
 				- philo->table->start_sim, philo->id, "is sleeping",
 				philo->table))
 			return (NULL);
 		ft_usleep(philo->table->time_sleep);
-		if (get_end_sim(*philo) == 1 || !set_print(get_time_in_ms()
+		if (philo->meals_count == philo->table->n_times_eat || get_end_sim(*philo) == 1 || !set_print(get_time_in_ms()
 				- philo->table->start_sim, philo->id, "is thinking",
 				philo->table))
 			return (NULL);

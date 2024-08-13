@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 23:50:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/11 15:45:20 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:03:39 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_table
 				UTILS
 ***************************************/
 
-long					ft_atoi(char *str);
+long				ft_atoi(char *str);
 /**
  * @brief Gives the current time in ms
  * @returns The current time in ms

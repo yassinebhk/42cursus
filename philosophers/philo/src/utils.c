@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 18:33:11 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/08 14:17:00 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:06:43 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 long	ft_atoi(char *str)
 {
-	long	num;
-	int		cont;
+	long long	num;
+	int			cont;
 
 	cont = 1;
 	num = 0;
