@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 19:20:49 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/11 16:36:54 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:32:33 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	*monitor_routine(void *arg)
 				set_dead(table, 1, pos);
 				break ;
 			}
-			ft_usleep(50);
 		}
 	}
 	return (NULL);
@@ -82,18 +81,29 @@ int	eat(t_philo *philo)
 	if (philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 			- philo->table->start_sim, philo->id, "has taken a fork",
 			philo->table))
+	{
+		pthread_mutex_unlock(philo->left_fork);
 		return (0);
+	}
 	pthread_mutex_lock(philo->right_fork);
 	if (philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 			- philo->table->start_sim, philo->id, "has taken a fork",
 			philo->table))
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);		
 		return (0);
-	philo->meals_count++;                //¿proteger?
-	philo->last_meal = get_time_in_ms(); // proteger
+	}
+	philo->meals_count++;               
+	philo->last_meal = get_time_in_ms(); 
 	if (philo->table->end_sim == 1 || !set_print(get_time_in_ms()
 			- philo->table->start_sim, philo->id, "is eating", philo->table))
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);		
 		return (0);
-	ft_usleep(philo->table->time_eat); // proteger
+	}
+	ft_usleep(philo->table->time_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	return (1);
@@ -106,7 +116,7 @@ void	*philo_routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		ft_usleep(50);
-	while (get_end_sim(*philo) != 1) // proteger
+	while (get_end_sim(*philo) != 1)
 	{
 		if (get_end_sim(*philo) == 1 || !eat(philo))
 		{

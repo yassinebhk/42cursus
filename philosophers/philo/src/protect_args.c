@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 19:21:04 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/11 16:36:15 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:46:03 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ long	get_meals_count(t_philo philo)
 		printf("\n❌ meals count mutex unlock failed.\n\n");
 		return (-1);
 	}
+	if (meals_count == 0)
+		return (-2);
 	return (meals_count);
 }
 
