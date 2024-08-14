@@ -28,16 +28,8 @@
 				STRUCTS
 ***************************************/
 
-typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;
 typedef struct s_table	t_table;
-
-typedef struct s_fork
-{
-	int					id;
-	pthread_mutex_t		forks;
-
-}						t_fork;
 
 typedef struct s_philo
 {
