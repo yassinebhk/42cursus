@@ -45,7 +45,7 @@ all:utils $(NAME)
 bonus: $(NAME_BONUS)
 
 %.o: %.c $(INCL)
-	@gcc $(FLAGS) -c $< -o $@
+	@gcc $(flags) -c $< -o $@
 	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
 
 $(NAME):$(OBJS)
