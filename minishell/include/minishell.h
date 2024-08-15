@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/14 17:34:21 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:21:31 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,16 @@
 typedef enum e_builtins
 {
 	e_echo,
-	e_cd, 
-	e_pwd, 
-	e_export, 
-	e_unset, 
-	e_env, 
+	e_cd,
+	e_pwd,
+	e_export,
+	e_unset,
+	e_env,
 	e_exit
 }			t_builtins;
 
-
+typedef struct s_env
+{
+	char	*key;
+	char	*var;
+}			t_env;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:39:54 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/13 16:43:33 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/15 18:41:35 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*ft_strcpy(char *dest, char *src)
 	int		cont;
 
 	cont = 0;
+	if (!src)
+		return (NULL);
 	letter = *src;
 	while (letter != '\0')
 	{
