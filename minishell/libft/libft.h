@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:09:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/07 23:09:35 by yassine          ###   ########.fr       */
+/*   Updated: 2024/08/15 13:34:39 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,17 @@ int					ft_round(double num);
 	the returned value
 */
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
+/**
+ * @brief Compares both strings. Characters that appear after
+		a `\0' character are not compared
+ * @param s1 The first string
+ * @param s2 The second string
+ * @returns An integer greater than,
+		equal to, or less than 0, according as the string s1 is greater
+		than, equal to, or less than the string s2.  The comparison is done
+		using unsigned characters, so that `\200' is greater than `\0'
+*/
+int					ft_strcmp(const char *s1, const char *s2);
 /**
  * @brief Compares not more than n characters. Characters that appear after
 		a `\0' character are not compared
@@ -461,5 +472,12 @@ char				*get_next_line(int fd);
  * @returns x if x is positive, -x otherwise.
  */
 long				ft_abs(long x);
+/**
+ * @brief Calculates the number of words of an string
+ * @param s The string
+ * @param c The delimitor between words
+ * @returns x if x is positive, -x otherwise.
+ */
+int					num_words(char const *s, char c);
 
 #endif

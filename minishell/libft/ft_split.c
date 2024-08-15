@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 19:04:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2023/09/20 21:12:06 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:32:24 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	num_words(char const *s, char c)
+int	num_words(char const *s, char c)
 {
 	int	num;
 	int	i;

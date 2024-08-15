@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 14:45:07 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/14 14:58:31 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/15 14:41:50 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ INCL				:= include/minishell.h
 
 all: $(NAME)
 
-bonus: $(NAME_BONUS)
+#bonus: $(NAME_BONUS)
 
 %.o: %.c $(INCL)
 	@gcc $(flags) -c $< -o $@
@@ -42,11 +42,10 @@ $(NAME):$(OBJS)
 	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS) libft.a $(CYAN) to $(YELLOW)$(ITALIC) $(NAME)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS) libft.a -o $(NAME)
+	@$(cc) $(flags) $(OBJS) libft.a -lreadline -o $(NAME)
 	@echo "$(MAGENTA)$(ITALIC) minishell compiled!$(RESET)"
 
 clean:
-	@rm -f $(FDF_OBJS)
 	@echo "$(YELLOW)Cleaning...$(RESET)"
 	@$(MAKE) -C libft clean
 	@rm -f src/*.o
