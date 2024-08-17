@@ -1,24 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 11:49:18 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 13:15:38 by ybouhaik         ###   ########.fr       */
+/*   Created: 2024/08/17 12:14:05 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/08/17 12:14:27 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_free(char **str)
 {
-	t_list	*last;
+	int	i;
 
-	last = ft_lstlast(*lst);
-	if (!last)
-		*lst = new;
-	else
-		last->next = new;
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	free_args(char *line, t_env *env, int len)
+{
+	int	i;
+
+	i = -1;
+	free(line);
+	while (++i < len)
+	{
+		free(env[i].key);
+		if (env[i].var)
+			free(env[i].var);
+	}
+	free(env);
 }
