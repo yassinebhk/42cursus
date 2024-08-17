@@ -6,31 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/15 20:49:04 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 12:04:42 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	num_words(char const *s, char c)
-{
-	int	num;
-	int	i;
-
-	num = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] != c)
-		{
-			num++;
-			while (s[i] != c && s[i + 1])
-				i++;
-		}
-		i++;
-	}
-	return (num);
-}
 
 int	ft_exit(char *str, int pos)
 {
@@ -117,18 +97,18 @@ int	echo(char **str, int pos, int num_words)
 	int	flag;
 
 	flag = 0;
-	while (++(pos) < num_words && is_valid_arg(str[pos]))
+	while (++pos < num_words && is_valid_arg(str[pos]))
 		flag = 1;
 	if (flag)
 	{
-		if ((pos) < num_words)
+		if (pos < num_words)
 			printf("%s", str[pos]);
 		while (++(pos) < num_words)
 			printf(" %s", str[pos]);
 	}
 	else
 	{
-		if ((pos) < num_words)
+		if (pos < num_words)
 			printf("%s", str[pos]);
 		while (++(pos) < num_words)
 			printf(" %s", str[pos]);
@@ -200,7 +180,7 @@ t_env	*get_var(char **environment)
 	}
 	while (++pos < len_env(environment))
 	{
-		split = ft_split(environment[pos], '=');
+		split = ft_split_mod(environment[pos], '=');
 		env[pos].key = ft_strdup(split[0]);
 		if (!split[1])
 			env[pos].var = NULL;

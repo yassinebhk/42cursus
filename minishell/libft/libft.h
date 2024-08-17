@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:09:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/15 13:34:39 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 12:01:09 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,15 @@ char				*ft_strrchr(const char *s, int c);
 		-wise, returns NULL if malloc fails
 */
 char				**ft_split(char const *s, char c);
+/**
+ * @brief A modified version of split where only separate by one time by 
+ * 		the delimiter.
+ * @param s The string to separe
+ * @param c The character using as dellimiter
+ * @returns The array of strings resulting from the separation. Other
+		-wise, returns NULL if malloc fails
+*/
+char				**ft_split_mod(char const *s, char c);
 /**
  * @brief Using malloc, creates an array of strings made up by the
 		the concatenation of 's1' and 's2'

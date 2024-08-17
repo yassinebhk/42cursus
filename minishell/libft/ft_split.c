@@ -6,13 +6,33 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 19:04:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/15 20:40:30 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 12:03:30 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*fill_word(char *palabra, const char *s, int ini, int pos)
+int	num_words(char const *s, char c)
+{
+	int	num;
+	int	i;
+
+	num = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			num++;
+			while (s[i] != c && s[i + 1])
+				i++;
+		}
+		i++;
+	}
+	return (num);
+}
+
+static char	*fill_word(char *palabra, char *s, int ini, int pos)
 {
 	int	j;
 
@@ -27,58 +47,58 @@ char	*fill_word(char *palabra, const char *s, int ini, int pos)
 	return (palabra);
 }
 
-int	find_first_delimiter(const char *s, char c)
-{
-	int pos = 0;
+static int	find_pos(char *palabra, char c, int *size, int *ini)
+{	
+	int	i;
 
-	while (s[pos] && s[pos] != c)
-		pos++;
-	return (pos);
+	i = *ini + *size;
+	*size = 0;
+	while (palabra[i] && palabra[i] == c)
+		(i)++;
+	*ini = i;
+	while (palabra[i] != c && palabra[i])
+	{
+		(*size)++;
+		i++;
+	}
+	return (i);
 }
 
-void	free_memory(char **palabra, int words)
+void	ft_free_split(char **s)
 {
 	int	i;
 
 	i = 0;
-	while (i < words)
+	while (*(s + i))
 	{
-		free(palabra[i]);
+		free(*(s + i));
 		i++;
 	}
-	free(palabra);
+	free(s);
 }
 
-char	**allocate_and_fill(const char *s, int pos, int len)
+char	**ft_split(char const *s, char c)
 {
-	char **palabra;
+	struct s_vbs	a;
 
-	palabra = (char **)malloc(3 * sizeof(char *));
-	if (!palabra)
+	a.i = 0;
+	a.size = 0;
+	a.ini = 0;
+	a.palabra = (char **)malloc((num_words(s, c) + 1) * sizeof(char *));
+	if (!a.palabra)
 		return (NULL);
-	palabra[0] = (char *)malloc((pos + 1) * sizeof(char));
-	if (!palabra[0])
-		return (free_memory(palabra, 0), NULL);
-	palabra[1] = (char *)malloc((len - pos) * sizeof(char));
-	if (!palabra[1])
-		return (free_memory(palabra, 1), NULL);
-	fill_word(palabra[0], s, 0, pos);
-	fill_word(palabra[1], s, pos + 1, len);
-	palabra[2] = NULL;
-	return (palabra);
-}
-
-char	**ft_split(const char *s, char c)
-{
-	int pos;
-	int len;
-
-	len = 0;
-	while (s[len])
-		len++;
-	pos = find_first_delimiter(s, c);
-	if (pos >= len) {
-		return NULL;
+	while (a.i < num_words(s, c))
+	{
+		a.pos = find_pos((char *)s, c, &a.size, &a.ini);
+		a.palabra[a.i] = (char *)malloc((a.size + 1) * sizeof(char));
+		if (!a.palabra[a.i])
+		{
+			ft_free_split(a.palabra);
+			return (NULL);
+		}
+		a.palabra[a.i] = fill_word(a.palabra[a.i], (char *)s, a.ini, a.pos);
+		a.i++;
 	}
-	return (allocate_and_fill(s, pos, len));
+	a.palabra[a.i] = NULL;
+	return (a.palabra);
 }
