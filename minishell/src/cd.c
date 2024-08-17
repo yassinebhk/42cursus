@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:23:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 16:02:36 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:42:00 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,34 @@ static int	move_to_path(char *new_dir, t_env *env, char *old_dir)
 	return (0);
 }
 
+static char	*get_parent(char *dir)
+{
+	int		i;
+	int		slash;
+	char	*path;
+
+	i = -1;
+	while (dir[++i])
+	{
+		if (dir[i] == '/' && dir[i + 1])
+			slash = i;
+	}
+	path = (char *)malloc((slash + 1) * sizeof(char));
+	if (!path)
+		return (NULL);
+	if (slash == 0)
+	{
+		path[0] = '/';
+		path[1] = '\0';
+		return (path);
+	}
+	i = -1;
+	while (++i < slash)
+		path[i] = dir[i];
+	path[i] = '\0';
+	return (path);
+}
+
 int	cd(char **str, int pos, int num_words, t_env *env)
 {
 	char	*old_dir;
@@ -73,7 +101,7 @@ int	cd(char **str, int pos, int num_words, t_env *env)
 	}
 	else if (!ft_strcmp(str[pos + 1], "..\0"))
 	{
-		new_dir = get_env(env, "OLDPWD\0");
+		new_dir = get_parent(old_dir);
 		chdir(new_dir);
 		update_dirs(env, old_dir, new_dir);
 	}
@@ -81,6 +109,6 @@ int	cd(char **str, int pos, int num_words, t_env *env)
 		;
 	else
 		return (move_to_path(str[pos + 1], env, old_dir));
-	print_listt(env);
+	// print_listt(env);
 	return (0);
 }

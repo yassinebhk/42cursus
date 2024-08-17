@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 15:49:15 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:04:43 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,6 @@ int	export(char *str, int pos)
 	(void)pos;
 	return (0);
 }
-
-// int	pwd(char **str, int pos, int num_words, char **env)
-// {
-
-// 	return (0);
-// }
 
 int	main(int argc, char **argv, char **environment)
 {

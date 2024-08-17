@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:16:58 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 15:50:22 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:13:35 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	find_built(char **str, int num_words, t_env *env)
 		return (echo(str, 0, num_words));
 	else if (!ft_strcmp(str[0], "cd"))
 		return (cd(str, 0, num_words, env));
-	// else if (!ft_strcmp(str[0], "pwd"))
-	// 	return (pwd(str, 0, lst_size, env));
+	else if (!ft_strcmp(str[0], "pwd"))
+		return (pwd(env));
 	// else if (!ft_strcmp(str[0], "export"))
 	// 	return (export(str[0], 0));
 	// else if (!ft_strcmp(str[0], "unset"))

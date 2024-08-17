@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 14:35:02 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 16:13:32 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,14 @@ void				free_args(char *line, t_env *env, int len);
 t_env				*get_var(char **environment);
 
 /**
+ * @brief Gets the arg of the environment variable key
+ * @param env The environment variables list
+ * @param key The environment varaible key
+ * @returns The argument
+ */
+char				*get_env(t_env *env, char *key);
+
+/**
  * @brief Calculates the lent of the environment list
  * @param environment The environment variables
  * @returns The len list
@@ -126,7 +134,7 @@ void				set_dirs(t_env **env, char *curr_dir, char *old_dir);
 int					find_built(char **str, int num_words, t_env *env);
 
 /**
- * @brief Execute the echo function
+ * @brief Execute the echo command
  * @param str The array of strings splited by spaces
  * @param pos The init pos in str
  * @param num_words The number of words of str
@@ -135,7 +143,7 @@ int					find_built(char **str, int num_words, t_env *env);
 int					echo(char **str, int pos, int num_words);
 
 /**
- * @brief Execute the cd function
+ * @brief Execute the cd command
  * @param str The array of strings splited by spaces
  * @param pos The init pos in str
  * @param num_words The number of words of str
@@ -143,3 +151,11 @@ int					echo(char **str, int pos, int num_words);
  * @returns 1 if it occurs an error. Otherwise 0.
  */
 int					cd(char **str, int pos, int num_words, t_env *env);
+
+/**
+ * @brief Execute the pwd command
+ * @param str The array of strings splited by spaces
+ * @param env The len list of env
+ * @returns 1 if it occurs an error. Otherwise 0.
+ */
+int					pwd(t_env *env);
