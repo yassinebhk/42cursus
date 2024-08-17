@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:08:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 15:33:28 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 18:16:38 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,12 @@ int	find_node(t_env *env, char *key)
 	return (1);
 }
 
-// int	find_node(t_env *env, char *key)
-// {
-// 	int	pos;
-// 	int	len;
-
-// 	pos = -1;
-// 	len = ft_lst_size(env);
-// 	while (++pos < len)
-// 	{
-// 		printf("\n%d %d %s %s \n", ft_lst_size(env), ft_strcmp(env[pos].key, key), env[pos].key, key);
-// 		if (!ft_strcmp(env[pos].key, key))
-// 			return (0);
-// 		printf("\n %d %d\n", pos + 1, len);
-// 	}
-// 	return (1);
-// }
-
-void	set_dirs(t_env **env, char *curr, char *old)
+void	set_dirs_env(t_env **env, char *curr, char *old)
 {
 	t_env	*curr_dir;
 	t_env	*old_dir;
 
-	curr_dir = ft_new_node("PWD\0", curr);
+	curr_dir = ft_new_node("PWD\0", curr, 0);
 	if (!curr_dir)
 	{
 		perror("malloc failed");
@@ -63,7 +46,7 @@ void	set_dirs(t_env **env, char *curr, char *old)
 	}
 	if (find_node(*env, "PWD\0"))
 		ft_add_back(env, curr_dir);
-	old_dir = ft_new_node("OLDPWD\0", old);
+	old_dir = ft_new_node("OLDPWD\0", old, 0);
 	if (!old_dir)
 	{
 		perror("malloc failed");
@@ -73,33 +56,48 @@ void	set_dirs(t_env **env, char *curr, char *old)
 		ft_add_back(env, old_dir);
 }
 
-void	print_list(t_env *env)
+void	set_dirs_exp(t_env **exp, char *curr, char *old)
 {
-	while (env)
+	t_env	*curr_dir;
+	t_env	*old_dir;
+
+	curr_dir = ft_new_node("declare -x PWD\0", curr, 0);
+	if (!curr_dir)
 	{
-		printf("%s | %s | %p\n", env->key, env->var, (void *)env->next);
-		env = env->next;
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
 	}
-	printf("\n---------------------------------\n\n\n\n");
+	if (find_node(*exp, "declare -x PWD\0"))
+		ft_add_back(exp, curr_dir);
+	old_dir = ft_new_node("declare -x OLDPWD\0", old, 0);
+	if (!old_dir)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
+	if (find_node(*exp, "declare -x OLDPWD\0"))
+		ft_add_back(exp, old_dir);
 }
 
-t_env	*get_var(char **environment)
+t_env	*get_var(char **environment, int flag)
 {
 	int		pos;
 	t_env	*env;
-	t_env	*new_node;
 	char	**split;
+	t_env	*new_node;
 
 	pos = -1;
 	env = NULL;
 	while (++pos < len_env(environment))
 	{
 		split = ft_split_mod(environment[pos], '=');
-		new_node = ft_new_node(split[0], split[1]);
+		new_node = ft_new_node(split[0], split[1], flag);
 		ft_add_back(&env, new_node);
 		ft_free(split);
 	}
-	set_dirs(&env, getcwd(NULL, 0), getcwd(NULL, 0));
-	print_list(env);
+	if (!flag)
+		set_dirs_env(&env, getcwd(NULL, 0), getcwd(NULL, 0));
+	else
+		set_dirs_exp(&env, getcwd(NULL, 0), getcwd(NULL, 0));
 	return (env);
 }

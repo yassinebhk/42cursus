@@ -6,49 +6,23 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 16:04:43 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 17:50:39 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_exit(char *str, int pos)
-{
-	(void)str;
-	(void)pos;
-	return (1);
-}
-
-int	ft_env(char *str, int pos)
-{
-	(void)str;
-	(void)pos;
-	return (1);
-}
-
-int	unset(char *str, int pos)
-{
-	(void)str;
-	(void)pos;
-	return (1);
-}
-
-int	export(char *str, int pos)
-{
-	(void)str;
-	(void)pos;
-	return (0);
-}
-
 int	main(int argc, char **argv, char **environment)
 {
 	t_env	*env;
+	t_env	*exp;
 	char	*line;
 	char	**split;
 
 	(void)argc;
 	(void)argv;
-	env = get_var(environment);
+	env = get_var(environment, 0);
+	exp = get_var(environment, 1);
 	while (1)
 	{
 		line = readline("$ ");
@@ -57,10 +31,10 @@ int	main(int argc, char **argv, char **environment)
 		else
 		{
 			split = ft_split(line, ' ');
-			find_built(split, num_words(line, ' '), env);
+			find_built(split, num_words(line, ' '), env, exp);
 			free(split);
 		}
 	}
-	free_args(line, env, len_env(environment));
+	free_args(line, env, exp);
 	return (0);
 }

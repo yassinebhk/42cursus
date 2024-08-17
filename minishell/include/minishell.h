@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 16:13:32 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/17 20:49:48 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ int					ft_lst_size(t_env *env);
  * @brief Create a new node
  * @param key The key of the new node
  * @param arg The arg of the new node
+* @param flag if flag is 0 return (the environment variables node); otherwise,
+		the export node
  * @returns The new node
  */
-t_env				*ft_new_node(char *key, char *arg);
+t_env				*ft_new_node(char *key, char *arg, int flag);
 
 /**
  * @brief Add a new node to the environment variables list
@@ -69,6 +71,15 @@ void				ft_add_back(t_env **lst, t_env *new);
  */
 t_env				*ft_last(t_env *lst);
 
+/**
+ * @brief Carry out the cd routine
+ * @param str The string
+ * @param num_words The num of words of str
+ * @param t_env The environment variables list
+ * @returns The last node
+ */
+int					cd_exp(char **str, int num_words, t_env *lst);
+
 /***************************************
 					free
 ***************************************/
@@ -83,9 +94,10 @@ void				ft_free(char **str);
  * @brief Free the params of the program
  * @param line The line
  * @param env The environment variables list
+ * @param exp The export variables list
  * @param len The len list
  */
-void				free_args(char *line, t_env *env, int len);
+void				free_args(char *line, t_env *env, t_env *exp);
 
 /***************************************
 			environment variables
@@ -94,9 +106,11 @@ void				free_args(char *line, t_env *env, int len);
 /**
  * @brief Initializates the list of environment variables in a t_env struct
  * @param environment The environment variables
+ * @param flag if flag is 0 return (the environment variables list); otherwise,
+	the export list
  * @returns The list of environment variables
  */
-t_env				*get_var(char **environment);
+t_env				*get_var(char **environment, int flag);
 
 /**
  * @brief Gets the arg of the environment variable key
@@ -107,18 +121,51 @@ t_env				*get_var(char **environment);
 char				*get_env(t_env *env, char *key);
 
 /**
- * @brief Calculates the lent of the environment list
+ * @brief Gets the arg of the environment variable key
+ * @param exp The export variables list
+ * @param key The environment varaible key
+ * @returns The argument
+ */
+char				*get_exp(t_env *exp, char *key);
+
+/**
+ * @brief Calculates the length of the environment list
  * @param environment The environment variables
  * @returns The len list
  */
 int					len_env(char **environment);
 
 /**
+ * @brief Calculates the number of "=" in the str
+ * @param str The string
+ * @returns The numer of character after the "=", included himself
+ */
+int					find_eq(char *str);
+
+/**
  * @brief Update the current and old dir
  * @param env The environment list
+ * @param curr_dir The current dir
+ * @param old_dir The old dir
  * @returns The len list
  */
-void				set_dirs(t_env **env, char *curr_dir, char *old_dir);
+void				update_dirs_env(t_env *env, char *old_dir, char *new_dir);
+
+/**
+ * @brief Update the current and old dir
+ * @param exp The export variables list
+ * @param curr_dir The current dir
+ * @param old_dir The old dir
+ * @returns The len list
+ */
+void				update_dirs_env(t_env *exp, char *old_dir, char *new_dir);
+
+/**
+ * @brief Gets the parent of the current directory
+ * @param dir The current directory
+ * @returns The path
+ */
+char				*get_parent(char *dir);
 
 /***************************************
 				builts
@@ -129,9 +176,11 @@ void				set_dirs(t_env **env, char *curr_dir, char *old_dir);
  * @param str The array of strings splited by spaces
  * @param num_words The number of words of str
  * @param env The len list of env
+ * @param exp The export variables list
  * @returns The len list
  */
-int					find_built(char **str, int num_words, t_env *env);
+int					find_built(char **str, int num_words, t_env *env,
+						t_env *exp);
 
 /**
  * @brief Execute the echo command
@@ -145,12 +194,12 @@ int					echo(char **str, int pos, int num_words);
 /**
  * @brief Execute the cd command
  * @param str The array of strings splited by spaces
- * @param pos The init pos in str
  * @param num_words The number of words of str
  * @param env The len list of env
+ * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					cd(char **str, int pos, int num_words, t_env *env);
+int					cd(char **str, int num_words, t_env *env, t_env *exp);
 
 /**
  * @brief Execute the pwd command
@@ -159,3 +208,23 @@ int					cd(char **str, int pos, int num_words, t_env *env);
  * @returns 1 if it occurs an error. Otherwise 0.
  */
 int					pwd(t_env *env);
+
+/**
+ * @brief Execute the export command
+ * @param str The array of strings splited by spaces
+ * @param num_words The number of words of str
+ * @param env The len list of env
+ * @param exp The export variables list
+ * @returns 1 if it occurs an error. Otherwise 0.
+ */
+int					export(char **str, int num_words, t_env *env, t_env *exp);
+
+/**
+ * @brief Execute the unset command
+ * @param str The array of strings splited by spaces
+ * @param num_words The number of words of str
+ * @param env The len list of env
+ * @param exp The export variables list
+ * @returns 1 if it occurs an error. Otherwise 0.
+ */
+int					unset(char **str, int num_words, t_env *env, t_env *exp);
