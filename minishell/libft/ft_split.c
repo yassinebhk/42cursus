@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 19:04:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 12:03:30 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/18 19:04:08 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*fill_word(char *palabra, char *s, int ini, int pos)
 }
 
 static int	find_pos(char *palabra, char c, int *size, int *ini)
-{	
+{
 	int	i;
 
 	i = *ini + *size;

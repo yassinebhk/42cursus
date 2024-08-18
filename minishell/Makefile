@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 14:45:07 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/18 16:33:17 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/18 20:57:13 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ RED		= \033[31;1m
 NAME				:= minishell
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror -Iinclude -Ilibft #-fsanitize=address
-SRCS 				:= src/main.c src/env_vars.c src/builts.c src/echo.c src/cd_env.c src/cd_exp.c src/free.c src/list_utils.c src/pwd.c src/export.c src/unset.c src/env.c
+SRCS 				:= src/main.c src/env_vars.c src/builts.c src/echo.c src/cd.c src/free.c src/list_utils.c src/pwd.c src/export.c src/unset.c src/print_lists.c src/export_two.c
 OBJS 				:=$(SRCS:.c=.o)
 INCL				:= include/minishell.h
 

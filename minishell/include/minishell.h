@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 16:36:36 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/18 20:20:14 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ t_env				*ft_last(t_env *lst);
  * @param str The string
  * @param num_words The num of words of str
  * @param t_env The environment variables list
+ * @param old_dir The current directory before make cd
  * @returns The last node
  */
-int					cd_exp(char **str, int num_words, t_env *lst);
+int					cd_exp(char **str, int num_words, t_env *lst, char *old_dir);
 
 /***************************************
 					free
@@ -172,6 +173,22 @@ char				*get_parent(char *dir);
  * @param exp The export list
  */
 void				print_export_list(t_env *exp);
+
+/**
+ * @brief Deletes the '=' character of the string
+ * @param str The string
+ * @returns The modified string
+ */
+char				*rm_eq(char *str);
+
+/**
+ * @brief Checks if exist the str variable
+ * @param str The string
+ * @param env The len list of env
+ * @param exp The export variables list
+ * @returns 0
+ */
+int					exist_var(char *str, t_env *env, t_env *exp);
 
 /***************************************
 				builts

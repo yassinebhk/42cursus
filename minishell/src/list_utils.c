@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:29:16 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 19:21:48 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/18 19:03:32 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_env	*ft_new_node(char *key, char *arg, int flag)
 		if (!arg)
 			node->var = NULL;
 		else
-			node->var = ft_strjoin("\"", ft_strjoin(ft_strdup(arg),  "\""));
+			node->var = ft_strjoin("\"", ft_strjoin(ft_strdup(arg), "\""));
 	}
 	return (node);
 }
