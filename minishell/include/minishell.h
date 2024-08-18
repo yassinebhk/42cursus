@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 20:49:48 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:36:36 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,12 @@ void				update_dirs_env(t_env *exp, char *old_dir, char *new_dir);
  */
 char				*get_parent(char *dir);
 
+/**
+ * @brief Prints the export list
+ * @param exp The export list
+ */
+void				print_export_list(t_env *exp);
+
 /***************************************
 				builts
 ***************************************/
@@ -228,3 +234,11 @@ int					export(char **str, int num_words, t_env *env, t_env *exp);
  * @returns 1 if it occurs an error. Otherwise 0.
  */
 int					unset(char **str, int num_words, t_env *env, t_env *exp);
+
+/**
+ * @brief Execute the unset command
+ * @param str The array of strings splited by spaces
+ * @param env The len list of env
+ * @returns 1 if it occurs an error. Otherwise 0.
+ */
+int					ft_env(t_env *env);
