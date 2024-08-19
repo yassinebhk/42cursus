@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:10:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 17:59:08 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:53:35 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 			(*env) = (*env)->next;
 		tmp = (*env)->next;
 		(*env)->next = (*env)->next->next;
+		free(tmp->key);
+		if (tmp->var)
+			free(tmp->var);
 		free(tmp);
 	}
 	aux = ft_strjoin("declare -x ", str);
@@ -51,6 +54,9 @@ void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 		(*exp) = (*exp)->next;
 	tmp = (*exp)->next;
 	(*exp)->next = (*exp)->next->next;
+	free(tmp->key);
+	if (tmp->var)
+		free(tmp->var);
 	free(tmp);
 	free(aux);
 }

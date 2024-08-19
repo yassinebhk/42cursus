@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 21:23:10 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:09:19 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void				ft_free(char **str);
  * @param exp The export variables list
  * @param len The len list
  */
-void				free_args(char *line, t_env *env, t_env *exp);
+void				free_args(t_env *env, t_env *exp);
 
 /***************************************
 			environment variables

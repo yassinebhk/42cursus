@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:52:41 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 17:39:49 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:20:54 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,20 @@
 
 static void	update_var(char **split, t_env *env, int flag)
 {
+	char *tmp;
+	
 	while (env)
 	{
+		tmp = ft_strjoin("declare -x ", split[0]);
 		if (!ft_strcmp(env->key, split[0]) && !flag)
 			env->var = ft_strdup(split[1]);
-		else if (!ft_strcmp(env->key, ft_strjoin("declare -x ",
-					ft_strdup(split[0]))))
-			env->var = ft_strjoin("\"", ft_strjoin(ft_strdup(split[1]), "\""));
+		else if (!ft_strcmp(env->key, tmp))
+		{
+			free(tmp);
+			tmp = ft_strjoin(split[1], "\"");
+			env->var = ft_strjoin("\"", tmp);
+		}
+		free(tmp);
 		env = env->next;
 	}
 }
@@ -68,6 +75,7 @@ static int	set_var_two(char *str, t_env *env, int flag)
 		str = rm_eq(str);
 		new_node = ft_new_node(str, "", flag);
 		ft_add_back(&env, new_node);
+		free(str);
 	}
 	else
 	{

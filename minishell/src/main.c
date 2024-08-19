@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 17:28:37 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/19 19:09:36 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ int	main(int argc, char **argv, char **environment)
 		}
 		free(line);
 	}
-	free_args(line, env, exp);
+	free_args(env, exp);
 	return (0);
 }
