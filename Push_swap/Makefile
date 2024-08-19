@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/27 12:09:53 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/07/26 22:04:02 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/14 16:38:35 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,6 @@ $(NAME):$(OBJS)
 	@echo "$(MAGENTA)$(ITALIC)Push-swap compiled!$(RESET)"
 
 clean:
-	@rm -f $(FDF_OBJS)
 	@echo "$(YELLOW)Cleaning...$(RESET)"
 	@$(MAKE) -C libft clean
 	@rm -f src/*.o
