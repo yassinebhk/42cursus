@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:52:41 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 22:15:09 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:37:02 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@ static void	update_var(char **split, t_env *env, int flag)
 	{
 		tmp = ft_strjoin("declare -x ", split[0]);
 		if (!ft_strcmp(env->key, split[0]) && !flag)
+		{
+			free(env->var);
 			env->var = ft_strdup(split[1]);
+		}
 		else if (!ft_strcmp(env->key, tmp))
 		{
 			free(tmp);
 			tmp = ft_strjoin(split[1], "\"");
+			free(env->var);
 			env->var = ft_strjoin("\"", tmp);
 		}
 		free(tmp);
