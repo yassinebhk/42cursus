@@ -1,5 +1,6 @@
 git checkout main
 git pull origin main
+git merge main
 git checkout -b yassine
 git branch
 git add .
