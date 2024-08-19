@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:10:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 21:42:13 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 23:29:50 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	check_var(char *str, t_env *env, t_env *exp)
 {
+	char	*tmp;
+
 	while (env)
 	{
 		if (!ft_strcmp(env->key, str))
@@ -22,16 +24,19 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	}
 	while (exp)
 	{
-		if (!ft_strcmp(exp->key, ft_strjoin("declare -x ", str)))
-			return (2);
+		tmp = ft_strjoin("declare -x ", str);
+		if (!ft_strcmp(exp->key, tmp))
+			return (free(tmp), 2);
 		exp = exp->next;
+		free(tmp);
 	}
 	return (0);
 }
-
+/*
 void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 {
 	t_env	*tmp;
+	char	*aux;
 
 	if (!flag)
 	{
@@ -44,15 +49,88 @@ void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 			free(tmp->var);
 		free(tmp);
 	}
-	while (ft_strcmp((*exp)->next->key, ft_strjoin("declare -x ", str)))
+	aux = ft_strjoin("declare -x ", str);
+	while (ft_strcmp((*exp)->next->key, aux))
+	{
+		printf("\nAntes:   %s|%s|%s|%s", aux, (*exp)->key, (*exp)->next->key, (*exp)->next->next->key);
 		(*exp) = (*exp)->next;
+		printf("\nDespues: %s|%s|%s", aux, (*exp)->key, (*exp)->next->key);
+	}
 	tmp = (*exp)->next;
 	(*exp)->next = (*exp)->next->next;
 	free(tmp->key);
 	if (tmp->var)
 		free(tmp->var);
 	free(tmp);
+	free(aux);
 }
+*/
+
+void	delete_var(char *str, t_env **env, t_env **exp, int flag)
+{
+	t_env	tmp;
+	t_env	*aux;
+	t_env	*curr;
+	
+	char	*key;
+
+	tmp.next = *env;
+	curr = &tmp;
+	if (!flag)
+	{
+		while (curr->next)
+		{
+			if (ft_strcmp(curr->next->key, str) == 0)
+			{
+				free(curr->next->key);
+				free(curr->next->var);
+				aux = curr->next->next;
+				free(curr->next);
+				curr->next = aux;
+				break;
+			}
+			curr = curr->next;
+		}
+	}
+	*env = tmp.next;
+	tmp.next = *exp;
+	curr = &tmp;
+	key = ft_strjoin("declare -x ", str);
+	while (curr->next)
+	{
+		if (ft_strcmp(curr->next->key, key) == 0)
+		{
+			free(curr->next->key);
+			free(curr->next->var);
+			aux = curr->next->next;
+			free(curr->next);
+			curr->next = aux;
+			break;
+		}
+		curr = curr->next;
+	}
+	free(key);
+	*exp = tmp.next;
+}
+
+//Arreglar leaks cuando reasigno valores a la vbles y reescribir la funcion anteior
+
+/*
+struct ListNode* removeElements(struct ListNode* head, int val) {
+    struct ListNode temp;
+    temp->next = head;
+
+    struct ListNode *curr = temp;
+    while(curr->next != NULL){
+        if(curr->next->val == val)
+            curr->next = curr->next->next;
+            free();
+            return;
+        curr = curr->next;
+    }
+    return temp->next;
+}
+*/
 
 char	*add_eq(char *str)
 {

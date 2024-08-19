@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:52:41 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 21:40:13 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:15:09 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	exist_var(char *str, t_env *env, t_env *exp)
 	split = ft_split_mod(str, '=');
 	var = find_var(split[0], env, exp);
 	if (!var)
-		return (1);
+		return (ft_free(split), 1);
 	else if (var == 1)
 	{
 		if (split[1])
