@@ -6,16 +6,19 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 21:23:10 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:55:17 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# include "libft.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <unistd.h>
 
 typedef enum e_builtins
 {
@@ -34,6 +37,8 @@ typedef struct s_env
 	char			*var;
 	struct s_env	*next;
 }					t_env;
+
+# define COMMAND_NOT_FOUND 127 
 
 /***************************************
 				list utils
@@ -266,3 +271,15 @@ int					ft_env(t_env *env);
  * @returns 42
  */
 int					ft_exit();
+
+/***************************************
+		print_command_not_found
+***************************************/
+
+/**
+ * @brief Print error caused by command not found
+ */
+
+void print_command_not_found(char *command);
+
+#endif

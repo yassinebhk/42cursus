@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:16:58 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 21:22:32 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:44:15 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ int	find_built(char **str, int num_words, t_env *env, t_env *exp)
 		return (ft_env(env));
 	else if (!ft_strcmp(str[0], "exit"))
 		return (ft_exit());
+	else
+		return (COMMAND_NOT_FOUND);
 	return (0);
 }
