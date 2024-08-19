@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:10:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 19:02:20 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:59:08 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	check_var(char *str, t_env *env, t_env *exp)
 {
+	char	*tmp;
+
 	while (env)
 	{
 		if (!ft_strcmp(env->key, str))
@@ -22,9 +24,11 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	}
 	while (exp)
 	{
-		if (!ft_strcmp(exp->key, ft_strjoin("declare -x ", str)))
-			return (2);
+		tmp = ft_strjoin("declare -x ", str);
+		if (!ft_strcmp(exp->key, tmp))
+			return (free(tmp), 2);
 		exp = exp->next;
+		free(tmp);
 	}
 	return (0);
 }
@@ -32,6 +36,7 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 {
 	t_env	*tmp;
+	char	*aux;
 
 	if (!flag)
 	{
@@ -41,11 +46,13 @@ void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 		(*env)->next = (*env)->next->next;
 		free(tmp);
 	}
-	while (ft_strcmp((*exp)->next->key, ft_strjoin("declare -x ", str)))
+	aux = ft_strjoin("declare -x ", str);
+	while (ft_strcmp((*exp)->next->key, aux))
 		(*exp) = (*exp)->next;
 	tmp = (*exp)->next;
 	(*exp)->next = (*exp)->next->next;
 	free(tmp);
+	free(aux);
 }
 
 char	*add_eq(char *str)
