@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 21:55:06 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:59:18 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)), 
 		}
 		free(line);
 	}
-	free_args(line, env, exp);
 	rl_clear_history();
 	free_args(env, exp);
 	return (0);
