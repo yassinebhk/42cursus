@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:44:14 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 16:38:15 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:19:37 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*rm_eq(char *str)
 	while (++pos < ((int)ft_strlen(str)) - 1)
 		rmv[pos] = str[pos];
 	rmv[pos] = '\0';
-	free(str);
 	return (rmv);
 }
 
@@ -64,6 +63,7 @@ static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 		ft_add_back(&exp, new_node);
 		new_node = ft_new_node(str, "", 0);
 		ft_add_back(&env, new_node);
+		free(str);
 	}
 	else
 	{

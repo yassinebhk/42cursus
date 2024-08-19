@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:10:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 19:02:20 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:42:13 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,18 @@ void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 			(*env) = (*env)->next;
 		tmp = (*env)->next;
 		(*env)->next = (*env)->next->next;
+		free(tmp->key);
+		if (tmp->var)
+			free(tmp->var);
 		free(tmp);
 	}
 	while (ft_strcmp((*exp)->next->key, ft_strjoin("declare -x ", str)))
 		(*exp) = (*exp)->next;
 	tmp = (*exp)->next;
 	(*exp)->next = (*exp)->next->next;
+	free(tmp->key);
+	if (tmp->var)
+		free(tmp->var);
 	free(tmp);
 }
 
