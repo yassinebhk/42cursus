@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 19:09:36 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 21:27:38 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	main(int argc, char **argv, char **environment)
 		{
 			split = ft_split(line, ' ');
 			status = find_built(split, num_words(line, ' '), env, exp);
+			if (status == COMMAND_NOT_FOUND)
+				print_command_not_found(split[0]);
 			ft_free(split);
 		}
 		free(line);
