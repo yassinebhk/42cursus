@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 14:45:07 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/19 18:16:04 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/19 18:42:42 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ RED		= \033[31;1m
 NAME				:= minishell
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror -Iinclude -Ilibft -fsanitize=address
-SRCS 				:= src/main.c src/env_vars.c src/builts.c src/echo.c src/cd.c src/free.c src/list_utils.c src/pwd.c src/export.c src/unset.c src/print_lists.c src/export_two.c src/exit.c
+SRCS 				:= src/main.c src/print_command_not_found.c src/env_vars.c src/builts.c src/echo.c src/cd.c src/free.c src/list_utils.c src/pwd.c src/export.c src/unset.c src/print_lists.c src/export_two.c src/exit.c
 OBJS 				:=$(SRCS:.c=.o)
 INCL				:= include/minishell.h
 
@@ -42,8 +42,6 @@ $(NAME):$(OBJS)
 	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS) libft.a $(CYAN) to $(YELLOW)$(ITALIC) $(NAME)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@setarch `uname -m` -R /bin/zsh
-	@setarch `uname -m` -R /bin/bash
 	@$(cc) $(flags) $(OBJS) libft.a -lreadline -o $(NAME)
 	@echo "$(MAGENTA)$(ITALIC) minishell compiled!$(RESET)"
 
