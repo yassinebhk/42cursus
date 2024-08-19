@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:29:16 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 19:03:32 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:14:20 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_add_back(t_env **lst, t_env *new)
 t_env	*ft_new_node(char *key, char *arg, int flag)
 {
 	t_env	*node;
+	char	*tmp;
 
 	node = (t_env *)malloc(sizeof(t_env));
 	node->next = NULL;
@@ -56,11 +57,13 @@ t_env	*ft_new_node(char *key, char *arg, int flag)
 	}
 	else
 	{
-		node->key = ft_strjoin("declare -x ", ft_strdup(key));
+		tmp = ft_strjoin(arg, "\"");
+		node->key = ft_strjoin("declare -x ", key);
 		if (!arg)
 			node->var = NULL;
 		else
-			node->var = ft_strjoin("\"", ft_strjoin(ft_strdup(arg), "\""));
+			node->var = ft_strjoin("\"", tmp);
+		free(tmp);
 	}
 	return (node);
 }

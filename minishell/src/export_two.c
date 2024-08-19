@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:52:41 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 19:00:50 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:50:32 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void	update_var(char **split, t_env *env, int flag)
 
 static int	find_var(char *str, t_env *env, t_env *exp)
 {
-	int	flag;
+	int		flag;
+	char	*tmp;
 
 	flag = 0;
 	while (env)
@@ -38,7 +39,8 @@ static int	find_var(char *str, t_env *env, t_env *exp)
 	}
 	while (exp)
 	{
-		if (!ft_strcmp(exp->key, ft_strjoin("declare -x ", str)))
+		tmp = ft_strjoin("declare -x ", str);
+		if (!ft_strcmp(exp->key, tmp))
 		{
 			if (!flag)
 				flag = 2;
@@ -46,6 +48,7 @@ static int	find_var(char *str, t_env *env, t_env *exp)
 				flag = 3;
 		}
 		exp = exp->next;
+		free(tmp);
 	}
 	return (flag);
 }

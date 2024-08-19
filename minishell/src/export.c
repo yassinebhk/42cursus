@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:44:14 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 19:00:58 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:38:15 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 	char	**split;
 
 	if (!flag)
-		ft_add_back(&exp, ft_new_node(str, NULL, 1));
+	{
+		new_node = ft_new_node(str, NULL, 1);
+		ft_add_back(&exp, new_node);
+	}
 	else if (flag == 1)
 	{
 		str = rm_eq(str);

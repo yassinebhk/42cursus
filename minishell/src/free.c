@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:14:05 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 17:26:40 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:24:18 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,25 @@ void	ft_free(char **str)
 
 void	free_args(char *line, t_env *env, t_env *exp)
 {
-	free(line);
+	t_env	*tmp;
+
+	(void)line;
 	while (env)
 	{
+		tmp = env->next;
 		free(env->key);
 		if (env->var)
 			free(env->var);
-		env = env->next;
+		free(env);
+		env = tmp;
 	}
-	free(env);
 	while (exp)
 	{
+		tmp = exp->next;
 		free(exp->key);
 		if (exp->var)
 			free(exp->var);
-		exp = exp->next;
+		free(exp);
+		exp = tmp;
 	}
-	free(exp);
 }

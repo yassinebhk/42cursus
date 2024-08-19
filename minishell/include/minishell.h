@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 20:20:14 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:23:10 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ t_env				*ft_last(t_env *lst);
  * @param old_dir The current directory before make cd
  * @returns The last node
  */
-int					cd_exp(char **str, int num_words, t_env *lst, char *old_dir);
+int					cd_exp(char **str, int num_words, t_env *lst,
+						char *old_dir);
 
 /***************************************
 					free
@@ -259,3 +260,9 @@ int					unset(char **str, int num_words, t_env *env, t_env *exp);
  * @returns 1 if it occurs an error. Otherwise 0.
  */
 int					ft_env(t_env *env);
+
+/**
+ * @brief Execute the unset exit
+ * @returns 42
+ */
+int					ft_exit();

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:08:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 18:16:38 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:30:23 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,51 +32,128 @@ int	find_node(t_env *env, char *key)
 	}
 	return (1);
 }
-
 void	set_dirs_env(t_env **env, char *curr, char *old)
 {
 	t_env	*curr_dir;
 	t_env	*old_dir;
 
-	curr_dir = ft_new_node("PWD\0", curr, 0);
-	if (!curr_dir)
-	{
-		perror("malloc failed");
-		exit(EXIT_FAILURE);
-	}
 	if (find_node(*env, "PWD\0"))
-		ft_add_back(env, curr_dir);
-	old_dir = ft_new_node("OLDPWD\0", old, 0);
-	if (!old_dir)
 	{
-		perror("malloc failed");
-		exit(EXIT_FAILURE);
+		curr_dir = ft_new_node("PWD\0", curr, 0);
+		if (!curr_dir)
+		{
+			free(curr);
+			free(old);
+			perror("malloc failed");
+			exit(EXIT_FAILURE);
+		}
+		ft_add_back(env, curr_dir);
 	}
-	if (find_node(*env, "OLDPWD\0"))
+	else if (find_node(*env, "OLDPWD\0"))
+	{
+		old_dir = ft_new_node("OLDPWD\0", old, 0);
+		if (!old_dir)
+		{
+			free(curr);
+			free(old);
+			perror("malloc failed");
+			exit(EXIT_FAILURE);
+		}
 		ft_add_back(env, old_dir);
+	}
+	free(curr);
+	free(old);
 }
+
+// void	set_dirs_env(t_env **env, char *curr, char *old)
+// {
+// 	t_env	*curr_dir;
+// 	t_env	*old_dir;
+
+// 	curr_dir = ft_new_node("PWD\0", curr, 0);
+// 	if (!curr_dir)
+// 	{
+// 		free(curr);
+// 		free(old);
+// 		perror("malloc failed");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	if (find_node(*env, "PWD\0"))
+// 		ft_add_back(env, curr_dir);
+// 	old_dir = ft_new_node("OLDPWD\0", old, 0);
+// 	if (!old_dir)
+// 	{
+// 		free(curr);
+// 		free(old);
+// 		perror("malloc failed");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	if (find_node(*env, "OLDPWD\0"))
+// 		ft_add_back(env, old_dir);
+// 	free(curr);
+// 	free(old);
+// }
+
+// void	set_dirs_exp(t_env **exp, char *curr, char *old)
+// {
+// 	t_env	*curr_dir;
+// 	t_env	*old_dir;
+
+// 	curr_dir = ft_new_node("declare -x PWD\0", curr, 0);
+// 	if (!curr_dir)
+// 	{
+// 		perror("malloc failed");
+// 		free(curr);
+// 		free(old);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	if (find_node(*exp, "declare -x PWD\0"))
+// 		ft_add_back(exp, curr_dir);
+// 	old_dir = ft_new_node("declare -x OLDPWD\0", old, 0);
+// 	if (!old_dir)
+// 	{
+// 		perror("malloc failed");
+// 		free(curr);
+// 		free(old);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	if (find_node(*exp, "declare -x OLDPWD\0"))
+// 		ft_add_back(exp, old_dir);
+// 	free(curr);
+// 	free(old);
+// }
 
 void	set_dirs_exp(t_env **exp, char *curr, char *old)
 {
 	t_env	*curr_dir;
 	t_env	*old_dir;
 
-	curr_dir = ft_new_node("declare -x PWD\0", curr, 0);
-	if (!curr_dir)
-	{
-		perror("malloc failed");
-		exit(EXIT_FAILURE);
-	}
 	if (find_node(*exp, "declare -x PWD\0"))
-		ft_add_back(exp, curr_dir);
-	old_dir = ft_new_node("declare -x OLDPWD\0", old, 0);
-	if (!old_dir)
 	{
-		perror("malloc failed");
-		exit(EXIT_FAILURE);
+		curr_dir = ft_new_node("declare -x PWD\0", curr, 0);
+		if (!curr_dir)
+		{
+			free(curr);
+			free(old);
+			perror("malloc failed");
+			exit(EXIT_FAILURE);
+		}
+		ft_add_back(exp, curr_dir);
 	}
-	if (find_node(*exp, "declare -x OLDPWD\0"))
+	else if (find_node(*exp, "declare -x OLDPWD\0"))
+	{
+		old_dir = ft_new_node("declare -x OLDPWD\0", old, 0);
+		if (!old_dir)
+		{
+			free(curr);
+			free(old);
+			perror("malloc failed");
+			exit(EXIT_FAILURE);
+		}
 		ft_add_back(exp, old_dir);
+	}
+	free(curr);
+	free(old);
 }
 
 t_env	*get_var(char **environment, int flag)

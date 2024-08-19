@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 19:04:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/18 19:04:24 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:01:52 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	**ft_split_mod(const char *s, char c)
 		result[0] = (char *)malloc((len + 1) * sizeof(char));
 		if (!result[0])
 			return (free_memory(result, 1), NULL);
-				// Corrected to use free_memory
 		fill_word(result[0], s, 0, len);
 		result[1] = NULL;
 		return (result);
