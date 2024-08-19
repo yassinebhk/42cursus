@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 14:45:07 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/19 18:16:04 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/19 18:30:19 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,6 @@ $(NAME):$(OBJS)
 	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS) libft.a $(CYAN) to $(YELLOW)$(ITALIC) $(NAME)\n"
 	@make -C libft
 	@mv libft/libft.a .
-	@setarch `uname -m` -R /bin/zsh
-	@setarch `uname -m` -R /bin/bash
 	@$(cc) $(flags) $(OBJS) libft.a -lreadline -o $(NAME)
 	@echo "$(MAGENTA)$(ITALIC) minishell compiled!$(RESET)"
 
