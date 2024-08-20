@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:44:14 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 23:34:33 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:27:13 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,22 @@ char	*rm_eq(char *str)
 	return (rmv);
 }
 
-static int	set_var(char *str, t_env *exp, t_env *env, int flag)
+static void	set_var_and_value(char *str, t_env *exp, t_env *env)
 {
 	t_env	*new_node;
 	char	**split;
+
+	split = ft_split_mod(str, '=');
+	new_node = ft_new_node(split[0], split[1], 1);
+	ft_add_back(&exp, new_node);
+	new_node = ft_new_node(split[0], split[1], 0);
+	ft_add_back(&env, new_node);
+	ft_free(split);
+}
+
+static int	set_var(char *str, t_env *exp, t_env *env, int flag)
+{
+	t_env	*new_node;
 
 	if (!flag)
 	{
@@ -66,14 +78,7 @@ static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 		free(str);
 	}
 	else
-	{
-		split = ft_split_mod(str, '=');
-		new_node = ft_new_node(split[0], split[1], 1);
-		ft_add_back(&exp, new_node);
-		new_node = ft_new_node(split[0], split[1], 0);
-		ft_add_back(&env, new_node);
-		ft_free(split);
-	}
+		set_var_and_value(str, exp, env);
 	return (0);
 }
 

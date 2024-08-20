@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:52:41 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 23:37:02 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/20 12:39:01 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	update_var(char **split, t_env *env, int flag)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	while (env)
 	{
 		tmp = ft_strjoin("declare -x ", split[0]);

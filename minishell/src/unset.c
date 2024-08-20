@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:10:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 23:29:50 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:36:12 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,70 +32,15 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	}
 	return (0);
 }
-/*
-void	delete_var(char *str, t_env **env, t_env **exp, int flag)
-{
-	t_env	*tmp;
-	char	*aux;
 
-	if (!flag)
-	{
-		while (ft_strcmp((*env)->next->key, str))
-			(*env) = (*env)->next;
-		tmp = (*env)->next;
-		(*env)->next = (*env)->next->next;
-		free(tmp->key);
-		if (tmp->var)
-			free(tmp->var);
-		free(tmp);
-	}
-	aux = ft_strjoin("declare -x ", str);
-	while (ft_strcmp((*exp)->next->key, aux))
-	{
-		printf("\nAntes:   %s|%s|%s|%s", aux, (*exp)->key, (*exp)->next->key, (*exp)->next->next->key);
-		(*exp) = (*exp)->next;
-		printf("\nDespues: %s|%s|%s", aux, (*exp)->key, (*exp)->next->key);
-	}
-	tmp = (*exp)->next;
-	(*exp)->next = (*exp)->next->next;
-	free(tmp->key);
-	if (tmp->var)
-		free(tmp->var);
-	free(tmp);
-	free(aux);
-}
-*/
-
-void	delete_var(char *str, t_env **env, t_env **exp, int flag)
+static void	delete(char *key, t_env **list)
 {
 	t_env	tmp;
 	t_env	*aux;
 	t_env	*curr;
-	
-	char	*key;
 
-	tmp.next = *env;
+	tmp.next = *list;
 	curr = &tmp;
-	if (!flag)
-	{
-		while (curr->next)
-		{
-			if (ft_strcmp(curr->next->key, str) == 0)
-			{
-				free(curr->next->key);
-				free(curr->next->var);
-				aux = curr->next->next;
-				free(curr->next);
-				curr->next = aux;
-				break;
-			}
-			curr = curr->next;
-		}
-	}
-	*env = tmp.next;
-	tmp.next = *exp;
-	curr = &tmp;
-	key = ft_strjoin("declare -x ", str);
 	while (curr->next)
 	{
 		if (ft_strcmp(curr->next->key, key) == 0)
@@ -105,32 +50,23 @@ void	delete_var(char *str, t_env **env, t_env **exp, int flag)
 			aux = curr->next->next;
 			free(curr->next);
 			curr->next = aux;
-			break;
+			break ;
 		}
 		curr = curr->next;
 	}
+	*list = tmp.next;
+}
+
+void	delete_var(char *str, t_env **env, t_env **exp, int flag)
+{
+	char	*key;
+
+	if (!flag)
+		delete (str, env);
+	key = ft_strjoin("declare -x ", str);
+	delete (key, exp);
 	free(key);
-	*exp = tmp.next;
 }
-
-//Arreglar leaks cuando reasigno valores a la vbles y reescribir la funcion anteior
-
-/*
-struct ListNode* removeElements(struct ListNode* head, int val) {
-    struct ListNode temp;
-    temp->next = head;
-
-    struct ListNode *curr = temp;
-    while(curr->next != NULL){
-        if(curr->next->val == val)
-            curr->next = curr->next->next;
-            free();
-            return;
-        curr = curr->next;
-    }
-    return temp->next;
-}
-*/
 
 char	*add_eq(char *str)
 {

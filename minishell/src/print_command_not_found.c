@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   print_command_not_found.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:10:01 by maxgarci          #+#    #+#             */
-/*   Updated: 2024/08/19 18:55:54 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:20:17 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_command_not_found(char *command)
+void	print_command_not_found(char *command)
 {
 	ft_putstr_fd("command not found: ", 2);
 	ft_putstr_fd(command, 2);

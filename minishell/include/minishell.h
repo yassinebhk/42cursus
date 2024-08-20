@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 21:40:45 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/20 13:45:29 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-# define COMMAND_NOT_FOUND 127 
+# define COMMAND_NOT_FOUND 127
 
 /***************************************
 				list utils
@@ -75,17 +75,6 @@ void				ft_add_back(t_env **lst, t_env *new);
  * @returns The last node
  */
 t_env				*ft_last(t_env *lst);
-
-/**
- * @brief Carry out the cd routine
- * @param str The string
- * @param num_words The num of words of str
- * @param t_env The environment variables list
- * @param old_dir The current directory before make cd
- * @returns The last node
- */
-int					cd_exp(char **str, int num_words, t_env *lst,
-						char *old_dir);
 
 /***************************************
 					free
@@ -143,6 +132,13 @@ char				*get_exp(t_env *exp, char *key);
 int					len_env(char **environment);
 
 /**
+ * @brief CHeck if exists the node with the key variable
+ * @param key The key variable
+ * @returns 1 if exists. Otherwise, 0.
+ */
+int					find_node(t_env *env, char *key);
+
+/**
  * @brief Calculates the number of "=" in the str
  * @param str The string
  * @returns The numer of character after the "=", included himself
@@ -150,22 +146,15 @@ int					len_env(char **environment);
 int					find_eq(char *str);
 
 /**
- * @brief Update the current and old dir
- * @param env The environment list
+ * @brief Update the current and old dir of both lists
+ * @param env The env list
+ * @param exp The export list
  * @param curr_dir The current dir
  * @param old_dir The old dir
  * @returns The len list
  */
-void				update_dirs_env(t_env *env, char *old_dir, char *new_dir);
-
-/**
- * @brief Update the current and old dir
- * @param exp The export variables list
- * @param curr_dir The current dir
- * @param old_dir The old dir
- * @returns The len list
- */
-void				update_dirs_env(t_env *exp, char *old_dir, char *new_dir);
+void				update(t_env *env, t_env *exp, char *old_dir,
+						char *new_dir);
 
 /**
  * @brief Gets the parent of the current directory
@@ -270,7 +259,7 @@ int					ft_env(t_env *env);
  * @brief Execute the unset exit
  * @returns 42
  */
-int					ft_exit();
+int					ft_exit(void);
 
 /***************************************
 		print_command_not_found
@@ -280,6 +269,6 @@ int					ft_exit();
  * @brief Print error caused by command not found
  */
 
-void print_command_not_found(char *command);
+void				print_command_not_found(char *command);
 
 #endif

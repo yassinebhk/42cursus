@@ -1,19 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   list_utils_two.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/18 21:18:10 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/20 13:18:58 by ybouhaik         ###   ########.fr       */
+/*   Created: 2024/08/20 13:46:25 by ybouhaik          #+#    #+#             */
+/*   Updated: 2024/08/20 13:46:50 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_exit(void)
+int	len_env(char **environment)
 {
-	printf("exit\n");
-	return (42);
+	int	len;
+
+	len = 0;
+	while (environment[len])
+		len++;
+	return (len);
+}
+
+int	find_node(t_env *env, char *key)
+{
+	while (env)
+	{
+		if (!ft_strcmp(env->key, key))
+			return (0);
+		env = env->next;
+	}
+	return (1);
 }
