@@ -37,3 +37,10 @@ NOTAS:
 -> Si tengo echo hola > a > b > c adios, deberían crearse a b y c pero solo habrá contenido
    en c (hola adíos)
    Igual si tengo hola > a > que tal > b adios, se crearían a y b y sólo habrá contenido en b
+
+
+***********************  IMPORTANTE ******************
+
+   -> HACER cd - (me lleva al oldpwd) (cd -- directorio raiz)
+   -> cd cuando no es . .. - 
+   -> pwd con argumento no valido
