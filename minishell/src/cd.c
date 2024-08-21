@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:23:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/20 16:49:26 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:16:42 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ int	cd_env(char **str, int num_words, t_env *env, t_env *exp)
 	}
 	else if (!ft_strcmp(str[1], "."))
 		free(old_dir);
+	else if (!ft_strcmp(str[1], "-"))
+	{
+		new_dir = get_env(env, "OLDPWD\0");
+		if (!new_dir)
+			return (1);
+		chdir(new_dir);
+		update(env, exp, old_dir, new_dir);
+	}
 	else
 		return (move_to_path_env(str[1], env, exp, old_dir));
 	return (0);
