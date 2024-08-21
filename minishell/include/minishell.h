@@ -37,9 +37,12 @@ enum				e_metacharacters
 
 enum				e_errors
 {
+	ENO_MEM = 12,
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127
 };
+
+# define NUM_ERRORS 2
 
 typedef struct s_env
 {
@@ -308,6 +311,6 @@ int					ft_exit(void);
  * @brief Print error caused by command not found
  */
 
-void				print_command_not_found(char *command);
+void				print_error(char *command, int errno);
 
 #endif

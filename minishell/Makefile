@@ -13,7 +13,7 @@ RED		= \033[31;1m
 NAME				:= minishell
 cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror -Iinclude -Ilibft #-fsanitize=address
-SRCS 				:= src/main.c src/print_command_not_found.c src/env_vars.c src/builts.c src/echo.c \
+SRCS 				:= src/main.c src/print_error.c src/env_vars.c src/builts.c src/echo.c \
 						src/cd.c src/free.c src/list_utils.c src/list_utils_two.c src/pwd.c src/export.c \
 						src/unset.c src/print_lists.c src/export_two.c src/exit.c src/cd_update.c \
 						src/count_pipes.c src/split_by_space.c src/parsing.c

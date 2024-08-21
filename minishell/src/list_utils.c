@@ -15,7 +15,7 @@ void	ft_add_back(t_env **lst, t_env *new)
 
 	if (!new)
 	{
-		ft_putstr_fd("Error: new node is NULL\n", 2);
+		print_error("ft_add_back", ENO_MEM);
 		return ;
 	}
 	if (!*lst)
