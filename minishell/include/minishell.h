@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 19:13:05 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/21 22:51:23 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,19 @@ typedef enum e_builtins
 	e_exit
 }					t_builtins;
 
+typedef struct {
+	int		errno;
+	char	*message;
+} errorMessage;
+
 enum e_errors
 {
+	ENO_MEM = 12,
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127
 };
+
+# define NUM_ERRORS 2
 
 typedef struct s_env
 {
@@ -276,6 +284,6 @@ int					ft_exit(void);
  * @brief Print error caused by command not found
  */
 
-void				print_command_not_found(char *command);
+void				print_error(char *command, int errno);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:29:16 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 19:22:38 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:02:39 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_add_back(t_env **lst, t_env *new)
 
 	if (!new)
 	{
-		ft_putstr_fd("Error: new node is NULL\n", 2);
+		print_error("ft_add_back", ENO_MEM);
 		return ;
 	}
 	if (!*lst)
