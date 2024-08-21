@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 22:23:23 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:06:48 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 // 	e_env,
 // 	e_exit
 // }					t_builtins;
+
+#define SINGLE_QUOTE_ERROR "ERROR: Missing single quote\n"
+#define DOUBLE_QUOTE_ERROR "ERROR: Missing double quote\n"
+
 
 #define APPEND_OUTPUT_FILE ">>"
 #define HEREDOC "<<" 
@@ -81,6 +85,13 @@ int split_by_spaces(char *line, t_env *env, t_env *exp);
  * @param returns The numer of valid pipes
  */
 int count_pipes(char *line);
+
+/**
+ * @brief Checks if there is an even number of simple and double quotes in the line
+ * @param line The line
+ * @param returns 0 if the condition its true. Otherwise, 1
+ */
+int even_quotes(char *line);
 
 /***************************************
 				list utils

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 20:58:03 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 22:43:46 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:07:51 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ int count_pipes(char *line)
         if (line[pos] == PIPE && !single_quote && !double_quote)
             num_pipes++;
     }
-    return num_pipes;
+    return (num_pipes);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:50:55 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 22:44:28 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:02:18 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 	t_env	*exp;
 	char	*line;
 	int		status;
-	int		num_pipes;
+	//int		num_pipes;
 
 	status = 0;
 	env = get_var(environment, 0);
@@ -30,8 +30,11 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		if (line && line[0])
 		{
     		add_history(line);
-			num_pipes = count_pipes(line);
-			status = split_by_spaces(line, env, exp);
+			if (!even_quotes(line))
+			{
+				/*num_pipes = */count_pipes(line);
+				status = split_by_spaces(line, env, exp);
+			}
 		}
 		free(line);
 	}
