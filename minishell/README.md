@@ -1,10 +1,30 @@
+--------------------------------------------------------------------------------------------------
+// Actualizar siempre el main para evitar conflictos con actualizaciones ya subidas
 git checkout main
 git pull origin main
+// Crear rama local
 git checkout -b yassine
-git branch
-git add .
-git commit -m "Descripción de cambios"
-git push origin yassine
+// Hago todos los cambios que necesite . . .
+. . .
+// Añado cambios y voy haciendo commit según me parezca pertinente
+git add *
+git commit -m ""
+// Por último actualizo mi rama main
+git checkout main
+git pull origin main
+// Resuelvo conflictos con mi rama
+git checkout yasin
+git merge main
+// Resuelvo conflictos manualmente
+git checkout main
+// Resuelvo conflictos
+git rebase yasin // me traigo mis cambios al main
+// Si hay conflictos los resuelvo manualmente
+// Por ultimo elimino mi rama local y pusheo el main
+git branch -d yasin
+git push origin main
+// Si quiero borrar una rama accidentalmente subida
+git push origin --delete yasin
 
 Para funsionar los cambios de nuestra rama a la rama main:
 

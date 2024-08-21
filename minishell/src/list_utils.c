@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:29:16 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/19 16:14:20 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:22:38 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_add_back(t_env **lst, t_env *new)
 
 	if (!new)
 	{
-		printf("Error: new node is NULL\n");
+		ft_putstr_fd("Error: new node is NULL\n", 2);
 		return ;
 	}
 	if (!*lst)
@@ -46,6 +46,8 @@ t_env	*ft_new_node(char *key, char *arg, int flag)
 	char	*tmp;
 
 	node = (t_env *)malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
 	node->next = NULL;
 	if (flag == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:23:15 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 12:33:59 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:34:12 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ static int	change_directory(t_env *env, t_env *exp, char *var, int flag)
 	}
 	else
 		new_dir = get_parent(old_dir);
-	chdir(new_dir);
+	if (chdir(new_dir))
+	{
+		ft_putstr_fd(old_dir, 2);
+		perror(" parent does not exist: ");
+		return (1);
+	}
 	update(env, exp, old_dir, new_dir);
 	if (!flag)
 		free(new_dir);

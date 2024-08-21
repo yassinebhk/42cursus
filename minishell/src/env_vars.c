@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 12:08:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/20 13:54:03 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:16:01 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	set(t_env **list, char *curr, char *old, int list_type)
 	}
 	else
 	{
-		curr_dir = ft_new_node("declare -x PWD\0", curr, 0);
+		curr_dir = ft_new_node("PWD\0", curr, EXPORT_FLAG);
 		if (!curr_dir)
 		{
 			free(curr);

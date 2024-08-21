@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/20 13:45:29 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:13:05 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ typedef enum e_builtins
 	e_exit
 }					t_builtins;
 
+enum e_errors
+{
+	BAD_ASSIGNMENT = 120,
+	COMMAND_NOT_FOUND = 127
+};
+
 typedef struct s_env
 {
 	char			*key;
@@ -38,7 +44,8 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-# define COMMAND_NOT_FOUND 127
+# define	EXPORT_FLAG	1
+# define	ENV_FLAG 0
 
 /***************************************
 				list utils

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:44:14 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/20 13:27:13 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/21 19:26:58 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,33 +48,26 @@ char	*rm_eq(char *str)
 
 static void	set_var_and_value(char *str, t_env *exp, t_env *env)
 {
-	t_env	*new_node;
 	char	**split;
 
 	split = ft_split_mod(str, '=');
-	new_node = ft_new_node(split[0], split[1], 1);
-	ft_add_back(&exp, new_node);
-	new_node = ft_new_node(split[0], split[1], 0);
-	ft_add_back(&env, new_node);
+	ft_add_back(&exp, ft_new_node(split[0], split[1], EXPORT_FLAG));
+	ft_add_back(&env, ft_new_node(split[0], split[1], ENV_FLAG));
 	ft_free(split);
 }
 
 static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 {
-	t_env	*new_node;
 
 	if (!flag)
-	{
-		new_node = ft_new_node(str, NULL, 1);
-		ft_add_back(&exp, new_node);
-	}
+		ft_add_back(&exp, ft_new_node(str, NULL, EXPORT_FLAG));
 	else if (flag == 1)
 	{
 		str = rm_eq(str);
-		new_node = ft_new_node(str, "", 1);
-		ft_add_back(&exp, new_node);
-		new_node = ft_new_node(str, "", 0);
-		ft_add_back(&env, new_node);
+		if (!str)
+			return (1);
+		ft_add_back(&exp, ft_new_node(str, "", EXPORT_FLAG));
+		ft_add_back(&env, ft_new_node(str, "", ENV_FLAG));
 		free(str);
 	}
 	else
