@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/14 14:45:07 by ybouhaik          #+#    #+#              #
-#    Updated: 2024/08/21 16:59:32 by ybouhaik         ###   ########.fr        #
+#    Updated: 2024/08/21 22:26:14 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ cc 					:= gcc
 flags 				:= -g -Wall -Wextra -Werror -Iinclude -Ilibft #-fsanitize=address
 SRCS 				:= src/main.c src/print_command_not_found.c src/env_vars.c src/builts.c src/echo.c \
 						src/cd.c src/free.c src/list_utils.c src/list_utils_two.c src/pwd.c src/export.c \
-						src/unset.c src/print_lists.c src/export_two.c src/exit.c src/cd_update.c
+						src/unset.c src/print_lists.c src/export_two.c src/exit.c src/cd_update.c \
+						src/count_pipes.c src/split_by_space.c
 OBJS 				:=$(SRCS:.c=.o)
 INCL				:= include/minishell.h
 

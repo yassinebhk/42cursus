@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 19:13:05 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/21 22:23:23 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,30 @@
 # include <stdio.h>
 # include <unistd.h>
 
-typedef enum e_builtins
+// typedef enum e_builtins
+// {
+// 	e_echo,
+// 	e_cd,
+// 	e_pwd,
+// 	e_export,
+// 	e_unset,
+// 	e_env,
+// 	e_exit
+// }					t_builtins;
+
+#define APPEND_OUTPUT_FILE ">>"
+#define HEREDOC "<<" 
+
+
+enum e_metacharacters
 {
-	e_echo,
-	e_cd,
-	e_pwd,
-	e_export,
-	e_unset,
-	e_env,
-	e_exit
-}					t_builtins;
+	PIPE = '|',
+	DOLLAR = '$',
+    OUTPUT_FILE = '>',
+    INPUT_FILE = '<',
+	SINGLE_QUOTE = '\'',
+	DOUBLE_QUOTE = '"'
+};
 
 enum e_errors
 {
@@ -46,6 +60,27 @@ typedef struct s_env
 
 # define	EXPORT_FLAG	1
 # define	ENV_FLAG 0
+
+/***************************************
+				main structure
+***************************************/
+
+/**
+ * @brief Split by spaces the line
+ * @param line The line
+ * @param env The environment variables list
+ * @param exp The export variables list
+ * @param len The len list
+ * @return The status
+ */
+int split_by_spaces(char *line, t_env *env, t_env *exp);
+
+/**
+ * @brief Counts the numer of pipes in the string
+ * @param line The line
+ * @param returns The numer of valid pipes
+ */
+int count_pipes(char *line);
 
 /***************************************
 				list utils
@@ -95,7 +130,6 @@ void				ft_free(char **str);
 
 /**
  * @brief Free the params of the program
- * @param line The line
  * @param env The environment variables list
  * @param exp The export variables list
  * @param len The len list
