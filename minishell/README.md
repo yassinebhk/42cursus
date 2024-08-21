@@ -12,6 +12,12 @@ Para funsionar los cambios de nuestra rama a la rama main:
 	2 -> git merge nombre_nuestra_rama
 	3 -> git push origin main
 
+--------------------------------------------------------------------------------------------------
+                                          COMPILACIÓN CON VALGRIND
+--------------------------------------------------------------------------------------------------
+
+   -> valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all -s ./minishell
+
 ---------------------------------------------------------
 
 Error: 
