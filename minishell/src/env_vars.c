@@ -86,6 +86,7 @@ t_env	*get_var(char **environment, int flag)
 	{
 		split = ft_split_mod(environment[pos], '=');
 		new_node = ft_new_node(split[0], split[1], flag);
+		new_node->index = -1;
 		ft_add_back(&env, new_node);
 		ft_free(split);
 	}

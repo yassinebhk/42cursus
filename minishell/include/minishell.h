@@ -53,11 +53,11 @@ enum				e_errors
 
 typedef struct s_env
 {
+	int				index;
 	char			*key;
 	char			*var;
 	struct s_env	*next;
 }					t_env;
-
 
 /***************************************
 				  main 
@@ -93,11 +93,11 @@ int					even_quotes(char *line);
 ***************************************/
 
 /**
- * @brief Initializates the list of environment variables in a t_env struct
- * @param env The environment variables list
+ * @brief Calculates the lent of a t_env list
+ * @param env The t_env list
  * @returns The len list
  */
-int					ft_lst_size(t_env *env);
+int					ft_lst_size(t_env *list);
 
 /**
  * @brief Create a new node
