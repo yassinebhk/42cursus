@@ -28,8 +28,8 @@ static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 		str = rm_eq(str);
 		if (!str)
 			return (ENO_MEM);
-		ft_add_back(&exp, ft_new_node(str, "", EXPORT_FLAG));
-		ft_add_back(&env, ft_new_node(str, "", ENV_FLAG));
+		ft_add_back(&exp, ft_new_node(str, '\0', EXPORT_FLAG));
+		ft_add_back(&env, ft_new_node(str, '\0', ENV_FLAG));
 		free(str);
 	}
 	else

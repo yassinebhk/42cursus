@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/24 18:03:37 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/07 23:34:41 by yassine          ###   ########.fr       */
+/*   Updated: 2024/08/22 19:29:37 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	format(char c, int *res, va_list arg)
 	else if (c == 'c')
 		return (ft_putchar2_fd(va_arg(arg, int), res));
 	else if (c == 's')
-		return (ft_putstr2_fd(va_arg(arg, char *), res));
+		return (ft_putstr2_fd(va_arg(arg, char *), 1));
 	else
 		return (printf_num(c, arg, res));
 }
