@@ -57,14 +57,14 @@ t_env	*ft_new_node(char *key, char *arg, int flag)
 	return (free(tmp), node);
 }
 
-int	ft_lst_size(t_env *env)
+int	ft_lst_size(t_env *list)
 {
 	int	size;
 
 	size = 0;
-	while (env)
+	while (list)
 	{
-		env = env->next;
+		list = list->next;
 		size++;
 	}
 	return (size);
