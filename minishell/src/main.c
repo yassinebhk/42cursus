@@ -7,7 +7,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 	t_env	*exp;
 	char	*line;
 	int		status;
-	int		num_pipes;
+	//int		num_pipes;
 
 	status = 0;
 	env = get_var(environment, 0);
@@ -20,7 +20,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 			add_history(line);
 			if (!even_quotes(line))
 			{
-				num_pipes = count_pipes(line);
+				count_pipes(line);
 				status = split_by_spaces(line, env, exp);
 			}
 		}

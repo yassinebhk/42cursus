@@ -1,6 +1,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/***************************************
+				INCLUDES
+***************************************/
+
 # include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -8,22 +12,23 @@
 # include <stdio.h>
 # include <unistd.h>
 
-// typedef enum e_builtins
-// {
-// 	e_echo,
-// 	e_cd,
-// 	e_pwd,
-// 	e_export,
-// 	e_unset,
-// 	e_env,
-// 	e_exit
-// }					t_builtins;
+/***************************************
+				 DEFINE
+***************************************/
 
 # define SINGLE_QUOTE_ERROR "ERROR: Missing single quote\n"
 # define DOUBLE_QUOTE_ERROR "ERROR: Missing double quote\n"
 
 # define APPEND_OUTPUT_FILE ">>"
 # define HEREDOC "<<"
+
+# define NUM_ERRORS 2
+# define EXPORT_FLAG 1
+# define ENV_FLAG 0
+
+/***************************************
+				  ENUM
+***************************************/
 
 enum				e_metacharacters
 {
@@ -42,7 +47,9 @@ enum				e_errors
 	COMMAND_NOT_FOUND = 127
 };
 
-# define NUM_ERRORS 2
+/***************************************
+				STRUCTS
+***************************************/
 
 typedef struct s_env
 {
@@ -51,11 +58,9 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-# define EXPORT_FLAG 1
-# define ENV_FLAG 0
 
 /***************************************
-				main structure
+				  main 
 ***************************************/
 
 /**
@@ -159,14 +164,6 @@ t_env				*get_var(char **environment, int flag);
 char				*get_env(t_env *env, char *key);
 
 /**
- * @brief Gets the arg of the environment variable key
- * @param exp The export variables list
- * @param key The environment varaible key
- * @returns The argument
- */
-char				*get_exp(t_env *exp, char *key);
-
-/**
  * @brief Calculates the length of the environment list
  * @param environment The environment variables
  * @returns The len list
@@ -226,6 +223,13 @@ char				*rm_eq(char *str);
  * @returns 0
  */
 int					exist_var(char *str, t_env *env, t_env *exp);
+
+/**
+ * @brief Checks if the variable has a correct name
+ * @param var The variable
+ * @returns 0 if has a correct name. Otherwise 1
+ */
+int					valid_var(char *var);
 
 /***************************************
 				builts
@@ -309,6 +313,8 @@ int					ft_exit(void);
 
 /**
  * @brief Print error caused by command not found
+ * @param command The command 
+ * @param errno The error status
  */
 
 void				print_error(char *command, int errno);

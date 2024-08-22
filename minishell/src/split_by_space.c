@@ -7,8 +7,8 @@ int	split_by_spaces(char *line, t_env *env, t_env *exp)
 
 	split = ft_split(line, ' ');
 	status = find_built(split, num_words(line, ' '), env, exp);
-	if (status == COMMAND_NOT_FOUND)
-		print_command_not_found(split[0]);
+	if (status)
+		print_error(split[0], status);
 	ft_free(split);
 	return (status);
 }
