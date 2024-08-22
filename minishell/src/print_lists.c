@@ -46,9 +46,16 @@ void	print_export_list(t_env *exp)
 	{
 		tmp = get_node_index(index, exp);
 		if (!tmp->var)
-			printf("%s\n", tmp->key);
+			ft_putstr2_fd(tmp->key, 1);
 		else
-			printf("%s=%s\n", tmp->key, tmp->var);
+		{
+			ft_putstr2_fd(tmp->key, 1);
+			ft_putstr_fd("=", 1);
+			ft_putstr_fd("\"", 1);
+			ft_putstr2_fd(tmp->var, 1);
+			ft_putstr_fd("\"", 1);
+		}
+		ft_putstr_fd("\n", 1);
 	}
 }
 
@@ -56,7 +63,10 @@ int	ft_env(t_env *env)
 {
 	while (env)
 	{
-		printf("%s=%s\n", env->key, env->var);
+		ft_putstr2_fd(env->key, 1);
+		ft_putstr_fd("=", 1);
+		ft_putstr2_fd(env->var, 1);
+		ft_putstr_fd("\n", 1);
 		env = env->next;
 	}
 	return (0);

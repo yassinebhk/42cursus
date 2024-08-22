@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr2_fd.c                                     :+:      :+:    :+:  */
+/*   ft_putstr2_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassine <yassine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 21:49:59 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/04/08 00:00:52 by yassine          ###   ########.fr       */
+/*   Updated: 2024/08/22 19:34:09 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_putstr2_fd(char *s, int *res)
+int	ft_putstr2_fd(char *s, int fd)
 {
+	int	i;
 	int	check;
 
+	i = -1;
 	if (!s)
-		check = write(1, "(null)", 6);
-	else
-		check = write(1, s, ft_strlen(s));
-	if (check == -1)
-		return (0);
-	else
+		check = write(fd, "(null)", 6);
+	while (s[++i])
 	{
-		*res += check;
-		return (1);
+		if (s[i] != '\'' && s[i] != '"')
+			write(fd, &s[i], 1);
 	}
+	return (check);
 }

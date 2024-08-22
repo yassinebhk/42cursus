@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:09:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/17 12:01:09 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/22 19:24:38 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ int					ft_putstr_fd(char *s, int fd);
  * @returns The number of bytes written or -1 if it's wasn't possible to
 			write
  */
-int					ft_putstr2_fd(char *s, int *res);
+int					ft_putstr2_fd(char *s, int fd);
 /**
  * @brief Sends the string 's' to the file descriptor given as parameter,
 		followed by a newline character
