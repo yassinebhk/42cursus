@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/14 14:45:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 23:06:48 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:48:54 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,23 @@
 // 	e_exit
 // }					t_builtins;
 
-#define SINGLE_QUOTE_ERROR "ERROR: Missing single quote\n"
-#define DOUBLE_QUOTE_ERROR "ERROR: Missing double quote\n"
+# define SINGLE_QUOTE_ERROR "ERROR: Missing single quote\n"
+# define DOUBLE_QUOTE_ERROR "ERROR: Missing double quote\n"
 
+# define APPEND_OUTPUT_FILE ">>"
+# define HEREDOC "<<"
 
-#define APPEND_OUTPUT_FILE ">>"
-#define HEREDOC "<<" 
-
-
-enum e_metacharacters
+enum				e_metacharacters
 {
 	PIPE = '|',
 	DOLLAR = '$',
-    OUTPUT_FILE = '>',
-    INPUT_FILE = '<',
+	OUTPUT_FILE = '>',
+	INPUT_FILE = '<',
 	SINGLE_QUOTE = '\'',
 	DOUBLE_QUOTE = '"'
 };
 
-enum e_errors
+enum				e_errors
 {
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127
@@ -62,8 +60,8 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-# define	EXPORT_FLAG	1
-# define	ENV_FLAG 0
+# define EXPORT_FLAG 1
+# define ENV_FLAG 0
 
 /***************************************
 				main structure
@@ -77,21 +75,22 @@ typedef struct s_env
  * @param len The len list
  * @return The status
  */
-int split_by_spaces(char *line, t_env *env, t_env *exp);
+int					split_by_spaces(char *line, t_env *env, t_env *exp);
 
 /**
  * @brief Counts the numer of pipes in the string
  * @param line The line
  * @param returns The numer of valid pipes
  */
-int count_pipes(char *line);
+int					count_pipes(char *line);
 
 /**
- * @brief Checks if there is an even number of simple and double quotes in the line
+ * @brief Checks if there is an even number of simple and double quotes
+	in the line
  * @param line The line
  * @param returns 0 if the condition its true. Otherwise, 1
  */
-int even_quotes(char *line);
+int					even_quotes(char *line);
 
 /***************************************
 				list utils

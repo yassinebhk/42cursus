@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 16:44:14 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 19:26:58 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:40:01 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	set_var_and_value(char *str, t_env *exp, t_env *env)
 
 static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 {
-
 	if (!flag)
 		ft_add_back(&exp, ft_new_node(str, NULL, EXPORT_FLAG));
 	else if (flag == 1)

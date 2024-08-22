@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 14:29:16 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/21 19:22:38 by maxgarci         ###   ########.fr       */
+/*   Updated: 2024/08/22 13:46:49 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_env	*ft_new_node(char *key, char *arg, int flag)
 	if (!node)
 		return (NULL);
 	node->next = NULL;
+	tmp = ft_strjoin(arg, "\"");
 	if (flag == 0)
 	{
 		node->key = ft_strdup(key);
@@ -59,15 +60,13 @@ t_env	*ft_new_node(char *key, char *arg, int flag)
 	}
 	else
 	{
-		tmp = ft_strjoin(arg, "\"");
 		node->key = ft_strjoin("declare -x ", key);
 		if (!arg)
 			node->var = NULL;
 		else
 			node->var = ft_strjoin("\"", tmp);
-		free(tmp);
 	}
-	return (node);
+	return (free(tmp), node);
 }
 
 int	ft_lst_size(t_env *env)
