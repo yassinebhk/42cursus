@@ -52,6 +52,13 @@ enum					e_errors
 				STRUCTS
 ***************************************/
 
+typedef struct s_redir
+{
+	int					type;
+	char				*arg;
+	struct s_redir		*next;
+}						t_redir;
+
 typedef struct s_env
 {
 	int					index;
@@ -75,6 +82,7 @@ typedef struct s_node
 	struct s_env		*env;
 	struct s_env		*exp;
 	struct s_node		*next;
+	struct s_redir		*redir;
 	struct s_command	*content;
 }						t_node;
 
@@ -150,6 +158,30 @@ int						init_nodes(char **env, char *line, t_node **head);
  * @param new_node The new node
  */
 void					ft_add_node_back(t_node **head, t_node *new_node);
+
+/**
+ * @brief Split the string in two parts: the commando and their args
+ * @param str The string
+ * @param command The command struct
+ * @returns 0 if occurs any error. Otherwise 1.
+ */
+int						split_str(char *str, t_command **command);
+
+/**
+ * @brief Truncs the str between init and end position
+ * @param line The string
+ * @param init_pos The initial position
+ * @param end_pos The final position
+ * @returns The modified string
+ */
+char					*get_trunc_str(char *line, int init_pos, int end_pos);
+
+/**
+ * @brief Finds the first occurence of a pipe
+ * @param line The string
+ * @param pos The current position in the string
+ */
+void					find_pipe(char *line, int *pos);
 
 /***************************************
 				lists utils
