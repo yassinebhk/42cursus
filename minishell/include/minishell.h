@@ -74,13 +74,21 @@ typedef struct s_node
 	int					fd_out;
 	struct s_env		*env;
 	struct s_env		*exp;
-	struct s_node		next;
+	struct s_node		*next;
 	struct s_command	*content;
 }						t_node;
 
 /***************************************
 					main
 ***************************************/
+
+/**
+ * @brief Process the commands given
+ * @param line The line with the commands
+ * @param env The environment variables list
+ * @return The status
+ */
+int						process_command(char **env, char *line);
 
 /**
  * @brief Split by spaces the line
@@ -106,13 +114,6 @@ int						count_pipes(char *line);
  * @returns 0 if the condition its true. Otherwise, 1
  */
 int						even_quotes(char *line);
-
-/**
- * @brief Check if the character is a quote
- * @param c The character
- * @returns 1 if is simple quote, 2 if is double quote, otherwise 0.
- */
-int						is_quote(char c);
 
 /**
  * @brief Deletes the simple and double quotes and adds a '\' in front
@@ -148,7 +149,7 @@ int						init_nodes(char **env, char *line, t_node **head);
  * @param head The head list
  * @param new_node The new node
  */
-void					ft_add_node_back(t_node **head, t_env *new_node);
+void					ft_add_node_back(t_node **head, t_node *new_node);
 
 /***************************************
 				lists utils
@@ -196,12 +197,10 @@ t_env					*ft_last(t_env *lst);
 void					ft_free(char **str);
 
 /**
- * @brief Free the params of the program
- * @param env The environment variables list
- * @param exp The export variables list
- * @param len The len list
+ * @brief Free the commands list
+ * @param head The head of the list
  */
-void					free_args(t_env *env, t_env *exp);
+void					free_list(t_node *head);
 
 /***************************************
 			environment variables

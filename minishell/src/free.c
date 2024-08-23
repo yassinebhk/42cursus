@@ -33,3 +33,27 @@ void	free_args(t_env *env, t_env *exp)
 		exp = tmp;
 	}
 }
+
+static void	free_content(t_command *command)
+{
+	int	pos;
+
+	pos = -1;
+	free(command->command);
+	while(command->args[++pos])
+		free(command->args[pos]);
+	free(command->args);
+}
+
+void	free_list(t_node *head)
+{
+	t_node	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		free_args(head->env, head->exp);
+		free_content(head->content);
+		head = tmp;
+	}	
+}
