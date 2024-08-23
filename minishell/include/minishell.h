@@ -30,7 +30,7 @@
 					ENUM
 ***************************************/
 
-enum				e_metacharacters
+enum					e_metacharacters
 {
 	PIPE = '|',
 	DOLLAR = '$',
@@ -38,10 +38,10 @@ enum				e_metacharacters
 	INPUT_FILE = '<',
 	SINGLE_QUOTE = '\'',
 	DOUBLE_QUOTE = '"',
-	BACKSLACH = '\\'
+	BACKSLASH = '\\'
 };
 
-enum				e_errors
+enum					e_errors
 {
 	ENO_MEM = 12,
 	BAD_ASSIGNMENT = 120,
@@ -54,11 +54,29 @@ enum				e_errors
 
 typedef struct s_env
 {
-	int				index;
-	char			*key;
-	char			*var;
-	struct s_env	*next;
-}					t_env;
+	int					index;
+	char				*key;
+	char				*var;
+	struct s_env		*next;
+}						t_env;
+
+typedef struct s_command
+{
+	int					num_args;
+	char				*command;
+	char				**args;
+}						t_command;
+
+typedef struct s_node
+{
+	int					error;
+	int					fd_in;
+	int					fd_out;
+	struct s_env		*env;
+	struct s_env		*exp;
+	struct s_node		next;
+	struct s_command	*content;
+}						t_node;
 
 /***************************************
 					main
@@ -72,14 +90,14 @@ typedef struct s_env
  * @param len The len list
  * @return The status
  */
-int					split_by_spaces(char *line, t_env *env, t_env *exp);
+int						split_by_spaces(char *line, t_env *env, t_env *exp);
 
 /**
  * @brief Counts the numer of pipes in the string
  * @param line The line
  * @param returns The numer of valid pipes
  */
-int					count_pipes(char *line);
+int						count_pipes(char *line);
 
 /**
  * @brief Checks if there is an even number of simple and double quotes
@@ -87,14 +105,14 @@ int					count_pipes(char *line);
  * @param line The line
  * @returns 0 if the condition its true. Otherwise, 1
  */
-int					even_quotes(char *line);
+int						even_quotes(char *line);
 
 /**
  * @brief Check if the character is a quote
  * @param c The character
  * @returns 1 if is simple quote, 2 if is double quote, otherwise 0.
  */
-int					is_quote(char c);
+int						is_quote(char c);
 
 /**
  * @brief Deletes the simple and double quotes and adds a '\' in front
@@ -102,7 +120,7 @@ int					is_quote(char c);
  * @param str The string
  * @returns The modified string
  */
-char				*translate_str(const char *str);
+char					*translate_str(const char *str);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -110,10 +128,30 @@ char				*translate_str(const char *str);
  * @param line The string
  * @returns 1 if there are invalid characters. Otherwise, 0.
  */
-int					invalid_character(char *line);
+int						invalid_character(char *line);
 
 /***************************************
-				list utils
+				commands list
+***************************************/
+
+/**
+ * @brief Initializates the list of commands
+ * @param environment The environment variables
+ * @param line The string which contains the commands
+ * @param head The head of the list
+ * @returns 1 if failts. Otherwise, 0.
+ */
+int						init_nodes(char **env, char *line, t_node **head);
+
+/**
+ * @brief Add a new node to the command list
+ * @param head The head list
+ * @param new_node The new node
+ */
+void					ft_add_node_back(t_node **head, t_env *new_node);
+
+/***************************************
+				lists utils
 ***************************************/
 
 /**
@@ -121,7 +159,7 @@ int					invalid_character(char *line);
  * @param env The t_env list
  * @returns The len list
  */
-int					ft_lst_size(t_env *list);
+int						ft_lst_size(t_env *list);
 
 /**
  * @brief Create a new node
@@ -131,22 +169,21 @@ int					ft_lst_size(t_env *list);
 		the export node
  * @returns The new node
  */
-t_env				*ft_new_node(char *key, char *arg, int flag);
+t_env					*ft_new_node(char *key, char *arg, int flag);
 
 /**
  * @brief Add a new node to the environment variables list
  * @param lst The environment variables list
  * @param new The new node
- * @returns The updated list
  */
-void				ft_add_back(t_env **lst, t_env *new);
+void					ft_add_back(t_env **lst, t_env *new);
 
 /**
  * @brief Gets the last node of the list
  * @param lst The environment variables list
  * @returns The last node
  */
-t_env				*ft_last(t_env *lst);
+t_env					*ft_last(t_env *lst);
 
 /***************************************
 					free
@@ -156,7 +193,7 @@ t_env				*ft_last(t_env *lst);
  * @brief Free the str
  * @param str The string
  */
-void				ft_free(char **str);
+void					ft_free(char **str);
 
 /**
  * @brief Free the params of the program
@@ -164,7 +201,7 @@ void				ft_free(char **str);
  * @param exp The export variables list
  * @param len The len list
  */
-void				free_args(t_env *env, t_env *exp);
+void					free_args(t_env *env, t_env *exp);
 
 /***************************************
 			environment variables
@@ -177,7 +214,7 @@ void				free_args(t_env *env, t_env *exp);
 	the export list
  * @returns The list of environment variables
  */
-t_env				*get_var(char **environment, int flag);
+t_env					*get_var(char **environment, int flag);
 
 /**
  * @brief Gets the arg of the environment variable key
@@ -185,28 +222,28 @@ t_env				*get_var(char **environment, int flag);
  * @param key The environment varaible key
  * @returns The argument
  */
-char				*get_env(t_env *env, char *key);
+char					*get_env(t_env *env, char *key);
 
 /**
  * @brief Calculates the length of the environment list
  * @param environment The environment variables
  * @returns The len list
  */
-int					len_env(char **environment);
+int						len_env(char **environment);
 
 /**
  * @brief CHeck if exists the node with the key variable
  * @param key The key variable
  * @returns 1 if exists. Otherwise, 0.
  */
-int					find_node(t_env *env, char *key);
+int						find_node(t_env *env, char *key);
 
 /**
  * @brief Calculates the number of "=" in the str
  * @param str The string
  * @returns The numer of character after the "=", included himself
  */
-int					find_eq(char *str);
+int						find_eq(char *str);
 
 /**
  * @brief Update the current and old dir of both lists
@@ -216,44 +253,44 @@ int					find_eq(char *str);
  * @param old_dir The old dir
  * @returns The len list
  */
-void				update(t_env *env, t_env *exp, char *old_dir,
-						char *new_dir);
+void					update(t_env *env, t_env *exp, char *old_dir,
+							char *new_dir);
 
 /**
  * @brief Gets the parent of the current directory
  * @param dir The current directory
  * @returns The path
  */
-char				*get_parent(char *dir);
+char					*get_parent(char *dir);
 
 /**
  * @brief Prints the export list
  * @param exp The export list
  */
-void				print_export_list(t_env *exp);
+void					print_export_list(t_env *exp);
 
 /**
  * @brief Deletes the '=' character of the string
  * @param str The string
  * @returns The modified string
  */
-char				*rm_eq(char *str);
+char					*rm_eq(char *str);
 
 /**
- * @brief Checks if exist the str variable
+ * @brief Checks if exist the variable str in the list
  * @param str The string
  * @param env The len list of env
  * @param exp The export variables list
- * @returns 0
+ * @returns 0 if exist. Otherwise 1.
  */
-int					exist_var(char *str, t_env *env, t_env *exp);
+int						exist_var(char *str, t_env *env, t_env *exp);
 
 /**
  * @brief Checks if the variable has a correct name
  * @param var The variable
  * @returns 0 if has a correct name. Otherwise 1
  */
-int					valid_var(char *var);
+int						valid_var(char *var);
 
 /***************************************
 				builts
@@ -267,8 +304,8 @@ int					valid_var(char *var);
  * @param exp The export variables list
  * @returns The len list
  */
-int					find_built(char **str, int num_words, t_env *env,
-						t_env *exp);
+int						find_built(char **str, int num_words, t_env *env,
+							t_env *exp);
 
 /**
  * @brief Execute the echo command
@@ -277,7 +314,7 @@ int					find_built(char **str, int num_words, t_env *env,
  * @param num_words The number of words of str
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					echo(char **str, int pos, int num_words);
+int						echo(char **str, int pos, int num_words);
 
 /**
  * @brief Execute the cd command
@@ -287,7 +324,7 @@ int					echo(char **str, int pos, int num_words);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					cd(char **str, int num_words, t_env *env, t_env *exp);
+int						cd(char **str, int num_words, t_env *env, t_env *exp);
 
 /**
  * @brief Execute the pwd command
@@ -295,7 +332,7 @@ int					cd(char **str, int num_words, t_env *env, t_env *exp);
  * @param env The len list of env
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					pwd(t_env *env);
+int						pwd(t_env *env);
 
 /**
  * @brief Execute the export command
@@ -305,7 +342,8 @@ int					pwd(t_env *env);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					export(char **str, int num_words, t_env *env, t_env *exp);
+int						export(char **str, int num_words, t_env *env,
+							t_env *exp);
 
 /**
  * @brief Execute the unset command
@@ -315,7 +353,8 @@ int					export(char **str, int num_words, t_env *env, t_env *exp);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					unset(char **str, int num_words, t_env *env, t_env *exp);
+int						unset(char **str, int num_words, t_env *env,
+							t_env *exp);
 
 /**
  * @brief Execute the unset command
@@ -323,13 +362,13 @@ int					unset(char **str, int num_words, t_env *env, t_env *exp);
  * @param env The len list of env
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int					ft_env(t_env *env);
+int						ft_env(t_env *env);
 
 /**
  * @brief Execute the unset exit
  * @returns 42
  */
-int					ft_exit(void);
+int						ft_exit(void);
 
 /***************************************
 		print_command_not_found
@@ -341,6 +380,6 @@ int					ft_exit(void);
  * @param errno The error status
  */
 
-void				print_error(char *command, int errno);
+void					print_error(char *command, int errno);
 
 #endif

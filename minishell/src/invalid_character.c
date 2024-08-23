@@ -44,7 +44,7 @@ int	invalid_character(char *line)
 	pos = -1;
 	single_quote_open = 0;
 	double_quote_open = 0;
-	if (ft_strchr(line, BACKSLACH))
+	if (ft_strchr(line, BACKSLASH))
 		return (1);
 	while (line[++pos])
 	{

@@ -1,36 +1,9 @@
 #include "minishell.h"
 
-int	is_quote(char c)
+static int	is_special_char(char c)
 {
-	return (c == SINGLE_QUOTE || c == DOUBLE_QUOTE);
-}
-
-static int	new_len_str(const char *str)
-{
-	int	pos;
-	int	new_len;
-	int	single_quote_open;
-	int	double_quote_open;
-
-	pos = 0;
-	new_len = 0;
-	single_quote_open = 0;
-	double_quote_open = 0;
-	while (str[pos])
-	{
-		if (str[pos] == SINGLE_QUOTE && !double_quote_open)
-			single_quote_open = !single_quote_open;
-		else if (str[pos] == DOUBLE_QUOTE && !single_quote_open)
-			double_quote_open = !double_quote_open;
-		else
-		{
-			if (single_quote_open || double_quote_open)
-				new_len++;
-			new_len++;
-		}
-		pos++;
-	}
-	return (new_len);
+	return (!isalnum((unsigned char)c) && c != BACKSLASH && c != SINGLE_QUOTE
+		&& c != DOUBLE_QUOTE);
 }
 
 static void	process_char(char c, int *single_quote_open, int *double_quote_open,
@@ -43,9 +16,40 @@ static void	process_char(char c, int *single_quote_open, int *double_quote_open,
 	else
 	{
 		if (*single_quote_open || *double_quote_open)
-			new_str[(*i)++] = BACKSLACH;
+		{
+			if (is_special_char(c) || c == BACKSLASH)
+				new_str[(*i)++] = BACKSLASH;
+		}
 		new_str[(*i)++] = c;
 	}
+}
+
+static int	new_len_str(const char *str)
+{
+	int	pos;
+	int	len;
+	int	single_quote_open;
+	int	double_quote_open;
+
+	pos = 0;
+	len = 0;
+	single_quote_open = 0;
+	double_quote_open = 0;
+	while (str[pos])
+	{
+		if (str[pos] == SINGLE_QUOTE && !double_quote_open)
+			single_quote_open = !single_quote_open;
+		else if (str[pos] == DOUBLE_QUOTE && !single_quote_open)
+			double_quote_open = !double_quote_open;
+		len++;
+		if (single_quote_open || double_quote_open)
+		{
+			if (is_special_char(str[pos]) || str[pos] == BACKSLASH)
+				len++;
+		}
+		pos++;
+	}
+	return (len);
 }
 
 char	*translate_str(const char *str)
@@ -64,8 +68,10 @@ char	*translate_str(const char *str)
 	if (!new_str)
 		return (print_error("translate str", ENO_MEM), NULL);
 	while (str[++pos])
+	{
 		process_char(str[pos], &single_quote_open, &double_quote_open, new_str,
 			&i);
+	}
 	new_str[i] = '\0';
 	return (new_str);
 }
