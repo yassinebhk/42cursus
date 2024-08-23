@@ -13,7 +13,7 @@
 # include <unistd.h>
 
 /***************************************
-				 DEFINE
+					DEFINE
 ***************************************/
 
 # define SINGLE_QUOTE_ERROR "ERROR: Missing single quote\n"
@@ -27,7 +27,7 @@
 # define ENV_FLAG 0
 
 /***************************************
-				  ENUM
+					ENUM
 ***************************************/
 
 enum				e_metacharacters
@@ -37,7 +37,8 @@ enum				e_metacharacters
 	OUTPUT_FILE = '>',
 	INPUT_FILE = '<',
 	SINGLE_QUOTE = '\'',
-	DOUBLE_QUOTE = '"'
+	DOUBLE_QUOTE = '"',
+	BACKSLACH = '\\'
 };
 
 enum				e_errors
@@ -60,7 +61,7 @@ typedef struct s_env
 }					t_env;
 
 /***************************************
-				  main 
+					main
 ***************************************/
 
 /**
@@ -84,9 +85,32 @@ int					count_pipes(char *line);
  * @brief Checks if there is an even number of simple and double quotes
 	in the line
  * @param line The line
- * @param returns 0 if the condition its true. Otherwise, 1
+ * @returns 0 if the condition its true. Otherwise, 1
  */
 int					even_quotes(char *line);
+
+/**
+ * @brief Check if the character is a quote
+ * @param c The character
+ * @returns 1 if is simple quote, 2 if is double quote, otherwise 0.
+ */
+int					is_quote(char c);
+
+/**
+ * @brief Deletes the simple and double quotes and adds a '\' in front
+   of each character that was between quotes
+ * @param str The string
+ * @returns The modified string
+ */
+char				*translate_str(const char *str);
+
+/**
+ * @brief Check if there are invalid characters ('\') or '|', ';', '&'
+   out of quotes
+ * @param line The string
+ * @returns 1 if there are invalid characters. Otherwise, 0.
+ */
+int					invalid_character(char *line);
 
 /***************************************
 				list utils
@@ -313,7 +337,7 @@ int					ft_exit(void);
 
 /**
  * @brief Print error caused by command not found
- * @param command The command 
+ * @param command The command
  * @param errno The error status
  */
 
