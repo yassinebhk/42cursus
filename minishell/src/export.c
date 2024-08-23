@@ -5,6 +5,7 @@ static int	set_var_and_value(char *str, t_env *exp, t_env *env)
 	char	**split;
 
 	split = ft_split_mod(str, '=');
+	printf("\n%sKey: \n", split[0]);
 	if (valid_var(split[0]))
 		return (BAD_ASSIGNMENT);
 	ft_add_back(&exp, ft_new_node(split[0], split[1], EXPORT_FLAG));
@@ -15,6 +16,7 @@ static int	set_var_and_value(char *str, t_env *exp, t_env *env)
 
 static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 {
+	printf("\nFlag: %d\n", flag);
 	if (!flag)
 	{
 		if (valid_var(str))

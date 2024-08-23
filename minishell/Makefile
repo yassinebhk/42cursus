@@ -16,7 +16,9 @@ flags 				:= -g -Wall -Wextra -Werror -Iinclude -Ilibft #-fsanitize=address
 SRCS 				:= src/main.c src/print_error.c src/env_vars.c src/builts.c src/echo.c \
 						src/cd.c src/free.c src/list_utils.c src/list_utils_two.c src/pwd.c src/export.c \
 						src/unset.c src/print_lists.c src/export_two.c src/exit.c src/cd_update.c \
-						src/count_pipes.c src/split_by_space.c src/parsing.c src/export_utils.c
+						src/count_pipes.c src/split_by_space.c src/parsing.c src/export_utils.c \
+						src/translate_str.c src/invalid_character.c src/init_node.c \
+						src/process_command.c src/node_utils.c
 OBJS 				:=$(SRCS:.c=.o)
 INCL				:= include/minishell.h
 

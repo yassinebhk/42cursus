@@ -19,12 +19,12 @@ int	even_quotes(char *line)
 	if (single_quote % 2 != 0)
 	{
 		ft_putstr_fd(SINGLE_QUOTE_ERROR, 2);
-		return (1);
+		return (0);
 	}
 	else if (double_quote % 2 != 0)
 	{
 		ft_putstr_fd(DOUBLE_QUOTE_ERROR, 2);
-		return (1);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
