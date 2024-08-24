@@ -24,21 +24,35 @@ void	print_list(t_node *head)
 		}
 		head = head->next;
 	}
+	printf("\n");
 }
 
 int	process_command(char **env, char *line)
 {
-	t_node *head;
+	int		pos;
+	t_node	*head;
 
+	pos = -1;
 	head = NULL;
 	if (!even_quotes(line) || invalid_character(line) || init_nodes(env, line,
 			&head))
 		return (1);
-		// EN init_node.c falta inicialziar la estructura de redir, habria que hacer una funcion que malloquease
-	//Ahora seria ir nodo por nodo. Primero, hacer un translate del command (y de los argumentos) para interpretarlo bien
-	// luego ver el tema de redirecciones, y luego ya ver si creamos la pipe antes o despues de ejecutar las cosa y almacenar
-	// los descriptores de fichero. IMPORTANTE: cuando se vaya a llamar al executor eliminar los \ que hayamos colocado.
-	// Leer el .h para ver las estrcuturas que hay y los define
-	print_list(head);
+	// print_list(head);
+	while (++pos < ft_len_node(head))
+	{
+		if (!translate_args(&head[pos]))
+			return (free_list(head), 1);
+	}
+	if (ft_len_node(head) == 1)
+	{
+		if (excute_one_command(head))
+			return (free_list(head), 1);
+	}
+	else
+	{
+		if (execute_commands(head))
+			// en los hijos liberar la memoria de todo el programa
+			return (free_list(head), 1);
+	}
 	return (free_list(head), 0);
 }

@@ -28,25 +28,6 @@ void	ft_add_node_back(t_node **head, t_node *new_node)
 	}
 }
 
-void	find_pipe(char *line, int *pos)
-{
-	int	single_quote_open;
-	int	double_quote_open;
-
-	single_quote_open = 0;
-	double_quote_open = 0;
-	while (line[*pos])
-	{
-		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
-			single_quote_open = !single_quote_open;
-		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
-			double_quote_open = !double_quote_open;
-		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
-			break ;
-		(*pos)++;
-	}
-}
-
 char	*get_trunc_str(char *line, int init_pos, int end_pos)
 {
 	int		pos;
@@ -86,4 +67,17 @@ int	split_str(char *str, t_command **command)
 	(*command)->args[pos] = NULL;
 	ft_free(split);
 	return (1);
+}
+
+int	ft_len_node(t_node *head)
+{
+	int	size;
+
+	size = 0;
+	while (head)
+	{
+		head = head->next;
+		size++;
+	}
+	return (size);
 }

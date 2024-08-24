@@ -45,7 +45,36 @@ enum					e_errors
 {
 	ENO_MEM = 12,
 	BAD_ASSIGNMENT = 120,
-	COMMAND_NOT_FOUND = 127
+	COMMAND_NOT_FOUND = 127,
+	VARIABLE_NOT_FOUND = 4
+
+};
+
+enum					e_redirtype
+{
+	r_output = 1,
+	r_append = 2,
+	r_input = 3,
+	r_heredoc = 4
+};
+
+enum					e_built_ins
+{
+	e_echo = 1,
+	e_cd = 2,
+	e_pwd = 3,
+	e_export = 4,
+	e_unset = 5,
+	e_env = 6,
+	e_exit = 7
+};
+
+enum					e_access_mode	
+{
+    e_F_OK = 0,   
+    e__OK = 4,  
+    e_W_OK = 2,   
+    e_X_OK = 1   
 };
 
 /***************************************
@@ -58,14 +87,6 @@ typedef struct s_redir
 	char				*arg;
 	struct s_redir		*next;
 }						t_redir;
-
-enum					e_redirtype
-{
-	r_output = 1,
-	r_append = 2,
-	r_input = 3,
-	r_heredoc = 4
-};
 
 typedef struct s_env
 {
@@ -80,6 +101,7 @@ typedef struct s_command
 	int					num_args;
 	char				*command;
 	char				**args;
+	struct s_redir		*redir;
 }						t_command;
 
 typedef struct s_node
@@ -90,7 +112,6 @@ typedef struct s_node
 	struct s_env		*env;
 	struct s_env		*exp;
 	struct s_node		*next;
-	struct s_redir		*redir;
 	struct s_command	*content;
 }						t_node;
 
@@ -105,6 +126,14 @@ typedef struct s_node
  * @return The status
  */
 int						process_command(char **env, char *line);
+
+/**
+ * @brief Check if there are invalid characters ('\') or '|', ';', '&'
+   out of quotes
+ * @param line The string
+ * @returns 1 if there are invalid characters. Otherwise, 0.
+ */
+int						invalid_character(char *line);
 
 /**
  * @brief Split by spaces the line
@@ -132,20 +161,19 @@ int						count_pipes(char *line);
 int						even_quotes(char *line);
 
 /**
+ * @brief Translate each command and their args
+ * @param node The node to translate
+ * @returns 0 if occurs any error. Otherwise, 1.
+ */
+int						translate_args(t_node *node);
+
+/**
  * @brief Deletes the simple and double quotes and adds a '\' in front
    of each character that was between quotes
  * @param str The string
  * @returns The modified string
  */
 char					*translate_str(const char *str);
-
-/**
- * @brief Check if there are invalid characters ('\') or '|', ';', '&'
-   out of quotes
- * @param line The string
- * @returns 1 if there are invalid characters. Otherwise, 0.
- */
-int						invalid_character(char *line);
 
 /***************************************
 				commands list
@@ -174,6 +202,13 @@ void					ft_add_node_back(t_node **head, t_node *new_node);
  * @returns 0 if occurs any error. Otherwise 1.
  */
 int						split_str(char *str, t_command **command);
+
+/**
+ * @brief Calculates the length of the command list
+ * @param head The head of the command list
+ * @returns The length of the command list
+ */
+int						ft_len_node(t_node *head);
 
 /**
  * @brief Truncs the str between init and end position

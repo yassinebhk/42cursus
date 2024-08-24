@@ -4,6 +4,25 @@
 // splitear por | reales
 // luego en cada nodo splitear por espacios y transcribir
 
+void	find_pipe(char *line, int *pos)
+{
+	int	single_quote_open;
+	int	double_quote_open;
+
+	single_quote_open = 0;
+	double_quote_open = 0;
+	while (line[*pos])
+	{
+		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
+			single_quote_open = !single_quote_open;
+		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
+			double_quote_open = !double_quote_open;
+		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
+			break ;
+		(*pos)++;
+	}
+}
+
 t_command	*get_content(char *line, int init_pos, int end_pos)
 {
 	char		*str;

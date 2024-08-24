@@ -75,3 +75,20 @@ char	*translate_str(const char *str)
 	new_str[i] = '\0';
 	return (new_str);
 }
+
+int	translate_args(t_node *node)
+{
+	int	pos;
+
+	pos = -1;
+	node->content->command = translate_str(node->content->command);
+	if (!node->content->command)
+		return (0);
+	while (node->content->args[++pos])
+	{
+		node->content->args[pos] = translate_str(node->content->args[pos]);
+		if (!node->content->args[pos])
+			return (0);
+	}
+	return (1);
+}
