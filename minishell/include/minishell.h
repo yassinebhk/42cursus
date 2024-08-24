@@ -59,6 +59,14 @@ typedef struct s_redir
 	struct s_redir		*next;
 }						t_redir;
 
+enum					e_redirtype
+{
+	r_output = 1,
+	r_append = 2,
+	r_input = 3,
+	r_heredoc = 4
+};
+
 typedef struct s_env
 {
 	int					index;
