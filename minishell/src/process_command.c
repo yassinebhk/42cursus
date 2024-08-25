@@ -37,22 +37,16 @@ int	process_command(char **env, char *line)
 	if (!even_quotes(line) || invalid_character(line) || init_nodes(env, line,
 			&head))
 		return (1);
-	// print_list(head);
+	print_list(head);
 	while (++pos < ft_len_node(head))
 	{
 		if (!translate_args(&head[pos]))
 			return (free_list(head), 1);
 	}
-	if (ft_len_node(head) == 1)
-	{
-		if (excute_one_command(head))
-			return (free_list(head), 1);
-	}
-	else
-	{
-		if (execute_commands(head))
-			// en los hijos liberar la memoria de todo el programa
-			return (free_list(head), 1);
-	}
+	print_list(head);
+	if (ft_len_node(head) == 1 && excute_one_command(head))
+		return (free_list(head), 1);
+	else if (execute_commands(head))
+		return (free_list(head), 1);
 	return (free_list(head), 0);
 }

@@ -2,4 +2,5 @@
 *.a
 *.DS_Store
 *.out
+*.txt
 minishell

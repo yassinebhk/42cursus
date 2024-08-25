@@ -2,8 +2,8 @@
 
 int	split_by_spaces(char *line, t_env *env, t_env *exp)
 {
-	int status;
-	char **split;
+	int		status;
+	char	**split;
 
 	split = ft_split(line, ' ');
 	status = find_built(split, num_words(line, ' '), env, exp);

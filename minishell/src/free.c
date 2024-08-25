@@ -40,7 +40,7 @@ static void	free_content(t_command *command)
 
 	pos = -1;
 	free(command->command);
-	while(command->args[++pos])
+	while (command->args[++pos])
 		free(command->args[pos]);
 	free(command->args);
 }
@@ -55,5 +55,5 @@ void	free_list(t_node *head)
 		free_args(head->env, head->exp);
 		free_content(head->content);
 		head = tmp;
-	}	
+	}
 }

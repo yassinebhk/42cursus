@@ -6,11 +6,13 @@
 ***************************************/
 
 # include "libft.h"
+# include <stdio.h>
+# include <signal.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <unistd.h>
 
 /***************************************
 					DEFINE
@@ -47,7 +49,6 @@ enum					e_errors
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127,
 	VARIABLE_NOT_FOUND = 4
-
 };
 
 enum					e_redirtype
@@ -69,12 +70,12 @@ enum					e_built_ins
 	e_exit = 7
 };
 
-enum					e_access_mode	
+enum					e_access_mode
 {
-    e_F_OK = 0,   
-    e__OK = 4,  
-    e_W_OK = 2,   
-    e_X_OK = 1   
+	e_F_OK = 0,
+	e__OK = 4,
+	e_W_OK = 2,
+	e_X_OK = 1
 };
 
 /***************************************
@@ -455,5 +456,55 @@ int						ft_exit(void);
  */
 
 void					print_error(char *command, int errno);
+
+/***************************************
+				executor
+***************************************/
+
+/**
+ * @brief Executes one command
+ * @param head The head of the commands list
+ * @returns 1 if occurs an error. Otherwise, 0.
+ */
+int						excute_one_command(t_node *head);
+
+/**
+ * @brief Checks if the command is a built_in
+ * @param command The command
+ * @returns 1 if it is. Otherwise, 0.
+ */
+int						is_built_in(char *command);
+
+/**
+ * @brief Gets the command variable value at the env list
+ * @param command The command
+ * @param env The enviromental variables list
+ * @returns The value of the command. Otherwise NULL.
+ */
+char					*get_path_list(char *command, t_env *env);
+
+/**
+ * @brief Gets the absolute path of a command if exists
+ * @param path_list The path list
+ * @param command The command
+ * @param head The head of the commands list
+ * @returns The absolute path if exists. Otherwise, NUlll.
+ */
+int						get_absolute_path(char *path_list, char *command,
+							t_node *head);
+
+/**
+ * @brief Executes all the commands
+ * @param head The head of the commands list
+ * @returns 1 if occurs an error. Otherwise, 0.
+ */
+int						execute_commands(t_node *head);
+
+/**
+ * @brief Remove the backslash from the strings
+ * @param head The head of the commands list
+ * @returns 1 if occurs an error. Otherwise, 0.
+ */
+int						delete_backslash(t_node *head);
 
 #endif

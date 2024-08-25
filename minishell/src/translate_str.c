@@ -73,7 +73,7 @@ char	*translate_str(const char *str)
 			&i);
 	}
 	new_str[i] = '\0';
-	return (new_str);
+	return (free(str), new_str);
 }
 
 int	translate_args(t_node *node)
