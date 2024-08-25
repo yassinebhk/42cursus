@@ -52,7 +52,7 @@ static int	new_len_str(const char *str)
 	return (len);
 }
 
-char	*translate_str(const char *str)
+char	*translate_str(char *str)
 {
 	int		i;
 	int		pos;

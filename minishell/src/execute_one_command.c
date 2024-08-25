@@ -49,7 +49,6 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 
 int	excute_one_command(t_node *head)
 {
-	char	**paths;
 	char	*path_list;
 
 	if (is_built_in(head->content->command))

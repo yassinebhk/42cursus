@@ -176,7 +176,7 @@ int						translate_args(t_node *node);
  * @param str The string
  * @returns The modified string
  */
-char					*translate_str(const char *str);
+char					*translate_str(char *str);
 
 /***************************************
 				commands list

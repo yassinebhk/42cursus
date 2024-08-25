@@ -38,15 +38,16 @@ t_node	*init_node(char **environment, char *line, int *pos)
 	new_node->next = NULL;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
-		return (free(new_node), print_error("new_node content malloc", ENO_MEM), NULL);
+		return (free(new_node), print_error("new_node content malloc", ENO_MEM),
+			NULL);
 	return (new_node);
 }
 
 int	init_nodes(char **env, char *line, t_node **head)
 {
-	int		i;
-	int		pos;
-	t_node	*new_node;
+	int i;
+	int pos;
+	t_node *new_node;
 
 	i = -1;
 	pos = 0;

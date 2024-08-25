@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	new_len_str(const char *str)
+static int	new_len_str(char *str)
 {
 	int	pos;
 	int	len;
@@ -15,7 +15,7 @@ static int	new_len_str(const char *str)
 	return (len);
 }
 
-char *delete (const char *str)
+char *delete (char *str)
 {
 	int		i;
 	int		pos;
