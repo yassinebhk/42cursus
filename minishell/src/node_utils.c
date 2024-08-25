@@ -28,6 +28,25 @@ void	ft_add_node_back(t_node **head, t_node *new_node)
 	}
 }
 
+void	find_pipe(char *line, int *pos)
+{
+	int	single_quote_open;
+	int	double_quote_open;
+
+	single_quote_open = 0;
+	double_quote_open = 0;
+	while (line[*pos])
+	{
+		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
+			single_quote_open = !single_quote_open;
+		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
+			double_quote_open = !double_quote_open;
+		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
+			break ;
+		(*pos)++;
+	}
+}
+
 char	*get_trunc_str(char *line, int init_pos, int end_pos)
 {
 	int		pos;
@@ -66,6 +85,184 @@ int	split_str(char *str, t_command **command)
 		(*command)->args[pos] = ft_strdup(split[pos + 1]);
 	(*command)->args[pos] = NULL;
 	ft_free(split);
+	return (1);
+}
+
+static int	is_redir(char *str)
+{
+	return ((*str == '>' && *(str + 1) == '>') || \
+				*str == '>' ||\
+				(*str == '<' && *(str+ 1) == '<') || \
+				*str == '<');
+}
+
+static int	ft_isspecial(char c)
+{
+	return (c == '*' || c == '?' || c == '!' || c == '$' || c == '&' || c == '#' || c == '<' || c == '>' || c == '\\' || c == '/' || c == '|');
+}
+
+static int	ft_isspace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\v');
+}
+
+static void	num_args (char *str, int *n_args, int *n_redir)
+{
+	int	word;
+
+	word = 0;
+	while (*str <= ' ')
+		str++;
+	while (*str)
+	{
+		if (is_redir(str))
+		{
+			while (is_redir(str))
+				str++;
+			while (ft_isspace(*str))
+				str++;
+			while (*str > ' ')
+				str++;
+			(*n_redir)++;
+		}
+		while (*str > ' ' && !is_redir(str))
+		{
+			str++;
+			if (!word)
+				word = 1;
+		}
+		while (ft_isspace(*str))
+			str++;
+		if (word)
+			(*n_args)++;
+		word = 0;
+	}
+}
+
+static t_redir	create_redir(char *str)
+{
+	int		i;
+	int		begin;
+	int		cp_i;
+	t_redir	redir;
+
+	i = 0;
+	if (str[i] == '>' && str[i + 1] == '>')
+		redir.type = r_append;
+	else if (str[i] == '>')
+		redir.type = r_output;
+	else if (str[i] == '<' && str[i + 1] == '<')
+		redir.type = r_heredoc;
+	else if (str[i] == '<')
+		redir.type = r_input;
+	else if (ft_isspecial(str[i + 2]))
+		return (print_error("create_redir parse error", PARSING), redir.valid = 0, redir);
+	while (is_redir(str + i))
+		i++;
+	while (ft_isspace(str[i]))
+		i++;
+	begin = i;
+	while (str[i] > ' ')
+	{
+		if (ft_isspecial(str[i]))
+			return (print_error("create_redir filename", BAD_ASSIGNMENT), redir.valid = 0, redir);
+		i++;
+	}
+	redir.filename = (char *)malloc(sizeof(char) * (i - begin));
+	if (!redir.filename)
+		return (print_error("create_redir malloc", ENO_MEM), redir.valid = 0, redir);
+	cp_i = 0;
+	while (begin < i)
+		redir.filename[cp_i++] = str[begin++];
+	redir.filename[cp_i] = '\0';
+	redir.valid = 1;
+	return (redir);
+}
+
+static int	create_command(char *str, t_command **command)
+{
+	int	redir_pos;
+	int	args_pos;
+	int	cp_i;
+	int	word;
+	int comm_word;
+	int	i;
+	int	begin;
+
+	redir_pos = 0;
+	args_pos = 0;
+	word = 0;
+	comm_word = 1;
+	i = 0;
+	while (str[i] <= ' ')
+		i++;
+	while (str[i])
+	{
+		if (is_redir(str + i))
+		{
+			(*command)->redir[redir_pos] = create_redir(str + (i++));
+			if (!(*command)->redir[redir_pos++].valid)
+				return (1);
+			while (is_redir(str +i))
+				i++;
+			while (ft_isspace(str[i]))
+				i++;
+			while (str[i] > ' ')
+				i++;
+
+		}
+		begin = i;
+		while (str[i] > ' ' && !is_redir(str + i))
+		{
+			i++;
+			if (!word)
+				word = 1;
+		}
+		if (word)
+		{
+			cp_i = 0;
+			if (comm_word)
+			{
+				(*command)->command = (char *)malloc(sizeof(char) * (i - begin));
+				while (begin < i)
+					(*command)->command[cp_i++] = str[begin++];
+				(*command)->command[cp_i] = '\0';
+				comm_word = 0;
+				// ft_strlcpy((*command)->args[args_pos++], (*command)->command, cp_i); falta introducir que copie en la primera posición de args el comando pero por alguna razón estalla
+			}
+			else
+			{
+				(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i - begin));
+				while (begin < i)
+					(*command)->args[args_pos][cp_i++] = str[begin++];
+				(*command)->args[args_pos++][cp_i] = '\0';
+			}
+		}
+		while (ft_isspace(str[i]))
+			i++;
+		word = 0;
+	}
+	return (0);
+
+}
+
+int	new_command(char *str, t_command **command)
+{
+	int		n_args;
+	int		n_redir;
+
+	n_args = 0;
+	n_redir = 0;
+	num_args(str, &n_args, &n_redir);
+	(*command)->num_args = n_args;
+	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args));
+	if (!(*command)->args)
+		return (print_error("command args malloc", ENO_MEM), 0);
+	(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
+	while (*str <= ' ')
+		str++;
+	if(create_command(str, command))
+		return (print_error("error command creation", 0), 0);
 	return (1);
 }
 

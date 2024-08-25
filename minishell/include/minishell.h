@@ -46,6 +46,7 @@ enum					e_metacharacters
 enum					e_errors
 {
 	ENO_MEM = 12,
+	PARSING = 64,
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127,
 	VARIABLE_NOT_FOUND = 4
@@ -85,7 +86,8 @@ enum					e_access_mode
 typedef struct s_redir
 {
 	int					type;
-	char				*arg;
+	int					valid;
+	char				*filename;
 	struct s_redir		*next;
 }						t_redir;
 
@@ -205,11 +207,12 @@ void					ft_add_node_back(t_node **head, t_node *new_node);
 int						split_str(char *str, t_command **command);
 
 /**
- * @brief Calculates the length of the command list
- * @param head The head of the command list
- * @returns The length of the command list
+ * @brief Split the string in three parts: the command, their args and the redirections
+ * @param str The string
+ * @param command The command struct
+ * @returns 0 if occurs any error. Otherwise 1.
  */
-int						ft_len_node(t_node *head);
+int						new_command(char *str, t_command **command);
 
 /**
  * @brief Truncs the str between init and end position
@@ -226,6 +229,13 @@ char					*get_trunc_str(char *line, int init_pos, int end_pos);
  * @param pos The current position in the string
  */
 void					find_pipe(char *line, int *pos);
+
+/**
+ * @brief Calculates the length of the command list
+ * @param head The head of the command list
+ * @returns The length of the command list
+ */
+int						ft_len_node(t_node *head);
 
 /***************************************
 				lists utils

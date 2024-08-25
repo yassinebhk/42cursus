@@ -4,25 +4,6 @@
 // splitear por | reales
 // luego en cada nodo splitear por espacios y transcribir
 
-void	find_pipe(char *line, int *pos)
-{
-	int	single_quote_open;
-	int	double_quote_open;
-
-	single_quote_open = 0;
-	double_quote_open = 0;
-	while (line[*pos])
-	{
-		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
-			single_quote_open = !single_quote_open;
-		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
-			double_quote_open = !double_quote_open;
-		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
-			break ;
-		(*pos)++;
-	}
-}
-
 t_command	*get_content(char *line, int init_pos, int end_pos)
 {
 	char		*str;
@@ -34,7 +15,7 @@ t_command	*get_content(char *line, int init_pos, int end_pos)
 	str = get_trunc_str(line, init_pos, end_pos);
 	if (!str)
 		return (free(command), NULL);
-	if (!split_str(str, &command))
+	if (!new_command(str, &command))
 		return (free(str), free(command), NULL);
 	return (free(str), command);
 }
@@ -52,15 +33,12 @@ t_node	*init_node(char **environment, char *line, int *pos)
 	new_node->env = get_var(environment, 0);
 	new_node->exp = get_var(environment, 1);
 	new_node->error = 0;
-	new_node->fd_in = 0;
+	new_node->fd_in = 1;
 	new_node->fd_out = 0;
 	new_node->next = NULL;
-	// HABRIA QUE MALLOQUEAR new_node->redir->arg = NULL;
-	// new_node->redir->next = NULL;
-	// new_node->redir->type = -1;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
-		return (free(new_node), NULL);
+		return (free(new_node), print_error("new_node content malloc", ENO_MEM), NULL);
 	return (new_node);
 }
 
