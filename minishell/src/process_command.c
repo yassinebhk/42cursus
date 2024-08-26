@@ -30,52 +30,58 @@
 // 	printf("----------------------------------\n");
 // }
 
-void print_redir(t_redir redir) {
-        printf("    Redirection type: %d\n", redir.type);
-        printf("    Valid: %d\n", redir.valid);
-        printf("    Filename: %s\n", redir.filename);
+void	print_redir(t_redir redir)
+{
+	printf("    Redirection type: %d\n", redir.type);
+	printf("    Valid: %d\n", redir.valid);
+	printf("    Filename: %s. (%ld)\n", redir.filename, ft_strlen(redir.filename));
 }
 
-void print_command(t_command *cmd) {
-    if (!cmd) {
-        printf("    (null)\n");
-        return;
-    }
-    printf("  Command: %s\n", cmd->command);
-    printf("  Number of arguments: %d\n", cmd->num_args);
-    if (cmd->args) {
-        printf("  Arguments:\n");
-        for (int i = 0; i < cmd->num_args; i++) {
-            printf("    arg[%d]: %s\n", i, cmd->args[i]);
-        }
-    } else {
-        printf("  No arguments.\n");
-    }
-	printf("  Number of redirs: %d\n", cmd->num_redir);
-    if (cmd->redir) {
-        printf("  Redirections:\n");
-		for (int i = 0; i < cmd->num_redir; i++) {
-	        print_redir(cmd->redir[i]);
-		}
-    } else {
-        printf("  No redirections.\n");
-    }
-}
-
-void print_list(t_node *node) {
-    int node_count = 0;
-    while (node)
+void	print_command(t_command *cmd)
+{
+	if (!cmd)
 	{
-        printf("       Command content     \n");
-        print_command(node->content);
+		printf("    (null)\n");
+		return ;
+	}
+	printf("  Command: %s\n", cmd->command);
+	printf("  Number of arguments: %d\n", cmd->num_args);
+	if (cmd->num_args > 0 && cmd->args)
+	{
+		printf("  Arguments:\n");
+		for (int i = 0; i < cmd->num_args; i++)
+			printf("    arg[%d]: %s. (%ld)\n", i, cmd->args[i], ft_strlen(cmd->args[i]));
+	}
+	else
+	{
+		printf("  No arguments.\n");
+	}
+	printf("  Number of redirs: %d\n", cmd->num_redir);
+	if (cmd->num_redir && cmd->redir)
+	{
+		printf("  Redirections:\n");
+		for (int i = 0; i < cmd->num_redir; i++)
+			print_redir(cmd->redir[i]);
+	}
+	else
+		printf("  No redirections.\n");
+}
 
-        // Print additional fields (env, exp) if necessary
-        // ...
+void	print_list(t_node *node)
+{
+	int	node_count;
 
-        printf("\n");
-        node = node->next;
-        node_count++;
-    }
+	node_count = 0;
+	while (node)
+	{
+		printf("       Command content     \n");
+		print_command(node->content);
+		// Print additional fields (env, exp) if necessary
+		// ...
+		printf("\n");
+		node = node->next;
+		node_count++;
+	}
 }
 
 int	process_command(char **env, char *line)
@@ -85,14 +91,14 @@ int	process_command(char **env, char *line)
 
 	pos = -1;
 	head = NULL;
-	if (!even_quotes(line) || invalid_character(line) || \
-			init_nodes(env, line, &head))
+	if (!even_quotes(line) || invalid_character(line) || init_nodes(env, line,
+			&head))
 		return (1);
 	print_list(head);
 	while (++pos < ft_len_node(head))
 	{
-		// if (!translate_args(&head[pos]))
-		// 	return (free_list(head), 1);
+		//if (!translate_args(&head[pos]))
+			//return (free_list(head), 1);
 	}
 	//print_list(head);
 	// if (ft_len_node(head) == 1 && excute_one_command(head))

@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-// tnatos nodos como count_pipes() haya
-// splitear por | reales
-// luego en cada nodo splitear por espacios y transcribir
-
 t_command	*get_content(char *line, int init_pos, int end_pos)
 {
 	char		*str;
@@ -45,9 +41,9 @@ t_node	*init_node(char **environment, char *line, int *pos)
 
 int	init_nodes(char **env, char *line, t_node **head)
 {
-	int i;
-	int pos;
-	t_node *new_node;
+	int		i;
+	int		pos;
+	t_node	*new_node;
 
 	i = -1;
 	pos = 0;

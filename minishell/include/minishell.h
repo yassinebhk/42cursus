@@ -6,13 +6,13 @@
 ***************************************/
 
 # include "libft.h"
-# include <stdio.h>
-# include <signal.h>
-# include <unistd.h>
-# include <sys/wait.h>
-# include <sys/types.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 /***************************************
 					DEFINE
@@ -199,7 +199,8 @@ int						init_nodes(char **env, char *line, t_node **head);
 void					ft_add_node_back(t_node **head, t_node *new_node);
 
 /**
- * @brief Split the string in three parts: the command, their args and the redirections
+ * @brief Split the string in three parts: the command,
+	their args and the redirections
  * @param str The string
  * @param command The command struct
  * @returns 0 if occurs any error. Otherwise 1.
@@ -207,7 +208,8 @@ void					ft_add_node_back(t_node **head, t_node *new_node);
 int						new_command(char *str, t_command **command);
 
 /**
- * @brief Split the string in three parts: the command, their args and the redirections
+ * @brief Split the string in three parts: the command,
+	their args and the redirections
  * @param str The string
  * @param command The command struct
  * @returns 0 if occurs any error. Otherwise 1.

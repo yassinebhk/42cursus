@@ -38,11 +38,23 @@ static void	free_content(t_command *command)
 {
 	int	pos;
 
-	pos = -1;
+	if (!command)
+		return ;
 	free(command->command);
-	while (command->args[++pos])
-		free(command->args[pos]);
-	free(command->args);
+	if (command->num_redir > 0 && command->redir)
+	{
+		pos = -1;
+		while (++pos < command->num_redir)
+			free(command->redir[pos].filename);
+		free(command->redir);
+	}
+	if (command->num_args > 0 && command->args)
+	{
+		pos = -1;
+		while (++pos < command->num_args)
+			free(command->args[pos]);
+		free(command->args);
+	}
 }
 
 void	free_list(t_node *head)
@@ -54,6 +66,8 @@ void	free_list(t_node *head)
 		tmp = head->next;
 		free_args(head->env, head->exp);
 		free_content(head->content);
+		free(head->content);
+		free(head);
 		head = tmp;
 	}
 }
