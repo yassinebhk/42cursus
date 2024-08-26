@@ -99,7 +99,7 @@ static void	num_args (char *str, int *n_args, int *n_redir)
 				str++;
 			while (ft_isspace(*str))
 				str++;
-			while (*str > ' ')
+			while (*str > ' ' && !is_redir(str))
 				str++;
 			(*n_redir)++;
 		}
@@ -140,7 +140,7 @@ static t_redir	create_redir(char *str)
 	while (ft_isspace(str[i]))
 		i++;
 	begin = i;
-	while (str[i] > ' ')
+	while (str[i] > ' ' && !is_redir(str + i))
 	{
 		if (ft_isspecial(str[i]))
 			return (print_error("create_redir filename", BAD_ASSIGNMENT), redir.valid = 0, redir);
@@ -179,14 +179,14 @@ static int	create_command(char *str, t_command **command)
 	{
 		if (is_redir(str + i))
 		{
-			(*command)->redir[redir_pos] = create_redir(str + (i++));
+			(*command)->redir[redir_pos] = create_redir(str + i);
 			if (!(*command)->redir[redir_pos++].valid)
 				return (1);
 			while (is_redir(str +i))
 				i++;
 			while (ft_isspace(str[i]))
 				i++;
-			while (str[i] > ' ')
+			while (str[i] > ' ' && !is_redir(str + i))
 				i++;
 		}
 		begin = i;
@@ -232,10 +232,12 @@ int	new_command(char *str, t_command **command)
 	num_args(str, &n_args, &n_redir);
 	(*command)->num_args = n_args;
 	(*command)->num_redir = n_redir;
-	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args));
+	if (n_args)
+		(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args));
 	if (!(*command)->args)
 		return (print_error("command args malloc", ENO_MEM), 0);
-	(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
+	if (n_redir)
+		(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
 	while (*str <= ' ')
 		str++;
 	if(create_command(str, command))

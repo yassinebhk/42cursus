@@ -30,10 +30,10 @@
 // 	printf("----------------------------------\n");
 // }
 
-void print_redir(t_redir *redir) {
-        printf("    Redirection type: %d\n", redir->type);
-        printf("    Valid: %d\n", redir->valid);
-        printf("    Filename: %s\n", redir->filename);
+void print_redir(t_redir redir) {
+        printf("    Redirection type: %d\n", redir.type);
+        printf("    Valid: %d\n", redir.valid);
+        printf("    Filename: %s\n", redir.filename);
 }
 
 void print_command(t_command *cmd) {
@@ -51,11 +51,12 @@ void print_command(t_command *cmd) {
     } else {
         printf("  No arguments.\n");
     }
-
+	printf("  Number of redirs: %d\n", cmd->num_redir);
     if (cmd->redir) {
         printf("  Redirections:\n");
-		for (int i = 0; i < cmd->num_redir; i++)
-	        print_redir(cmd->redir);
+		for (int i = 0; i < cmd->num_redir; i++) {
+	        print_redir(cmd->redir[i]);
+		}
     } else {
         printf("  No redirections.\n");
     }
