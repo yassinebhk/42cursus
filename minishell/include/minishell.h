@@ -88,7 +88,6 @@ typedef struct s_redir
 	int					type;
 	int					valid;
 	char				*filename;
-	struct s_redir		*next;
 }						t_redir;
 
 typedef struct s_env
@@ -102,6 +101,7 @@ typedef struct s_env
 typedef struct s_command
 {
 	int					num_args;
+	int					num_redir;
 	char				*command;
 	char				**args;
 	struct s_redir		*redir;
@@ -112,8 +112,8 @@ typedef struct s_node
 	int					error;
 	int					fd_in;
 	int					fd_out;
-	struct s_env		*env;
-	struct s_env		*exp;
+	t_env				*env;
+	t_env				*exp;
 	struct s_node		*next;
 	struct s_command	*content;
 }						t_node;
@@ -199,12 +199,12 @@ int						init_nodes(char **env, char *line, t_node **head);
 void					ft_add_node_back(t_node **head, t_node *new_node);
 
 /**
- * @brief Split the string in two parts: the commando and their args
+ * @brief Split the string in three parts: the command, their args and the redirections
  * @param str The string
  * @param command The command struct
  * @returns 0 if occurs any error. Otherwise 1.
  */
-int						split_str(char *str, t_command **command);
+int						new_command(char *str, t_command **command);
 
 /**
  * @brief Split the string in three parts: the command, their args and the redirections

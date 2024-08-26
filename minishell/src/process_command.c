@@ -31,13 +31,9 @@
 // }
 
 void print_redir(t_redir *redir) {
-    while (redir) {
         printf("    Redirection type: %d\n", redir->type);
         printf("    Valid: %d\n", redir->valid);
         printf("    Filename: %s\n", redir->filename);
-		printf("\n punteros %p %p\n", redir, redir->next);
-        redir = redir->next;
-    }
 }
 
 void print_command(t_command *cmd) {
@@ -58,7 +54,8 @@ void print_command(t_command *cmd) {
 
     if (cmd->redir) {
         printf("  Redirections:\n");
-        print_redir(cmd->redir);
+		for (int i = 0; i < cmd->num_redir; i++)
+	        print_redir(cmd->redir);
     } else {
         printf("  No redirections.\n");
     }
@@ -87,8 +84,8 @@ int	process_command(char **env, char *line)
 
 	pos = -1;
 	head = NULL;
-	if (!even_quotes(line) || invalid_character(line) || init_nodes(env, line,
-			&head))
+	if (!even_quotes(line) || invalid_character(line) || \
+			init_nodes(env, line, &head))
 		return (1);
 	print_list(head);
 	while (++pos < ft_len_node(head))
