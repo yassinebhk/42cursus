@@ -73,7 +73,7 @@ char	*translate_str(char *str)
 			&i);
 	}
 	new_str[i] = '\0';
-	return (free(str), new_str);
+	return (new_str);
 }
 
 int	translate_args(t_node *node)
@@ -84,7 +84,7 @@ int	translate_args(t_node *node)
 	node->content->command = translate_str(node->content->command);
 	if (!node->content->command)
 		return (0);
-	while (node->content->args[++pos])
+	while (++pos < node->content->num_args)
 	{
 		node->content->args[pos] = translate_str(node->content->args[pos]);
 		if (!node->content->args[pos])
