@@ -73,22 +73,20 @@ char	*add_eq(char *str)
 	return (rmv);
 }
 
-int	unset(char **str, int num_words, t_env *env, t_env *exp)
+int	unset(char **str, int num_words, t_env **env, t_env **exp)
 {
 	int	pos;
-	int	result;
 
-	result = 0;
 	pos = 0;
 	if (num_words > 1)
 	{
 		while (++pos < num_words)
 		{
-			if (check_var(str[pos], env, exp) == 1)
-				delete_var(str[pos], &env, &exp, 0);
-			else if (check_var(str[pos], env, exp) == 2)
-				delete_var(str[pos], &env, &exp, 1);
+			if (check_var(str[pos], *env, *exp) == 1)
+				delete_var(str[pos], env, exp, 0);
+			else if (check_var(str[pos], *env, *exp) == 2)
+				delete_var(str[pos], env, exp, 1);
 		}
 	}
-	return (result);
+	return (0);
 }

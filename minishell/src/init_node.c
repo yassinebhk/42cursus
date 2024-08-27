@@ -16,7 +16,7 @@ t_command	*get_content(char *line, int init_pos, int end_pos)
 	return (free(str), command);
 }
 
-t_node	*init_node(char **environment, char *line, int *pos)
+t_node	*init_node(char *line, int *pos, t_lists lists)
 {
 	int		init_pos;
 	t_node	*new_node;
@@ -26,8 +26,8 @@ t_node	*init_node(char **environment, char *line, int *pos)
 	new_node = (t_node *)malloc(sizeof(t_node));
 	if (!new_node)
 		return (print_error("new_node malloc", ENO_MEM), NULL);
-	new_node->env = get_var(environment, 0);
-	new_node->exp = get_var(environment, 1);
+	new_node->var_list.env = lists.env;
+	new_node->var_list.exp = lists.exp;
 	new_node->error = 0;
 	new_node->fd_in = 1;
 	new_node->fd_out = 0;
@@ -39,17 +39,27 @@ t_node	*init_node(char **environment, char *line, int *pos)
 	return (new_node);
 }
 
-int	init_nodes(char **env, char *line, t_node **head)
+int	init_nodes(char *line, t_node **head, t_lists lists, char **environment)
 {
 	int		i;
 	int		pos;
+	int		npipes;
+	t_lists	cp_parent;
 	t_node	*new_node;
 
 	i = -1;
 	pos = 0;
-	while (++i <= count_pipes(line))
+	npipes = count_pipes(line);
+	while (++i <= npipes)
 	{
-		new_node = init_node(env, line, &pos);
+		if (!npipes)
+			new_node = init_node(line, &pos, lists);
+		else
+		{
+			cp_parent.env = get_var(environment, 0);
+			cp_parent.exp = get_var(environment, 1);
+			new_node = init_node(line, &pos, cp_parent);
+		}
 		if (!new_node)
 			return (free_list(*head), 1);
 		ft_add_node_back(head, new_node);

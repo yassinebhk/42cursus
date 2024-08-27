@@ -35,7 +35,6 @@ int	find_eq(char *str)
 	pos = -1;
 	flag = 0;
 	cont = 0;
-	printf("\nstrr: %s\n", str);
 	while (str[++pos])
 	{
 		if (str[pos] == '=')

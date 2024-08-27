@@ -1,26 +1,26 @@
 #include "minishell.h"
 
-static void	update_var(char **split, t_env *env, int flag)
+static void	update_var(char **split, t_env **env, int flag)
 {
 	char	*tmp;
 
-	while (env)
+	while (*env)
 	{
 		tmp = ft_strjoin("declare -x ", split[0]);
-		if (!ft_strcmp(env->key, split[0]) && !flag)
+		if (!ft_strcmp((*env)->key, split[0]) && !flag)
 		{
-			free(env->var);
-			env->var = ft_strdup(split[1]);
+			free((*env)->var);
+			(*env)->var = ft_strdup(split[1]);
 		}
-		else if (!ft_strcmp(env->key, tmp))
+		else if (!ft_strcmp((*env)->key, tmp))
 		{
 			free(tmp);
 			tmp = ft_strjoin(split[1], "\"");
-			free(env->var);
-			env->var = ft_strjoin("\"", tmp);
+			free((*env)->var);
+			(*env)->var = ft_strjoin("\"", tmp);
 		}
 		free(tmp);
-		env = env->next;
+		(*env) = (*env)->next;
 	}
 }
 
@@ -52,7 +52,7 @@ static int	find_var(char *str, t_env *env, t_env *exp)
 	return (flag);
 }
 
-static int	set_var_two(char *str, t_env *env, int flag)
+static int	set_var_two(char *str, t_env **env, int flag)
 {
 	t_env	*new_node;
 	char	**split;
@@ -60,32 +60,32 @@ static int	set_var_two(char *str, t_env *env, int flag)
 	if (!find_eq(str))
 	{
 		new_node = ft_new_node(str, NULL, 1);
-		ft_add_back(&env, new_node);
+		ft_add_back(env, new_node);
 	}
 	else if (find_eq(str) == 1)
 	{
 		str = rm_eq(str);
 		new_node = ft_new_node(str, "", flag);
-		ft_add_back(&env, new_node);
+		ft_add_back(env, new_node);
 		free(str);
 	}
 	else
 	{
 		split = ft_split_mod(str, '=');
 		new_node = ft_new_node(split[0], split[1], flag);
-		ft_add_back(&env, new_node);
+		ft_add_back(env, new_node);
 		ft_free(split);
 	}
 	return (0);
 }
 
-int	exist_var(char *str, t_env *env, t_env *exp)
+int	exist_var(char *str, t_env **env, t_env **exp)
 {
 	int		var;
 	char	**split;
 
 	split = ft_split_mod(str, '=');
-	var = find_var(split[0], env, exp);
+	var = find_var(split[0], *env, *exp);
 	if (!var)
 		return (ft_free(split), 1);
 	else if (var == 1)

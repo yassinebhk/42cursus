@@ -1,27 +1,25 @@
 #include "minishell.h"
 
-static int	set_var_and_value(char *str, t_env *exp, t_env *env)
+static int	set_var_and_value(char *str, t_env **exp, t_env **env)
 {
 	char	**split;
 
 	split = ft_split_mod(str, '=');
-	printf("\n%sKey: \n", split[0]);
 	if (valid_var(split[0]))
 		return (BAD_ASSIGNMENT);
-	ft_add_back(&exp, ft_new_node(split[0], split[1], EXPORT_FLAG));
-	ft_add_back(&env, ft_new_node(split[0], split[1], ENV_FLAG));
+	ft_add_back(exp, ft_new_node(split[0], split[1], EXPORT_FLAG));
+	ft_add_back(env, ft_new_node(split[0], split[1], ENV_FLAG));
 	ft_free(split);
 	return (0);
 }
 
-static int	set_var(char *str, t_env *exp, t_env *env, int flag)
+static int	set_var(char *str, t_env **exp, t_env **env, int flag)
 {
-	printf("\nFlag: %d\n", flag);
 	if (!flag)
 	{
 		if (valid_var(str))
 			return (BAD_ASSIGNMENT);
-		ft_add_back(&exp, ft_new_node(str, NULL, EXPORT_FLAG));
+		ft_add_back(exp, ft_new_node(str, NULL, EXPORT_FLAG));
 	}
 	else if (flag == 1)
 	{
@@ -30,8 +28,8 @@ static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 		str = rm_eq(str);
 		if (!str)
 			return (ENO_MEM);
-		ft_add_back(&exp, ft_new_node(str, '\0', EXPORT_FLAG));
-		ft_add_back(&env, ft_new_node(str, '\0', ENV_FLAG));
+		ft_add_back(exp, ft_new_node(str, '\0', EXPORT_FLAG));
+		ft_add_back(env, ft_new_node(str, '\0', ENV_FLAG));
 		free(str);
 	}
 	else
@@ -39,7 +37,7 @@ static int	set_var(char *str, t_env *exp, t_env *env, int flag)
 	return (0);
 }
 
-int	export(char **str, int num_words, t_env *env, t_env *exp)
+int	export(char **str, int num_words, t_env **env, t_env **exp)
 {
 	int	pos;
 	int	result;
@@ -47,7 +45,7 @@ int	export(char **str, int num_words, t_env *env, t_env *exp)
 	pos = 0;
 	result = 0;
 	if (num_words == 1)
-		print_export_list(exp);
+		print_export_list(*exp);
 	else
 	{
 		while (++pos < num_words && !result)

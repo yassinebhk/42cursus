@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	execute_commands(t_node *head)
+int	execute_commands(t_node **head)
 {
 	(void)head;
 	// int	pid;

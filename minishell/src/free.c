@@ -64,7 +64,7 @@ void	free_list(t_node *head)
 	while (head)
 	{
 		tmp = head->next;
-		free_args(head->env, head->exp);
+		free_args(head->var_list.env, head->var_list.exp);
 		free_content(head->content);
 		free(head->content);
 		free(head);

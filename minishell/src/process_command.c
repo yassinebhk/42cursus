@@ -34,7 +34,8 @@ void	print_redir(t_redir redir)
 {
 	printf("    Redirection type: %d\n", redir.type);
 	printf("    Valid: %d\n", redir.valid);
-	printf("    Filename: %s. (%ld)\n", redir.filename, ft_strlen(redir.filename));
+	printf("    Filename: %s. (%ld)\n", redir.filename,
+		ft_strlen(redir.filename));
 }
 
 void	print_command(t_command *cmd)
@@ -50,7 +51,8 @@ void	print_command(t_command *cmd)
 	{
 		printf("  Arguments:\n");
 		for (int i = 0; i < cmd->num_args; i++)
-			printf("    arg[%d]: %s. (%ld)\n", i, cmd->args[i], ft_strlen(cmd->args[i]));
+			printf("    arg[%d]: %s. (%ld)\n", i, cmd->args[i],
+				ft_strlen(cmd->args[i]));
 	}
 	else
 	{
@@ -84,29 +86,30 @@ void	print_list(t_node *node)
 	}
 }
 
-int	process_command(char **env, char *line)
+
+int	process_command(char *line, t_lists *lists, char **environment)
 {
 	int		pos;
+	t_node	*tmp;
 	t_node	*head;
-    t_node  *tmp;
 
 	pos = -1;
 	head = NULL;
-	if (!even_quotes(line) || invalid_character(line) || init_nodes(env, line,
-			&head))
-		return (1);
-	//print_list(head); 
-    tmp = head;
+	if (!even_quotes(line) || invalid_character(line) || init_nodes(line,
+			&head, *lists, environment))
+		return (free_list(head), 1);
+	print_list(head);
+	tmp = head;
 	while (++pos < ft_len_node(head))
 	{
 		if (!translate_args(tmp))
 			return (free_list(head), 1);
-        tmp = tmp->next;
+		tmp = tmp->next;
 	}
-	print_list(head);
-	// if (ft_len_node(head) == 1 && excute_one_command(head))
-	// 	return (free_list(head), 1);
-	// else if (execute_commands(head))
-	// 	return (free_list(head), 1);
-	return (free_list(head), 0);
+	// print_list(*head);
+	if (ft_len_node(head) == 1)
+		pos = excute_one_command(&head);
+	else
+		pos = execute_commands(&head);
+	return (free_list(head), pos);
 }

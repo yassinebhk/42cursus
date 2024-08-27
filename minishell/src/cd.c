@@ -88,9 +88,9 @@ int	cd_env(char **str, int num_words, t_env *env, t_env *exp)
 	return (0);
 }
 
-int	cd(char **str, int num_words, t_env *env, t_env *exp)
+int	cd(char **str, int num_words, t_env **env, t_env **exp)
 {
-	if (cd_env(str, num_words, env, exp))
+	if (cd_env(str, num_words, *env, *exp))
 		return (1);
 	return (0);
 }

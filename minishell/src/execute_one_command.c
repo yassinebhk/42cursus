@@ -47,19 +47,19 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 	return (ft_free(split), free(tmp), free(absolute_dir), 0);
 }
 
-int	excute_one_command(t_node *head)
+int	excute_one_command(t_node **head)
 {
 	char	*path_list;
 
-	if (is_built_in(head->content->command))
-		return (find_built(head->content->args, head->content->num_args,
-				head->env, head->exp));
-	path_list = get_path_list("PATH\0", head->env);
+	if (is_built_in((*head)->content->command))
+		return (find_built((*head)->content->args, (*head)->content->num_args,
+				&(*head)->var_list.env, &(*head)->var_list.exp));
+	path_list = get_path_list("PATH\0", (*head)->var_list.env);
 	if (!path_list)
 		return (VARIABLE_NOT_FOUND);
-	if (!get_absolute_path(path_list, head->content->command, head))
+	if (!get_absolute_path(path_list, (*head)->content->command, (*head)))
 		return (COMMAND_NOT_FOUND);
-	if (execv(head->content->command, head->content->args) == -1)
+	if (execv((*head)->content->command, (*head)->content->args) == -1)
 	{
 		perror("execv: ");
 		return (1);

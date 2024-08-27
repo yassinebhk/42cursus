@@ -98,6 +98,12 @@ typedef struct s_env
 	struct s_env		*next;
 }						t_env;
 
+typedef struct s_lists
+{
+	t_env				*env;
+	t_env				*exp;
+}						t_lists;
+
 typedef struct s_command
 {
 	int					num_args;
@@ -112,8 +118,7 @@ typedef struct s_node
 	int					error;
 	int					fd_in;
 	int					fd_out;
-	t_env				*env;
-	t_env				*exp;
+	struct s_lists		var_list;
 	struct s_node		*next;
 	struct s_command	*content;
 }						t_node;
@@ -125,10 +130,10 @@ typedef struct s_node
 /**
  * @brief Process the commands given
  * @param line The line with the commands
- * @param env The environment variables list
+ * @param lists The env and export list
  * @return The status
  */
-int						process_command(char **env, char *line);
+int						process_command(char *line, t_lists *lists, char **environment);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -137,16 +142,6 @@ int						process_command(char **env, char *line);
  * @returns 1 if there are invalid characters. Otherwise, 0.
  */
 int						invalid_character(char *line);
-
-/**
- * @brief Split by spaces the line
- * @param line The line
- * @param env The environment variables list
- * @param exp The export variables list
- * @param len The len list
- * @return The status
- */
-int						split_by_spaces(char *line, t_env *env, t_env *exp);
 
 /**
  * @brief Counts the numer of pipes in the string
@@ -187,9 +182,10 @@ char					*translate_str(char *str);
  * @param environment The environment variables
  * @param line The string which contains the commands
  * @param head The head of the list
+ * @param lists The exp and env lists
  * @returns 1 if failts. Otherwise, 0.
  */
-int						init_nodes(char **env, char *line, t_node **head);
+int						init_nodes(char *line, t_node **head, t_lists lists, char **environment);
 
 /**
  * @brief Add a new node to the command list
@@ -370,7 +366,7 @@ char					*rm_eq(char *str);
  * @param exp The export variables list
  * @returns 0 if exist. Otherwise 1.
  */
-int						exist_var(char *str, t_env *env, t_env *exp);
+int						exist_var(char *str, t_env **env, t_env **exp);
 
 /**
  * @brief Checks if the variable has a correct name
@@ -391,8 +387,8 @@ int						valid_var(char *var);
  * @param exp The export variables list
  * @returns The len list
  */
-int						find_built(char **str, int num_words, t_env *env,
-							t_env *exp);
+int						find_built(char **str, int num_words, t_env **env,
+							t_env **exp);
 
 /**
  * @brief Execute the echo command
@@ -411,7 +407,7 @@ int						echo(char **str, int pos, int num_words);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						cd(char **str, int num_words, t_env *env, t_env *exp);
+int						cd(char **str, int num_words, t_env **env, t_env **exp);
 
 /**
  * @brief Execute the pwd command
@@ -429,8 +425,8 @@ int						pwd(t_env *env);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						export(char **str, int num_words, t_env *env,
-							t_env *exp);
+int						export(char **str, int num_words, t_env **env,
+							t_env **exp);
 
 /**
  * @brief Execute the unset command
@@ -440,8 +436,8 @@ int						export(char **str, int num_words, t_env *env,
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						unset(char **str, int num_words, t_env *env,
-							t_env *exp);
+int						unset(char **str, int num_words, t_env **env,
+							t_env **exp);
 
 /**
  * @brief Execute the unset command
@@ -478,7 +474,7 @@ void					print_error(char *command, int errno);
  * @param head The head of the commands list
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						excute_one_command(t_node *head);
+int						excute_one_command(t_node **head);
 
 /**
  * @brief Checks if the command is a built_in
@@ -510,7 +506,7 @@ int						get_absolute_path(char *path_list, char *command,
  * @param head The head of the commands list
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						execute_commands(t_node *head);
+int						execute_commands(t_node **head);
 
 /**
  * @brief Remove the backslash from the strings
