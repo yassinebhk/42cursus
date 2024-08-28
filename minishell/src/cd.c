@@ -12,7 +12,7 @@ char	*get_env(t_env *env, char *key)
 	return (NULL);
 }
 
-static int	move_to_path_env(char *new_dir, t_env *env, t_env *exp)
+static int	move_to_path_env(char *new_dir, t_env **env, t_env **exp)
 {
 	char	*new_rel_dir;
 	char	*tmp;
@@ -26,12 +26,12 @@ static int	move_to_path_env(char *new_dir, t_env *env, t_env *exp)
 	if (new_dir && *new_dir == '/' && chdir(new_dir))
 	{
 		perror("cd absolute ");
-		return (free(new_rel_dir), 1);
+		return (free(old_dir), free(new_rel_dir), free(cwd), free(tmp), 1);
 	}
 	else if (*new_dir != '/' && chdir(new_rel_dir))
 	{
 		perror("cd relative ");
-		return (free(new_rel_dir), 1);
+		return (free(old_dir), free(new_rel_dir), free(cwd), free(tmp), 1);
 	}
 	if (*new_dir == '/')
 		update(env, exp, old_dir, new_dir);
@@ -40,7 +40,7 @@ static int	move_to_path_env(char *new_dir, t_env *env, t_env *exp)
 	return (free(cwd), free(tmp), free(new_rel_dir), 0);
 }
 
-static int	change_directory(t_env *env, t_env *exp, char *var, int flag)
+static int	change_directory(t_env **env, t_env **exp, char *var, int flag)
 {
 	char	*old_dir;
 	char	*new_dir;
@@ -48,9 +48,9 @@ static int	change_directory(t_env *env, t_env *exp, char *var, int flag)
 	old_dir = getcwd(NULL, 0);
 	if (flag)
 	{
-		new_dir = get_env(env, var);
+		new_dir = get_env(*env, var);
 		if (!new_dir)
-			return (1);
+			return (free(old_dir), 1);
 	}
 	else
 		new_dir = get_parent(old_dir);
@@ -58,7 +58,7 @@ static int	change_directory(t_env *env, t_env *exp, char *var, int flag)
 	{
 		ft_putstr_fd(old_dir, 2);
 		perror(" parent does not exist: ");
-		return (1);
+		return (free(old_dir), 1);
 	}
 	update(env, exp, old_dir, new_dir);
 	if (!flag)
@@ -66,7 +66,7 @@ static int	change_directory(t_env *env, t_env *exp, char *var, int flag)
 	return (0);
 }
 
-int	cd_env(char **str, int num_words, t_env *env, t_env *exp)
+int	cd_env(char **str, int num_words, t_env **env, t_env **exp)
 {
 	if (num_words == 1 || !ft_strcmp(str[1], "~"))
 	{
@@ -90,7 +90,7 @@ int	cd_env(char **str, int num_words, t_env *env, t_env *exp)
 
 int	cd(char **str, int num_words, t_env **env, t_env **exp)
 {
-	if (cd_env(str, num_words, *env, *exp))
+	if (cd_env(str, num_words, env, exp))
 		return (1);
 	return (0);
 }

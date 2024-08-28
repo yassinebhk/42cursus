@@ -46,7 +46,7 @@ t_env	*ft_listdup(t_env *list)
 	if (!new_env)
 		return (NULL);
 	tmp = new_env;
-	while(list)
+	while (list)
 	{
 		tmp->next = ft_nodedup(list);
 		tmp = tmp->next;
@@ -65,23 +65,21 @@ t_node	*fill_node(char *line, int *pos, t_lists *lists)
 	new_node = (t_node *)ft_calloc(1, sizeof(t_node));
 	if (!new_node)
 		return (print_error("new_node malloc", ENO_MEM), NULL);
-	new_node->var_list = (t_lists *) ft_calloc(1, sizeof(t_lists));
+	new_node->var_list = (t_lists *)ft_calloc(1, sizeof(t_lists));
 	if (!new_node->var_list)
-		return (free(new_node), print_error("new_node_var_list malloc", ENO_MEM), NULL);
-	new_node->var_list->env = ft_listdup(lists->env);//lists->env;
-	new_node->var_list->exp = ft_listdup(lists->exp);//lists->exp;
+		return (free(new_node), print_error("new_node_var_list malloc",
+				ENO_MEM), NULL);
+	new_node->var_list->env = ft_listdup(lists->env);
+	new_node->var_list->exp = ft_listdup(lists->exp);
 	new_node->error = 0;
 	new_node->fd_in = 1;
 	new_node->fd_out = 0;
 	new_node->next = NULL;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
-		return (free_args(new_node->var_list->env,
-			new_node->var_list->exp),
-			free(new_node->var_list),
-			free(new_node),
-			print_error("new_node content malloc", ENO_MEM),
-			NULL);
+		return (free_args(new_node->var_list->env, new_node->var_list->exp),
+			free(new_node->var_list), free(new_node),
+			print_error("new_node content malloc", ENO_MEM), NULL);
 	return (new_node);
 }
 

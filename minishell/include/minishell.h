@@ -108,8 +108,8 @@ typedef struct s_command
 {
 	int					num_args;
 	int					num_redir;
-	char				*command; // leaked
-	char				**args; // leaked
+	char				*command;
+	char				**args;
 	struct s_redir		*redir;
 }						t_command;
 
@@ -338,7 +338,7 @@ int						find_eq(char *str);
  * @param old_dir The old dir
  * @returns The len list
  */
-void					update(t_env *env, t_env *exp, char *old_dir,
+void					update(t_env **env, t_env **exp, char *old_dir,
 							char *new_dir);
 
 /**
