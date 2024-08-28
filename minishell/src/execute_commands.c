@@ -20,7 +20,7 @@ int	execute_commands(t_node **head)
 	// 	}
 	// 	else if(!pid)
 	// 		execute_child(head);
-	// 	else
+	// 	else	
 	// 	{
 	// 		close(pipes);
 	// 		waitpid(-1, NULL, 0);

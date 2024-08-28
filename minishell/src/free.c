@@ -34,7 +34,7 @@ void	free_args(t_env *env, t_env *exp)
 	}
 }
 
-static void	free_content(t_command *command)
+void	free_content(t_command *command)
 {
 	int	pos;
 
@@ -64,7 +64,8 @@ void	free_list(t_node *head)
 	while (head)
 	{
 		tmp = head->next;
-		free_args(head->var_list.env, head->var_list.exp);
+		free_args(head->var_list->env, head->var_list->exp);
+		free(head->var_list);
 		free_content(head->content);
 		free(head->content);
 		free(head);

@@ -66,14 +66,14 @@ char	*translate_str(char *str)
 	double_quote_open = 0;
 	new_str = (char *)malloc(new_len_str(str) + 1);
 	if (!new_str)
-		return (print_error("translate str", ENO_MEM), NULL);
+		return (free(str), print_error("translate str", ENO_MEM), NULL);
 	while (str[++pos])
 	{
 		process_char(str[pos], &single_quote_open, &double_quote_open, new_str,
 			&i);
 	}
 	new_str[i] = '\0';
-	return (new_str);
+	return (free(str), new_str);
 }
 
 int	translate_args(t_node *node)

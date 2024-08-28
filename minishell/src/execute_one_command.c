@@ -32,29 +32,33 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 
 	pos = -1;
 	split = ft_split(path_list, ':');
-	while (split[++pos])
+	tmp = NULL;
+	while (split && split[++pos])
 	{
 		path = split[pos];
 		tmp = ft_strjoin(path, "/");
 		absolute_dir = ft_strjoin(tmp, command);
 		if (!access(absolute_dir, e_X_OK))
 		{
+			free(head->content->command);
 			head->content->command = ft_strdup(absolute_dir);
-			return (ft_free(split), free(tmp), free(absolute_dir), 1);
+			return (ft_free(split), free(absolute_dir), 1);
 		}
+		free(tmp);
+		free(absolute_dir);
 	}
 	ft_putstr_fd("absolute path not found.", 2);
-	return (ft_free(split), free(tmp), free(absolute_dir), 0);
+	return (ft_free(split), 0);
 }
 
-int	excute_one_command(t_node **head)
+int	excute_one_command(t_node **head, t_lists *lists)
 {
 	char	*path_list;
 
 	if (is_built_in((*head)->content->command))
 		return (find_built((*head)->content->args, (*head)->content->num_args,
-				&(*head)->var_list.env, &(*head)->var_list.exp));
-	path_list = get_path_list("PATH\0", (*head)->var_list.env);
+				&(lists->env), &(lists->exp)));
+	path_list = get_path_list("PATH\0", lists->env);
 	if (!path_list)
 		return (VARIABLE_NOT_FOUND);
 	if (!get_absolute_path(path_list, (*head)->content->command, (*head)))

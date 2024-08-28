@@ -3,24 +3,26 @@
 static void	update_var(char **split, t_env **env, int flag)
 {
 	char	*tmp;
+	t_env	*aux;
 
-	while (*env)
+	aux = *env;
+	while (aux)
 	{
 		tmp = ft_strjoin("declare -x ", split[0]);
-		if (!ft_strcmp((*env)->key, split[0]) && !flag)
+		if (!ft_strcmp(aux->key, split[0]) && !flag)
 		{
-			free((*env)->var);
-			(*env)->var = ft_strdup(split[1]);
+			free(aux->var);
+			aux->var = ft_strdup(split[1]);
 		}
-		else if (!ft_strcmp((*env)->key, tmp))
+		else if (!ft_strcmp(aux->key, tmp))
 		{
 			free(tmp);
 			tmp = ft_strjoin(split[1], "\"");
-			free((*env)->var);
-			(*env)->var = ft_strjoin("\"", tmp);
+			free(aux->var);
+			aux->var = ft_strjoin("\"", tmp);
 		}
 		free(tmp);
-		(*env) = (*env)->next;
+		aux = aux->next;
 	}
 }
 

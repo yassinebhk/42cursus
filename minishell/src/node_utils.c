@@ -206,8 +206,9 @@ static int	create_command(char *str, t_command **command)
 			str_i = begin;
 			if (comm_word)
 			{
-				(*command)->command = (char *)malloc(sizeof(char) * (i
-							- begin + 1));
+				free((*command)->command);
+				(*command)->command = (char *)ft_calloc((i
+							- begin + 1), sizeof(char));
 				while (begin < i)
 					(*command)->command[cp_i++] = str[begin++];
 				(*command)->command[cp_i] = '\0';

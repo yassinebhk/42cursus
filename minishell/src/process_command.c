@@ -86,17 +86,16 @@ void	print_list(t_node *node)
 	}
 }
 
-
-int	process_command(char *line, t_lists *lists, char **environment)
+int	process_command(char *line, t_lists *lists)
 {
 	int		pos;
 	t_node	*tmp;
-	t_node	*head;
+	t_node *head;
 
 	pos = -1;
 	head = NULL;
-	if (!even_quotes(line) || invalid_character(line) || init_nodes(line,
-			&head, *lists, environment))
+	if (!even_quotes(line) || invalid_character(line) || fill_nodes(line,
+			&head, lists))
 		return (free_list(head), 1);
 	print_list(head);
 	tmp = head;
@@ -108,7 +107,7 @@ int	process_command(char *line, t_lists *lists, char **environment)
 	}
 	// print_list(*head);
 	if (ft_len_node(head) == 1)
-		pos = excute_one_command(&head);
+		pos = excute_one_command(&head, lists);
 	else
 		pos = execute_commands(&head);
 	return (free_list(head), pos);

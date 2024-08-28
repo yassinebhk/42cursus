@@ -15,5 +15,5 @@ int	find_built(char **str, int num_words, t_env **env, t_env **exp)
 	else if (!ft_strcmp(str[0], "env"))
 		return (ft_env(*env));
 	else
-		return (ft_exit());
+		return (ft_exit(str));
 }

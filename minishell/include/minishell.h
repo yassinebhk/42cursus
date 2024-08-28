@@ -108,8 +108,8 @@ typedef struct s_command
 {
 	int					num_args;
 	int					num_redir;
-	char				*command;
-	char				**args;
+	char				*command; // leaked
+	char				**args; // leaked
 	struct s_redir		*redir;
 }						t_command;
 
@@ -118,7 +118,7 @@ typedef struct s_node
 	int					error;
 	int					fd_in;
 	int					fd_out;
-	struct s_lists		var_list;
+	struct s_lists		*var_list;
 	struct s_node		*next;
 	struct s_command	*content;
 }						t_node;
@@ -130,10 +130,10 @@ typedef struct s_node
 /**
  * @brief Process the commands given
  * @param line The line with the commands
- * @param lists The env and export list
+ * @param lists The env and export lists
  * @return The status
  */
-int						process_command(char *line, t_lists *lists, char **environment);
+int						process_command(char *line, t_lists *lists);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -179,13 +179,11 @@ char					*translate_str(char *str);
 
 /**
  * @brief Initializates the list of commands
- * @param environment The environment variables
  * @param line The string which contains the commands
  * @param head The head of the list
- * @param lists The exp and env lists
  * @returns 1 if failts. Otherwise, 0.
  */
-int						init_nodes(char *line, t_node **head, t_lists lists, char **environment);
+int						fill_nodes(char *line, t_node **head, t_lists *lists);
 
 /**
  * @brief Add a new node to the command list
@@ -284,7 +282,11 @@ void					ft_free(char **str);
  * @brief Free the commands list
  * @param head The head of the list
  */
+void					free_content(t_command *command);
+
 void					free_list(t_node *head);
+
+void					free_args(t_env *env, t_env *exp);
 
 /***************************************
 			environment variables
@@ -451,7 +453,7 @@ int						ft_env(t_env *env);
  * @brief Execute the unset exit
  * @returns 42
  */
-int						ft_exit(void);
+int						ft_exit(char **str);
 
 /***************************************
 		print_command_not_found
@@ -474,7 +476,7 @@ void					print_error(char *command, int errno);
  * @param head The head of the commands list
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						excute_one_command(t_node **head);
+int						excute_one_command(t_node **head, t_lists *lists);
 
 /**
  * @brief Checks if the command is a built_in
