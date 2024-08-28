@@ -61,7 +61,7 @@ int	init_nodes(char *line, t_node **head, t_lists lists, char **environment)
 			new_node = init_node(line, &pos, cp_parent);
 		}
 		if (!new_node)
-			return (free_list(*head), 1);
+			return (free_list(*head, lists), 1);
 		ft_add_node_back(head, new_node);
 		pos++;
 	}

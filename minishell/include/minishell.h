@@ -284,7 +284,7 @@ void					ft_free(char **str);
  * @brief Free the commands list
  * @param head The head of the list
  */
-void					free_list(t_node *head);
+void					free_list(t_node *head, t_lists plists);
 
 /***************************************
 			environment variables

@@ -57,14 +57,15 @@ static void	free_content(t_command *command)
 	}
 }
 
-void	free_list(t_node *head)
+void	free_list(t_node *head, t_lists plists)
 {
 	t_node	*tmp;
 
 	while (head)
 	{
 		tmp = head->next;
-		free_args(head->var_list.env, head->var_list.exp);
+		if (head->var_list.env != plists.env)
+			free_args(head->var_list.env, head->var_list.exp);
 		free_content(head->content);
 		free(head->content);
 		free(head);

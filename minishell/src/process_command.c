@@ -97,13 +97,13 @@ int	process_command(char *line, t_lists *lists, char **environment)
 	head = NULL;
 	if (!even_quotes(line) || invalid_character(line) || init_nodes(line,
 			&head, *lists, environment))
-		return (free_list(head), 1);
+		return (free_list(head, *lists), 1);
 	print_list(head);
 	tmp = head;
 	while (++pos < ft_len_node(head))
 	{
 		if (!translate_args(tmp))
-			return (free_list(head), 1);
+			return (free_list(head, *lists), 1);
 		tmp = tmp->next;
 	}
 	// print_list(*head);
@@ -111,5 +111,5 @@ int	process_command(char *line, t_lists *lists, char **environment)
 		pos = excute_one_command(&head);
 	else
 		pos = execute_commands(&head);
-	return (free_list(head), pos);
+	return (free_list(head, *lists), pos);
 }
