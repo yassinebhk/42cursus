@@ -58,6 +58,8 @@ static int	change_directory(t_env **env, t_env **exp, char *var, int flag)
 	{
 		ft_putstr_fd(old_dir, 2);
 		perror(" parent does not exist: ");
+		if (!flag)
+			free(new_dir);
 		return (free(old_dir), 1);
 	}
 	update(env, exp, old_dir, new_dir);
