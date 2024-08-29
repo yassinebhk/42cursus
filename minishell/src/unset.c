@@ -8,7 +8,6 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 		return (0);
 	while (env)
 	{	
-		printf("\n %s %s\n", env->key,str);
 		if (!ft_strcmp(env->key, str))
 			return (1);
 		env = env->next;

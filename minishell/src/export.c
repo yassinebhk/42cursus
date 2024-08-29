@@ -6,11 +6,10 @@ static int	set_var_and_value(char *str, t_env **exp, t_env **env)
 
 	split = ft_split_mod(str, '=');
 	if (valid_var(split[0]))
-		return (BAD_ASSIGNMENT);
+		return (ft_free(split), BAD_ASSIGNMENT);
 	ft_add_back(exp, ft_new_node(split[0], split[1], EXPORT_FLAG));
 	ft_add_back(env, ft_new_node(split[0], split[1], ENV_FLAG));
-	ft_free(split);
-	return (0);
+	return (ft_free(split), 0);
 }
 
 static int	set_var(char *str, t_env **exp, t_env **env, int flag)
