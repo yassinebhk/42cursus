@@ -36,7 +36,7 @@ Para funsionar los cambios de nuestra rama a la rama main:
                                           COMPILACIÓN CON VALGRIND
 --------------------------------------------------------------------------------------------------
 
-   -> valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all -s ./minishell
+   -> valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes -s ./minishell
 
 ---------------------------------------------------------
 

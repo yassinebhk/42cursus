@@ -254,12 +254,14 @@ int	new_command(char *str, t_command **command)
 
 int	ft_len_node(t_node *head)
 {
-	int	size;
+	int		size;
+	t_node	*tmp;
 
 	size = 0;
-	while (head)
+	tmp = head;
+	while (tmp)
 	{
-		head = head->next;
+		tmp = tmp->next;
 		size++;
 	}
 	return (size);

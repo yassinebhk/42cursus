@@ -53,6 +53,7 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 
 int	excute_one_command(t_node **head, t_lists *lists)
 {
+	int		pid;
 	char	*path_list;
 
 	if (is_built_in((*head)->content->command))
@@ -63,10 +64,14 @@ int	excute_one_command(t_node **head, t_lists *lists)
 		return (VARIABLE_NOT_FOUND);
 	if (!get_absolute_path(path_list, (*head)->content->command, (*head)))
 		return (COMMAND_NOT_FOUND);
-	if (execv((*head)->content->command, (*head)->content->args) == -1)
+	pid = fork();
+	if (pid < 0)
+		return (ft_putstr_fd("fork failed", 2), 1);
+	else if (pid == 0)
 	{
-		perror("execv: ");
-		return (1);
+		if (execv((*head)->content->command, (*head)->content->args) == -1)
+			return (perror("execv: "), 1);
+		free_list(*head);
 	}
 	return (0);
 }

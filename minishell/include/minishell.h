@@ -11,8 +11,11 @@
 # include <signal.h>
 # include <stdio.h>
 # include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <errno.h>
 
 /***************************************
 					DEFINE
@@ -49,7 +52,7 @@ enum					e_errors
 	PARSING = 64,
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127,
-	VARIABLE_NOT_FOUND = 4
+	VARIABLE_NOT_FOUND = 4,
 };
 
 enum					e_redirtype
@@ -465,7 +468,7 @@ int						ft_exit(char **str);
  * @param errno The error status
  */
 
-void					print_error(char *command, int errno);
+void					print_error(char *command, int erno);
 
 /***************************************
 				executor

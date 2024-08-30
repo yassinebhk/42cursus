@@ -15,7 +15,7 @@ void	ft_add_back(t_env **lst, t_env *new)
 
 	if (!new)
 	{
-		print_error("ft_add_back", ENO_MEM);
+		ft_putstr_fd("null new env variable", 2);
 		return ;
 	}
 	if (!*lst)
