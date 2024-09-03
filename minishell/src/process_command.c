@@ -108,7 +108,7 @@ int	process_command(char *line, t_lists *lists, char **environment)
 	}
 	// print_list(*head);
 	if (ft_len_node(head) == 1)
-		pos = excute_one_command(&head);
+		pos = excute_one_command(head);
 	else
 		pos = execute_commands(&head);
 	return (free_list(head, *lists), pos);

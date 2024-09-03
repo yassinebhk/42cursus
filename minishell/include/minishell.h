@@ -474,7 +474,7 @@ void					print_error(char *command, int errno);
  * @param head The head of the commands list
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						excute_one_command(t_node **head);
+int						excute_one_command(t_node *head);
 
 /**
  * @brief Checks if the command is a built_in
