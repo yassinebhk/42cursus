@@ -1,0 +1,6 @@
+*.o
+megaphone
+*.txt
+*.md
+*.pdf
+*.DS_Store

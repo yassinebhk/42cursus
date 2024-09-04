@@ -518,6 +518,6 @@ int						execute_commands(t_node **head);
  * @param head The head of the commands list
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						delete_backslash(t_node *head);
+int						delete_backslash(t_node **head);
 
 #endif

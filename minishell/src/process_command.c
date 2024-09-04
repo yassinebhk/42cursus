@@ -1,35 +1,5 @@
 #include "minishell.h"
 
-// void	print_list(t_node *head)
-// {
-// 	int	i;
-
-// 	while (head)
-// 	{
-// 		if (head->content)
-// 		{
-// 			printf("\n%d|%s|", head->content->num_args, head->content->command);
-// 			if (head->content->args)
-// 			{
-// 				i = 0;
-// 				if (head->content->args[i])
-// 				{
-// 					printf("%s", head->content->args[i]);
-// 					i++;
-// 				}
-// 				while (head->content->args[i])
-// 				{
-// 					printf(" %s", head->content->args[i]);
-// 					i++;
-// 				}
-// 			}
-// 			printf("\n");
-// 		}
-// 		head = head->next;
-// 	}
-// 	printf("----------------------------------\n");
-// }
-
 void	print_redir(t_redir redir)
 {
 	printf("    Redirection type: %d\n", redir.type);
@@ -78,12 +48,15 @@ void	print_list(t_node *node)
 	{
 		printf("       Command content     \n");
 		print_command(node->content);
+		printf("  fd:\n");
 		// Print additional fields (env, exp) if necessary
 		// ...
-		printf("\n");
+		printf("    fd_in: %d\n",node->fd_in);
+		printf("    fd_out: %d\n",node->fd_out);
 		node = node->next;
 		node_count++;
 	}
+	printf("\n-----------------------------------------------\n");
 }
 
 int	process_command(char *line, t_lists *lists)
@@ -97,7 +70,7 @@ int	process_command(char *line, t_lists *lists)
 	if (!even_quotes(line) || invalid_character(line) || fill_nodes(line,
 			&head, lists))
 		return (free_list(head), 1);
-	print_list(head);
+	//print_list(head);
 	tmp = head;
 	while (++pos < ft_len_node(head))
 	{
@@ -105,7 +78,7 @@ int	process_command(char *line, t_lists *lists)
 			return (free_list(head), 1);
 		tmp = tmp->next;
 	}
-	// print_list(*head);
+	print_list(head);
 	if (ft_len_node(head) == 1)
 		pos = excute_one_command(&head, lists);
 	else

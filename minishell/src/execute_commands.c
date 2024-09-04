@@ -30,16 +30,14 @@ void	close_pipes(int *pipes, int len)
 		close(pipes[i]);
 }
 
-/**
- * @brief El proposito de esta funcion es cerrar los fds abiertos
- * cuando se sobreescriba ese tipo de redireccion.
- * Se ignora si es correcta la logica
- */
-int	ft_open(char *file, int flag, int old_fd)
+int	ft_open(char *file, int flag, int permission, int old_fd)
 {
 	if (old_fd > 2)
 		close(old_fd);
-	return (open(file, flag));
+	if (permission)
+		return (open(file, flag, 0644));
+	else
+		return (open(file, flag));
 }
 
 int heredoc(void)
@@ -47,15 +45,6 @@ int heredoc(void)
 	return (1);
 }
 
-/**
-enum	e_redirtype
-{
-	r_output = 1,
-	r_append = 2,
-	r_input = 3,
-	r_heredoc = 4
-};
-*/
 int	open_and_get_fd(t_node *tmp, int i, int *fd_in, int *fd_out)
 {
 	int		redir;
@@ -64,11 +53,11 @@ int	open_and_get_fd(t_node *tmp, int i, int *fd_in, int *fd_out)
 	redir = tmp->content->redir[i].type;
 	file = tmp->content->redir[i].filename;
 	if (redir == 1)
-		*fd_out = ft_open(file, O_CREAT | O_WRONLY, tmp->fd_out);
+		*fd_out = ft_open(file, O_CREAT | O_WRONLY | O_TRUNC, 1, tmp->fd_out);
 	else if (redir == 2)
-		*fd_out = ft_open(file, O_CREAT | O_APPEND | O_WRONLY, tmp->fd_out);
+		*fd_out = ft_open(file, O_CREAT | O_APPEND | O_WRONLY, 1, tmp->fd_out);
 	else if (redir == 3)
-		*fd_in = ft_open(file, O_RDONLY, tmp->fd_in);
+		*fd_in = ft_open(file, O_RDONLY, 0, tmp->fd_in);
 	else if (redir == 4)
 		*fd_in = heredoc();
 	// hay que hacer el heredoc antes de pasar al siguiente (foto)
@@ -94,8 +83,8 @@ int	set_fd(t_node **head)
 	tmp = *head;
 	while (tmp)
 	{
-		fd_out = -42;
-		fd_in = -42;
+		fd_out = 1;
+		fd_in = 0;
 		while (++i < tmp->content->num_redir)
 		{
 			if (!open_and_get_fd(tmp, i, &fd_out, &fd_in))
@@ -110,7 +99,6 @@ int	set_fd(t_node **head)
 
 void	ft_dup2(int *fd_in, int *fd_out)
 {
-	//hacer una copia temporal para restaurar (0 y 1) para la siguiente linea
 	dup2(*fd_in, 0);
 	dup2(*fd_out, 1);
 	close(*fd_in);
@@ -119,23 +107,114 @@ void	ft_dup2(int *fd_in, int *fd_out)
 
 void	execute_child(t_node *head, t_node *curr, int *pipes, int *pipe_pos)
 {
+	int		fd_in;
+	int		fd_out;
+	int		fd_tmp;
 	char	*path_list;
 
+	fd_in = curr->fd_in;
+	fd_out = curr->fd_out;
 	if (curr->next && curr->content->num_redir == 0)
+	{
+		fd_tmp = pipes[(*pipe_pos) + 1];
 		pipes[(*pipe_pos) + 1] = pipes[(*pipe_pos) + 2];
-	ft_dup2(&pipes[(*pipe_pos) + 1], &pipes[(*pipe_pos) + 2]);
+		pipes[(*pipe_pos) + 2] = fd_tmp;		
+	}
+	if (!fd_in)
+		fd_in = pipes[(*pipe_pos)];
+	if (!(fd_out - 1))
+		fd_out = pipes[(*pipe_pos) + 1];	
+	ft_dup2(&fd_in, &fd_out);
+	close_pipes(pipes, ft_len_node(head));
 	(*pipe_pos) += 2;
 	if (is_built_in(curr->content->command))
+	{
 		find_built(curr->content->args, curr->content->num_args,
 			&(curr->var_list->env), &(curr->var_list->exp));
+		free_list(head);
+		free(pipes);
+		_exit(0);
+	}
 	path_list = get_path_list("PATH\0", curr->var_list->env);
 	if (!path_list)
+	{
 		ft_putstr_fd("variable not found", 2);
+		free(head);
+		free(pipes);
+		return ;
+	}
 	if (!get_absolute_path(path_list, curr->content->command, curr))
+	{
 		ft_putstr_fd("command not found", 2);
+		free(head);
+		free(pipes);
+		return ;
+	}
 	if (execv(curr->content->command, curr->content->args) == -1)
+	{
 		perror("execv: ");
-	free_list(head);
+		free(pipes);
+		free_list(head);
+	}
+}
+
+void	print_redir2(t_redir redir)
+{
+	printf("    Redirection type: %d\n", redir.type);
+	printf("    Valid: %d\n", redir.valid);
+	printf("    Filename: %s. (%ld)\n", redir.filename,
+		ft_strlen(redir.filename));
+}
+
+void	print_command2(t_command *cmd)
+{
+	if (!cmd)
+	{
+		printf("    (null)\n");
+		return ;
+	}
+	printf("  Command: %s\n", cmd->command);
+	printf("  Number of arguments: %d\n", cmd->num_args);
+	if (cmd->num_args > 0 && cmd->args)
+	{
+		printf("  Arguments:\n");
+		for (int i = 0; i < cmd->num_args; i++)
+			printf("    arg[%d]: %s. (%ld)\n", i, cmd->args[i],
+				ft_strlen(cmd->args[i]));
+	}
+	else
+	{
+		printf("  No arguments.\n");
+	}
+	printf("  Number of redirs: %d\n", cmd->num_redir);
+	if (cmd->num_redir && cmd->redir)
+	{
+		printf("  Redirections:\n");
+		for (int i = 0; i < cmd->num_redir; i++)
+			print_redir2(cmd->redir[i]);
+	}
+	else
+		printf("  No redirections.\n");
+}
+
+void	print_list2(t_node *node)
+{
+	int	node_count;
+
+	node_count = 0;
+	while (node)
+	{
+		printf("       Command content     \n");
+		print_command2(node->content);
+		printf("  fd:\n");
+		// Print additional fields (env, exp) if necessary
+		// ...
+		printf("    fd_in: %d\n",node->fd_in);
+		printf("    fd_out: %d\n",node->fd_out);
+		node = node->next;
+		node_count++;
+	}
+	printf("\n-----------------------------------------------\n");
 }
 
 int	execute_commands(t_node **head)
@@ -146,10 +225,11 @@ int	execute_commands(t_node **head)
 	t_node	*tmp;
 
 	pipe_pos = 0;
-	// if (delete_backslash(*head))
-	// 	return (1);
+	if (delete_backslash(head))
+		return (1);
 	if (!set_fd(head))
 		return (1);
+	print_list2(*head);
 	if (!init_pipes(&pipes, *head))
 		return (1);
 	tmp = *head;
@@ -157,7 +237,7 @@ int	execute_commands(t_node **head)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (ft_putstr_fd("fork failed", 2), 1);
+			return (free(pipes), ft_putstr_fd("fork failed", 2), 1);
 		else if (!pid)
 			execute_child(*head, tmp, pipes, &pipe_pos);
 		else
@@ -165,6 +245,8 @@ int	execute_commands(t_node **head)
 			close_pipes(pipes, ft_len_node(*head));
 			wait(NULL);
 			//waitpid(-1, NULL, 0);
+			wait(NULL);
+			free(pipes);
 		}
 		tmp = tmp->next;
 	}
