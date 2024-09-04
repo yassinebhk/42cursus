@@ -13,6 +13,9 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <string.h>
 
 /***************************************
 					DEFINE
@@ -54,9 +57,9 @@ enum					e_errors
 
 enum					e_redirtype
 {
-	r_output = 1,
-	r_append = 2,
-	r_input = 3,
+	r_input = 1,
+	r_output = 2,
+	r_append = 3,
 	r_heredoc = 4
 };
 
@@ -463,7 +466,7 @@ int						ft_exit(void);
  * @param errno The error status
  */
 
-void					print_error(char *command, int errno);
+void					print_error(char *command, int error);
 
 /***************************************
 				executor
@@ -474,7 +477,7 @@ void					print_error(char *command, int errno);
  * @param head The head of the commands list
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						excute_one_command(t_node *head);
+int						execute_one_command(t_node *head);
 
 /**
  * @brief Checks if the command is a built_in

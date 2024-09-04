@@ -29,8 +29,8 @@ t_node	*init_node(char *line, int *pos, t_lists lists)
 	new_node->var_list.env = lists.env;
 	new_node->var_list.exp = lists.exp;
 	new_node->error = 0;
-	new_node->fd_in = 1;
-	new_node->fd_out = 0;
+	new_node->fd_in = STDIN_FILENO;
+	new_node->fd_out = STDOUT_FILENO;
 	new_node->next = NULL;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
