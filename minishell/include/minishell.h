@@ -30,6 +30,7 @@
 # define NUM_ERRORS 2
 # define EXPORT_FLAG 1
 # define ENV_FLAG 0
+# define NUM_REDIRS 4
 
 /***************************************
 					ENUM

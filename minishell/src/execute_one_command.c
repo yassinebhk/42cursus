@@ -47,50 +47,75 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 	return (ft_free(split), free(tmp), free(absolute_dir), 0);
 }
 
-static int	reset_std(int stdin_copy, int stdout_copy)
-{
-	if (dup2(stdin_copy, STDIN_FILENO) < 0 || dup2(stdout_copy, STDOUT_FILENO) < 0)
-	{
-		perror("error reseting std");
-		return (1);
-	}
-	return (0);
-}
-
-static int	save_std_streams(int *stdin_copy, int *stdout_copy)
-{
-	*stdin_copy = dup(STDIN_FILENO);
-	*stdout_copy = dup(STDOUT_FILENO);
-	if (*stdin_copy < 0 || *stdout_copy < 0)
-	{
-		perror("dup copy error");
-		return (1);
-	}
-	return (0);
-}
-
-static int	exec_comm(t_node *head)
+static int	exec_comm(t_node *head, int input, int output)
 {
 	pid_t	pid;
+	int		inpos;
+	int		outpos;
 	int		status;
 
+	inpos = head->fd_in;
+	outpos = head->fd_out;
+	status = 0;
 	pid = fork();
-	if (pid == -1)
+	if (pid  < 0)
 	{
 		perror("fork error");
 		return (1);
 	}
-	else if (pid)
-		wait(&status);
-	else
+	else if (!pid)
 	{
-		if (execv((head)->content->command, (head)->content->args) == -1)
+		if (input == r_input)
 		{
-			printf("Error al ejecutar execv: %s\n", strerror(errno));
-			_exit(1);
+			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
+			if (head->fd_in < 0)
+			{
+				perror("open error");
+				exit(EXIT_FAILURE);
+			}
+			if (dup2(input, STDIN_FILENO) < 0)
+			{
+				perror("dup2 error");
+				exit(EXIT_FAILURE);
+			}
+			close(head->fd_in);
 		}
-		_exit(0);
+		if (output == r_output)
+		{
+			head->fd_out = open(head->content->redir[outpos].filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (head->fd_out < 0)
+			{
+				perror("open error");
+				exit(EXIT_FAILURE);
+			}
+			if (dup2(output, STDOUT_FILENO) < 0)
+			{
+				perror("dup2 error");
+				exit(EXIT_FAILURE);
+			}
+			close(head->fd_out);
+		}
+		if (output == r_append)
+		{
+			head->fd_out = open(head->content->redir[outpos].filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (head->fd_out < 0)
+			{
+				perror("open error");
+				exit(EXIT_FAILURE);
+			}
+			if (dup2(output, STDOUT_FILENO) < 0)
+			{
+				perror("dup2 error");
+				exit(EXIT_FAILURE);
+			}
+			close(head->fd_out);
+		}
+		execv((head)->content->command, (head)->content->args);
+		perror("execv failed");
+		exit(EXIT_FAILURE);
 	}
+	else
+		wait(&status);
 	return (status);
 }
 
@@ -108,35 +133,26 @@ static int	find_output_redirection(t_command *comm)
 	return (0);
 }
 
-static int	handle_output_redirections(t_node *head)
+static int	handle_output_redirections(t_node *head, int input)
 {
-	int	outpos;
+	int			outpos;
+	int 		outtype;
 	t_command	*c;
 
 	outpos = -1;
-	c = head->content;
+	c = head->content; // aquí solo debería de ejecutar bucles que llaman a exec_comm y le indican si tiene que redirigir y hacia donde
 	while (++outpos < c->num_redir)
 	{
-		if (c->redir[outpos].type == r_output)
-			head->fd_out = open(c->redir[outpos].filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (c->redir[outpos].type == r_append)
-			head->fd_out = open(c->redir[outpos].filename, O_WRONLY | O_APPEND | O_CREAT, 0664);
-		if (head->fd_out < 0)
+		if (c->redir[outpos].type == r_output || c->redir[outpos].type == r_append)
 		{
-			perror("output error opening the file");
-			return (1);
-		}
-		else if (head->fd_out != STDOUT_FILENO)
-		{
-			if (dup2(head->fd_out, STDOUT_FILENO))
-			{
-				perror("output error dup2");
+			if (c->redir[outpos].type == r_output)
+				outtype = r_output;
+			else if (c->redir[outpos].type == r_append)
+				outtype = r_append;
+			head->fd_out = outpos;
+			if (exec_comm(head, input, outtype))
 				return (1);
-			}
-			close(head->fd_out);
 		}
-		if (exec_comm(head))
-			return (1);
 	}
 	return (0);
 }
@@ -165,24 +181,13 @@ static int	handle_input_redirections(t_node *head)
 	{
 		if (c->redir[inpos].type == r_input)
 		{
-			head->fd_in = open(c->redir[inpos].filename, O_RDONLY);
-			if (head->fd_in < 0)
-			{
-				perror("input error opening the file");
-				return (1);
-			}
-			if (dup2(head->fd_in, STDIN_FILENO) < 0)
-			{
-				perror("intput error dup2");
-				return (1);
-			}
-			close(head->fd_in);
+			head->fd_in = inpos;
 			if (find_output_redirection(head->content))
 			{
-				if (handle_output_redirections(head))
+				if (handle_output_redirections(head, r_input))
 					return (1);
 			}
-			else if(exec_comm(head))
+			else if(exec_comm(head, r_input, 0))
 				return (1);
 		}
 	}
@@ -191,25 +196,26 @@ static int	handle_input_redirections(t_node *head)
 
 static int	redirect(t_node *head)
 {
-	int			stdin_copy;
-	int			stdout_copy;
+	int		num_input;
+	int		num_output;
 
-	if (save_std_streams(&stdin_copy, &stdout_copy))
-		return (1);
-	if (find_input_redirection(head->content))
+	num_input = find_input_redirection(head->content);
+	num_output = find_output_redirection(head->content);
+	if (num_input > 0)
 	{
 		if (handle_input_redirections(head))
 			return (1);
 	}
-	else if (find_output_redirection(head->content))
+	else if (num_output > 0)
 	{
-		if (handle_output_redirections(head))
+		if (handle_output_redirections(head, 0))
 			return (1);
 	}
-	else if (exec_comm(head))
-		return (1);
-	if (reset_std(stdin_copy, stdout_copy))
-		return (1);
+	else
+	{
+		if (exec_comm(head, 0, 0))
+			return (1);
+	}
 	return (0);
 }
 
