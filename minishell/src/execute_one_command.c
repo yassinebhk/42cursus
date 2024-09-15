@@ -223,6 +223,8 @@ int	execute_one_command(t_node *head)
 {
 	char	*path_list;
 
+	// if (delete_backslash(head))
+	//		return (1);
 	if (is_built_in((head)->content->command))
 		return (find_built((head)->content->args, (head)->content->num_args,
 				&(head)->var_list.env, &(head)->var_list.exp));
