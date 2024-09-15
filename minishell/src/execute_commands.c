@@ -8,10 +8,10 @@ int	init_pipes(int **pipes, t_node *head)
 
 	i = -1;
 	pos = 0;
-	*pipes = (int *)malloc(2 * sizeof(int) * (ft_len_node(head) - 1));
+	*pipes = (int *)malloc(2 * sizeof(int) * (ft_len_node(head)));
 	if (!(*pipes))
 		return (print_error("pipe array malloc ", ENO_MEM), 0);
-	while (++i < ft_len_node(head) - 1)
+	while (++i < ft_len_node(head))
 	{
 		if (pipe(fd) == -1)
 			return (ft_putstr_fd("pipe function failed", 2), 0);
@@ -26,7 +26,7 @@ void	close_pipes(int *pipes, int len)
 	int	i;
 
 	i = -1;
-	while (++i < 2 * (len - 1))
+	while (++i < 2 * len)
 		close(pipes[i]);
 }
 
@@ -40,7 +40,7 @@ int	ft_open(char *file, int flag, int permission, int old_fd)
 		return (open(file, flag));
 }
 
-int heredoc(void)
+int	heredoc(void)
 {
 	return (1);
 }
@@ -79,15 +79,15 @@ int	set_fd(t_node **head)
 	int		fd_in;
 	t_node	*tmp;
 
-	i = -1;
 	tmp = *head;
 	while (tmp)
 	{
+		i = -1;
 		fd_out = 1;
 		fd_in = 0;
 		while (++i < tmp->content->num_redir)
 		{
-			if (!open_and_get_fd(tmp, i, &fd_out, &fd_in))
+			if (!open_and_get_fd(tmp, i, &fd_in, &fd_out))
 				return (0);
 		}
 		tmp->fd_in = fd_in;
@@ -95,67 +95,6 @@ int	set_fd(t_node **head)
 		tmp = tmp->next;
 	}
 	return (1);
-}
-
-void	ft_dup2(int *fd_in, int *fd_out)
-{
-	dup2(*fd_in, 0);
-	dup2(*fd_out, 1);
-	close(*fd_in);
-	close(*fd_out);
-}
-
-void	execute_child(t_node *head, t_node *curr, int *pipes, int *pipe_pos)
-{
-	int		fd_in;
-	int		fd_out;
-	int		fd_tmp;
-	char	*path_list;
-
-	fd_in = curr->fd_in;
-	fd_out = curr->fd_out;
-	if (curr->next && curr->content->num_redir == 0)
-	{
-		fd_tmp = pipes[(*pipe_pos) + 1];
-		pipes[(*pipe_pos) + 1] = pipes[(*pipe_pos) + 2];
-		pipes[(*pipe_pos) + 2] = fd_tmp;		
-	}
-	if (!fd_in)
-		fd_in = pipes[(*pipe_pos)];
-	if (!(fd_out - 1))
-		fd_out = pipes[(*pipe_pos) + 1];	
-	ft_dup2(&fd_in, &fd_out);
-	close_pipes(pipes, ft_len_node(head));
-	(*pipe_pos) += 2;
-	if (is_built_in(curr->content->command))
-	{
-		find_built(curr->content->args, curr->content->num_args,
-			&(curr->var_list->env), &(curr->var_list->exp));
-		free_list(head);
-		free(pipes);
-		_exit(0);
-	}
-	path_list = get_path_list("PATH\0", curr->var_list->env);
-	if (!path_list)
-	{
-		ft_putstr_fd("variable not found", 2);
-		free(head);
-		free(pipes);
-		return ;
-	}
-	if (!get_absolute_path(path_list, curr->content->command, curr))
-	{
-		ft_putstr_fd("command not found", 2);
-		free(head);
-		free(pipes);
-		return ;
-	}
-	if (execv(curr->content->command, curr->content->args) == -1)
-	{
-		perror("execv: ");
-		free(pipes);
-		free_list(head);
-	}
 }
 
 void	print_redir2(t_redir redir)
@@ -209,20 +148,85 @@ void	print_list2(t_node *node)
 		printf("  fd:\n");
 		// Print additional fields (env, exp) if necessary
 		// ...
-		printf("    fd_in: %d\n",node->fd_in);
-		printf("    fd_out: %d\n",node->fd_out);
+		printf("    fd_in: %d\n", node->fd_in);
+		printf("    fd_out: %d\n", node->fd_out);
 		node = node->next;
 		node_count++;
 	}
 	printf("\n-----------------------------------------------\n");
 }
 
-int	execute_commands(t_node **head)
+void	ft_dup2(int *fd_in, int *fd_out)
+{
+	dup2(*fd_in, STDIN_FILENO);
+	dup2(*fd_out, STDOUT_FILENO);
+	close(*fd_in);
+	close(*fd_out);
+}
+
+void	execute_child(t_node *head, t_node *curr, int *pipes, int pipe_pos)
+{
+	char	*path_list;
+
+	if (curr->next && curr->content->num_redir == 0)
+	{
+		if (dup2(pipes[pipe_pos + 2], STDOUT_FILENO) == -1)
+			perror("dup2 fd_out failed\n");
+	}
+	else if (curr->fd_out != STDOUT_FILENO)
+	{
+		if (dup2(curr->fd_out, STDOUT_FILENO) == -1)
+			perror("dup2 fd_out to file failed\n");
+	}
+	if (curr != head && curr->content->num_redir == 0)
+	{
+		if (dup2(pipes[pipe_pos - 1], STDIN_FILENO) == -1)
+			perror("dup2 fd_in failed\n");
+	}
+	else if (curr->fd_in != STDIN_FILENO)
+	{
+		if (dup2(curr->fd_in, STDIN_FILENO) == -1)
+			perror("dup2 fd_in from file failed\n");
+	}
+	close_pipes(pipes, ft_len_node(head));
+	if (is_built_in(curr->content->command))
+	{
+		find_built(curr->content->args, curr->content->num_args,
+			&(curr->var_list->env), &(curr->var_list->exp));
+		free_list(head);
+		free(pipes);
+		_exit(0);
+	}
+	path_list = get_path_list("PATH\0", curr->var_list->env);
+	if (!path_list)
+	{
+		ft_putstr_fd("variable not found\n", 2);
+		free(head);
+		free(pipes);
+		return ;
+	}
+	if (!get_absolute_path(path_list, curr->content->command, curr))
+	{
+		ft_putstr_fd("command not found\n", 2);
+		free(head);
+		free(pipes);
+		return ;
+	}
+	if (execv(curr->content->command, curr->content->args) == -1)
+	{
+		perror("execv: ");
+		free(pipes);
+		free_list(head);
+	}
+}
+
+int	execute_commands(t_node **head, t_lists *lists)
 {
 	int		pid;
 	int		pipe_pos;
 	int		*pipes;
 	t_node	*tmp;
+	(void)lists;
 
 	pipe_pos = 0;
 	if (delete_backslash(head))
@@ -237,19 +241,19 @@ int	execute_commands(t_node **head)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (free(pipes), ft_putstr_fd("fork failed", 2), 1);
+			return (free(pipes), ft_putstr_fd("fork failed\n", 2), 1);
 		else if (!pid)
-			execute_child(*head, tmp, pipes, &pipe_pos);
+			execute_child(*head, tmp, pipes, pipe_pos);
 		else
 		{
-			close_pipes(pipes, ft_len_node(*head));
 			wait(NULL);
-			//waitpid(-1, NULL, 0);
-			wait(NULL);
-			free(pipes);
+			// waitpid(-1, NULL, 0);
 		}
+		pipe_pos += 2;
 		tmp = tmp->next;
 	}
+	close_pipes(pipes, ft_len_node(*head));
+	free(pipes);
 	return (0);
 }
 

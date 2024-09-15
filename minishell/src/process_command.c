@@ -80,8 +80,8 @@ int	process_command(char *line, t_lists *lists)
 	}
 	print_list(head);
 	if (ft_len_node(head) == 1)
-		pos = excute_one_command(&head, lists);
+		pos = execute_one_command(&head, lists);
 	else
-		pos = execute_commands(&head);
+		pos = execute_commands(&head, lists);
 	return (free_list(head), pos);
 }

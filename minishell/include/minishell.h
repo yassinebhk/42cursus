@@ -6,16 +6,16 @@
 ***************************************/
 
 # include "libft.h"
+# include <errno.h>
+# include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
-# include <sys/types.h>
 # include <sys/stat.h>
-# include <fcntl.h>
+# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <errno.h>
 
 /***************************************
 					DEFINE
@@ -477,9 +477,10 @@ void					print_error(char *command, int erno);
 /**
  * @brief Executes one command
  * @param head The head of the commands list
+ * @param lists The original lists
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						excute_one_command(t_node **head, t_lists *lists);
+int						execute_one_command(t_node **head, t_lists *lists);
 
 /**
  * @brief Checks if the command is a built_in
@@ -509,9 +510,10 @@ int						get_absolute_path(char *path_list, char *command,
 /**
  * @brief Executes all the commands
  * @param head The head of the commands list
+ * @param lists The original lists
  * @returns 1 if occurs an error. Otherwise, 0.
  */
-int						execute_commands(t_node **head);
+int						execute_commands(t_node **head, t_lists *lists);
 
 /**
  * @brief Remove the backslash from the strings
@@ -519,5 +521,7 @@ int						execute_commands(t_node **head);
  * @returns 1 if occurs an error. Otherwise, 0.
  */
 int						delete_backslash(t_node **head);
+
+int						set_fd(t_node **head);
 
 #endif
