@@ -20,8 +20,7 @@ t_env	*ft_nodedup(t_env *node)
 {
 	t_env	*new_node;
 
-	if (!node)
-		return (NULL);
+	printf("\n\nholaaaa\n\n");
 	new_node = (t_env *)malloc(sizeof(t_env));
 	if (!new_node)
 		return (print_error("new_node", ENO_MEM), NULL);
@@ -52,6 +51,8 @@ t_env	*ft_listdup(t_env *list)
 		tmp = tmp->next;
 		list = list->next;
 	}
+	ft_env(new_env);
+	printf("\n-------aqui termina new_env-------\n");
 	return (new_env);
 }
 
@@ -69,11 +70,15 @@ t_node	*fill_node(char *line, int *pos, t_lists *lists)
 	if (!new_node->var_list)
 		return (free(new_node), print_error("new_node_var_list malloc",
 				ENO_MEM), NULL);
+	ft_env(lists->env);
+	printf("\n-------aqui termina list-------\n");
 	new_node->var_list->env = ft_listdup(lists->env);
+	ft_env(new_node->var_list->env);
+	printf("\n-------aqui termina node-------\n");
 	new_node->var_list->exp = ft_listdup(lists->exp);
 	new_node->error = 0;
-	new_node->fd_in = 1;
-	new_node->fd_out = 0;
+	new_node->fd_in = 0;
+	new_node->fd_out = 1;
 	new_node->next = NULL;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
@@ -96,6 +101,7 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists)
 		new_node = fill_node(line, &pos, lists);
 		if (!new_node)
 			return (free_list(*head), *head = NULL, 1);
+		ft_env(new_node->var_list->env);
 		ft_add_node_back(head, new_node);
 		pos++;
 	}

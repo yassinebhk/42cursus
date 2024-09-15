@@ -8,6 +8,8 @@ char	*get_path_list(char *command, t_env *env)
 			return (env->var);
 		env = env->next;
 	}
+	ft_putstr_fd(command, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd("path variable not found at env.\n", 2);
 	return (NULL);
 }
@@ -42,7 +44,11 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 			head->content->command = ft_strdup(absolute_dir);
 			return (ft_free(split), free(tmp), free(absolute_dir), 1);
 		}
+		free(tmp);
+		free(absolute_dir);
 	}
+	ft_putstr_fd(command, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd("absolute path not found.\n", 2);
 	return (ft_free(split), free(tmp), free(absolute_dir), 0);
 }
@@ -262,8 +268,6 @@ int	execute_one_command(t_node **head, t_lists *lists)
 {
 	char	*path_list;
 
-	if (delete_backslash(head))
-		return (1);
 	if (is_built_in((*head)->content->command))
 		return (execute_built(head, lists));
 	path_list = get_path_list("PATH\0", lists->env);

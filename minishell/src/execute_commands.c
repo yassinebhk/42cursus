@@ -164,7 +164,7 @@ void	ft_dup2(int *fd_in, int *fd_out)
 	close(*fd_out);
 }
 
-void	execute_child(t_node *head, t_node *curr, int *pipes, int pipe_pos)
+void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes, int pipe_pos)
 {
 	char	*path_list;
 
@@ -195,28 +195,32 @@ void	execute_child(t_node *head, t_node *curr, int *pipes, int pipe_pos)
 			&(curr->var_list->env), &(curr->var_list->exp));
 		free_list(head);
 		free(pipes);
-		_exit(0);
+		free_args(lists->env, lists->exp);
+		exit(0);
 	}
 	path_list = get_path_list("PATH\0", curr->var_list->env);
 	if (!path_list)
 	{
-		ft_putstr_fd("variable not found\n", 2);
-		free(head);
+		free_list(head);
 		free(pipes);
-		return ;
+		free_args(lists->env, lists->exp);
+		exit(EXIT_FAILURE);
 	}
 	if (!get_absolute_path(path_list, curr->content->command, curr))
 	{
-		ft_putstr_fd("command not found\n", 2);
-		free(head);
+		free_list(head);
 		free(pipes);
-		return ;
+		free_args(lists->env, lists->exp);
+		exit(EXIT_FAILURE);
 	}
+	printf("\n | %d | %d | %s |\n", curr->fd_in, curr->fd_out, curr->content->command);
 	if (execv(curr->content->command, curr->content->args) == -1)
 	{
 		perror("execv: ");
 		free(pipes);
+		free_args(lists->env, lists->exp);
 		free_list(head);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -226,16 +230,13 @@ int	execute_commands(t_node **head, t_lists *lists)
 	int		pipe_pos;
 	int		*pipes;
 	t_node	*tmp;
-	(void)lists;
 
 	pipe_pos = 0;
-	if (delete_backslash(head))
-		return (1);
 	if (!set_fd(head))
-		return (1);
+		return (EXIT_FAILURE);
 	print_list2(*head);
 	if (!init_pipes(&pipes, *head))
-		return (1);
+		return (EXIT_FAILURE);
 	tmp = *head;
 	while (tmp)
 	{
@@ -243,12 +244,9 @@ int	execute_commands(t_node **head, t_lists *lists)
 		if (pid < 0)
 			return (free(pipes), ft_putstr_fd("fork failed\n", 2), 1);
 		else if (!pid)
-			execute_child(*head, tmp, pipes, pipe_pos);
+			execute_child(lists, *head, tmp, pipes, pipe_pos);
 		else
-		{
 			wait(NULL);
-			// waitpid(-1, NULL, 0);
-		}
 		pipe_pos += 2;
 		tmp = tmp->next;
 	}

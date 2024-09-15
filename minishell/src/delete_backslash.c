@@ -23,7 +23,7 @@ static char *delete (char *str)
 
 	i = 0;
 	pos = -1;
-	new_str = (char *)malloc(new_len_str(str) + 1);
+	new_str = (char *)ft_calloc(sizeof(char), (new_len_str(str) + 1));
 	if (!new_str)
 		return (print_error("translate str", ENO_MEM), NULL);
 	while (++pos < ft_strlen(str))
