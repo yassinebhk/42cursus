@@ -8,7 +8,7 @@ char	*get_path_list(char *command, t_env *env)
 			return (env->var);
 		env = env->next;
 	}
-	ft_putstr_fd("path variable not found at env.", 2);
+	ft_putstr_fd("path variable not found at env.\n", 2);
 	return (NULL);
 }
 
@@ -73,7 +73,7 @@ static int	exec_comm(t_node *head, int input, int output)
 				perror("open error");
 				exit(EXIT_FAILURE);
 			}
-			if (dup2(input, STDIN_FILENO) < 0)
+			if (dup2(head->fd_in, STDIN_FILENO) < 0)
 			{
 				perror("dup2 error");
 				exit(EXIT_FAILURE);
@@ -88,7 +88,7 @@ static int	exec_comm(t_node *head, int input, int output)
 				perror("open error");
 				exit(EXIT_FAILURE);
 			}
-			if (dup2(output, STDOUT_FILENO) < 0)
+			if (dup2(head->fd_out, STDOUT_FILENO) < 0)
 			{
 				perror("dup2 error");
 				exit(EXIT_FAILURE);
@@ -103,7 +103,7 @@ static int	exec_comm(t_node *head, int input, int output)
 				perror("open error");
 				exit(EXIT_FAILURE);
 			}
-			if (dup2(output, STDOUT_FILENO) < 0)
+			if (dup2(head->fd_out, STDOUT_FILENO) < 0)
 			{
 				perror("dup2 error");
 				exit(EXIT_FAILURE);

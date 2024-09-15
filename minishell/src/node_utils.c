@@ -239,7 +239,7 @@ int	new_command(char *str, t_command **command)
 	(*command)->num_redir = n_redir;
 	if (n_args)
 		(*command)->args = (char **)malloc(sizeof(char *)
-				* ((*command)->num_args));
+				* (((*command)->num_args + 1)));
 	if (!(*command)->args)
 		return (print_error("command args malloc", ENO_MEM), 0);
 	if (n_redir)
@@ -248,6 +248,7 @@ int	new_command(char *str, t_command **command)
 		str++;
 	if (create_command(str, command))
 		return (print_error("error command creation", 0), 0);
+	(*command)->args[n_args] = NULL;
 	return (1);
 }
 
