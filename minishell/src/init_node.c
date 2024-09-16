@@ -37,6 +37,7 @@ t_env	*ft_listdup(t_env *list)
 {
 	t_env	*new_env;
 	t_env	*tmp;
+	t_env	*curr;
 
 	if (!list)
 		return (NULL);
@@ -44,9 +45,13 @@ t_env	*ft_listdup(t_env *list)
 	if (!new_env)
 		return (NULL);
 	tmp = new_env;
+	list = list->next;
 	while (list)
 	{
-		tmp->next = ft_nodedup(list);
+		curr = ft_nodedup(list);
+		if (!curr)
+			return (NULL);
+		tmp->next = curr;
 		tmp = tmp->next;
 		list = list->next;
 	}

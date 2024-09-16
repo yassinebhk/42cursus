@@ -45,7 +45,7 @@ void	print_export_list(t_env *exp)
 	while (++index < ft_lst_size(exp))
 	{
 		tmp = get_node_index(index, exp);
-		if (!tmp->var)
+		if (tmp && !tmp->var)
 			printf("%s\n", tmp->key);
 		else
 			printf("%s=%s\n", tmp->key, tmp->var);
