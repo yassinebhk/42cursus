@@ -170,7 +170,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes, int p
 
 	if (curr->next && curr->content->num_redir == 0)
 	{
-		if (dup2(pipes[pipe_pos + 2], STDOUT_FILENO) == -1)
+		if (dup2(pipes[pipe_pos + 1], STDOUT_FILENO) == -1)
 			perror("dup2 fd_out failed\n");
 	}
 	else if (curr->fd_out != STDOUT_FILENO)
@@ -180,7 +180,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes, int p
 	}
 	if (curr != head && curr->content->num_redir == 0)
 	{
-		if (dup2(pipes[pipe_pos - 1], STDIN_FILENO) == -1)
+		if (dup2(pipes[pipe_pos - 2], STDIN_FILENO) == -1)
 			perror("dup2 fd_in failed\n");
 	}
 	else if (curr->fd_in != STDIN_FILENO)
@@ -213,7 +213,6 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes, int p
 		free_args(lists->env, lists->exp);
 		exit(EXIT_FAILURE);
 	}
-	printf("\n | %d | %d | %s |\n", curr->fd_in, curr->fd_out, curr->content->command);
 	if (execv(curr->content->command, curr->content->args) == -1)
 	{
 		perror("execv: ");

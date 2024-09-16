@@ -50,7 +50,7 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 	ft_putstr_fd(command, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd("absolute path not found.\n", 2);
-	return (ft_free(split), free(tmp), free(absolute_dir), 0);
+	return (ft_free(split), 0);
 }
 
 static int	exec_comm(t_node *head, int input, int output)

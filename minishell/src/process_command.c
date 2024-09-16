@@ -70,7 +70,6 @@ int	process_command(char *line, t_lists *lists)
 	if (!even_quotes(line) || invalid_character(line) || fill_nodes(line,
 			&head, lists))
 		return (free_list(head), 1);
-	ft_env(head->var_list->env);
 	tmp = head;
 	while (++pos < ft_len_node(head))
 	{
@@ -78,7 +77,7 @@ int	process_command(char *line, t_lists *lists)
 			return (free_list(head), 1);
 		tmp = tmp->next;
 	}
-	print_list(head);
+	//print_list(head);
 	// if (delete_backslash(&head))
 	// 	return (EXIT_FAILURE);
 	if (ft_len_node(head) == 1)
