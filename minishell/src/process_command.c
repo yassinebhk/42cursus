@@ -73,8 +73,8 @@ int	process_command(char *line, t_lists *lists)
 	tmp = head;
 	while (++pos < ft_len_node(head))
 	{
-		if (!translate_args(tmp))
-			return (free_list(head), 1);
+		// if (!translate_args(tmp))
+		// 	return (free_list(head), 1);
 		tmp = tmp->next;
 	}
 	//print_list(head);

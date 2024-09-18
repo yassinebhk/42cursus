@@ -64,6 +64,8 @@ char	*translate_str(char *str)
 	pos = -1;
 	single_quote_open = 0;
 	double_quote_open = 0;
+	if (!str)
+		return (NULL);
 	new_str = (char *)malloc(new_len_str(str) + 1);
 	if (!new_str)
 		return (free(str), print_error("translate str", ENO_MEM), NULL);
