@@ -51,38 +51,49 @@ void	print_list(t_node *node)
 		printf("  fd:\n");
 		// Print additional fields (env, exp) if necessary
 		// ...
-		printf("    fd_in: %d\n",node->fd_in);
-		printf("    fd_out: %d\n",node->fd_out);
+		printf("    fd_in: %d\n", node->fd_in);
+		printf("    fd_out: %d\n", node->fd_out);
 		node = node->next;
 		node_count++;
 	}
 	printf("\n-----------------------------------------------\n");
 }
 
-int	process_command(char *line, t_lists *lists)
+int	process_command(t_node *head, char *line, t_lists *lists)
 {
 	int		pos;
-	t_node	*tmp;
-	t_node *head;
+	int		saved_stdin;
+	int		saved_stdout;
 
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
 	pos = -1;
 	head = NULL;
-	if (!even_quotes(line) || invalid_character(line) || fill_nodes(line,
-			&head, lists))
+	if (!even_quotes(line) || invalid_character(line))
 		return (free_list(head), 1);
-	tmp = head;
-	while (++pos < ft_len_node(head))
-	{
-		// if (!translate_args(tmp))
-		// 	return (free_list(head), 1);
-		tmp = tmp->next;
-	}
-	//print_list(head);
+	line = translate_str(line);
+	if (fill_nodes(line, &head, lists))
+		return (free_list(head), 1);
+	if (head->content->command)
+		g_signal = 1;
+	print_list(head);
+	if (expand_commands(&head))
+		return (free_list(head), 1);
 	// if (delete_backslash(&head))
 	// 	return (EXIT_FAILURE);
 	if (ft_len_node(head) == 1)
 		pos = execute_one_command(&head, lists);
 	else
 		pos = execute_commands(&head, lists);
+	if (dup2(saved_stdin, STDIN_FILENO) == -1)
+	{
+		perror("Failed to restore stdin");
+		return (EXIT_FAILURE);
+	}
+	if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+	{
+		perror("Failed to restore stdout");
+		return (EXIT_FAILURE);
+	}
 	return (free_list(head), pos);
 }

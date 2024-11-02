@@ -52,7 +52,7 @@ void	print_export_list(t_env *exp)
 	}
 }
 
-int	ft_env(t_env *env)
+int	ft_env(t_env *env, t_node **head)
 {
 	while (env)
 	{
@@ -62,5 +62,6 @@ int	ft_env(t_env *env)
 		ft_putstr_fd("\n", 1);
 		env = env->next;
 	}
+	(*head)->error = 0;
 	return (0);
 }

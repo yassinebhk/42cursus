@@ -34,6 +34,8 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 
 	pos = -1;
 	split = ft_split(path_list, ':');
+	if (!access((head)->content->command, X_OK))
+		return (1);
 	while (split[++pos])
 	{
 		path = split[pos];
@@ -71,6 +73,8 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else if (!pid)
 	{
+		if (!access((head)->content->command, X_OK))
+			execve((head)->content->command, (head)->content->args, 0);
 		if (input == r_input)
 		{
 			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
@@ -255,7 +259,7 @@ int	execute_built(t_node **head, t_lists *lists)
 		close((*head)->fd_out);
 	}
 	status = find_built((*head)->content->args, (*head)->content->num_args,
-			&(lists->env), &(lists->exp));
+			&lists, head);
 	if (dup2(saved_stdin, STDIN_FILENO) == -1 || dup2(saved_stdout,
 			STDOUT_FILENO) == -1)
 		return (perror("Error restoring original fd"), 1);

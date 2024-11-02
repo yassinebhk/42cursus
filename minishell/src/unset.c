@@ -7,7 +7,7 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	if (!str)
 		return (0);
 	while (env)
-	{	
+	{
 		if (!ft_strcmp(env->key, str))
 			return (1);
 		env = env->next;
@@ -23,7 +23,7 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	return (0);
 }
 
-static void	delete(char *key, t_env **list)
+static void delete (char *key, t_env **list)
 {
 	t_env	tmp;
 	t_env	*aux;
@@ -75,7 +75,7 @@ char	*add_eq(char *str)
 	return (rmv);
 }
 
-int	unset(char **str, int num_words, t_env **env, t_env **exp)
+int	unset(char **str, int num_words, t_lists **list, t_node **head)
 {
 	int	pos;
 
@@ -84,11 +84,12 @@ int	unset(char **str, int num_words, t_env **env, t_env **exp)
 	{
 		while (++pos < num_words)
 		{
-			if (check_var(str[pos], *env, *exp) == 1)
-				delete_var(str[pos], env, exp, 0);
-			else if (check_var(str[pos], *env, *exp) == 2)
-				delete_var(str[pos], env, exp, 1);
+			if (check_var(str[pos], (*list)->env, (*list)->exp) == 1)
+				delete_var(str[pos], &(*list)->env, &(*list)->exp, 0);
+			else if (check_var(str[pos], (*list)->env, (*list)->exp) == 2)
+				delete_var(str[pos], &(*list)->env, &(*list)->exp, 1);
 		}
 	}
+	(*head)->error = 0;
 	return (0);
 }

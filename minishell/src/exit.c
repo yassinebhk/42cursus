@@ -1,9 +1,50 @@
 #include "minishell.h"
 
-int	ft_exit(char **str)
+static int  isnum(char *str)
 {
-	printf("exit\n");
-	(void)str;
-	//exit + arg, ese aegumento es el valor que debe devolver exit
-	return (42);
+    if (!str || str == (void *)0)
+        return (-1);
+    if (*str == '-' || *str == '+')
+        str++;
+    while(*str)
+    {
+        if(!ft_isdigit((unsigned char)*str))
+            return (0);
+        str++;
+    }
+    return (1);
+}
+
+static int ft_mtxlen(char **str)
+{
+	int len;
+
+	len = 0;
+	while(str && str[len])
+		len++;
+	return (len);
+}
+
+void	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
+{
+    int exit_code;
+
+    exit_code = 1;
+    if (ft_mtxlen(str) > 2)
+        perror("exit: too many arguments");
+    else if (ft_mtxlen(str) == 2)
+    {
+        if (!isnum(str[1]))
+        {
+            printf("%s%s%s", "exit: ", str[1], " numeric argument required\n");
+            free_args(*env, *exp);
+            free_list(*head);
+            exit(255);
+        }
+        exit_code = ft_atoi(str[1]);
+    }
+    printf("exit\n");
+    free_list(*head);
+    free_args(*env, *exp);
+    exit(exit_code);
 }

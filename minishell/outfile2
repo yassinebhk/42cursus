@@ -1,13 +1,1 @@
-include
-jaimito
-libft
-libft.a
-Makefile
-minishell
-minishell.pdf
-outfile
-outfile2
-readline.supp
-README.md
-src
-test.c
+hola

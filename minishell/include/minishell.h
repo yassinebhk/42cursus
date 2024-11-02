@@ -53,6 +53,7 @@ enum					e_errors
 	BAD_ASSIGNMENT = 120,
 	COMMAND_NOT_FOUND = 127,
 	VARIABLE_NOT_FOUND = 4,
+	CANNOT_CHANGE_DIR = 5
 };
 
 enum					e_redirtype
@@ -126,6 +127,8 @@ typedef struct s_node
 	struct s_command	*content;
 }						t_node;
 
+extern int				g_signal;
+
 /***************************************
 					main
 ***************************************/
@@ -136,7 +139,8 @@ typedef struct s_node
  * @param lists The env and export lists
  * @return The status
  */
-int						process_command(char *line, t_lists *lists);
+int						process_command(t_node *head, char *line,
+							t_lists *lists);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -392,8 +396,8 @@ int						valid_var(char *var);
  * @param exp The export variables list
  * @returns The len list
  */
-int						find_built(char **str, int num_words, t_env **env,
-							t_env **exp);
+int						find_built(char **str, int num_words, t_lists **lists,
+							t_node **head);
 
 /**
  * @brief Execute the echo command
@@ -402,7 +406,7 @@ int						find_built(char **str, int num_words, t_env **env,
  * @param num_words The number of words of str
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						echo(char **str, int pos, int num_words);
+int						echo(char **str, int pos, int num_words, t_node **head);
 
 /**
  * @brief Execute the cd command
@@ -412,7 +416,8 @@ int						echo(char **str, int pos, int num_words);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						cd(char **str, int num_words, t_env **env, t_env **exp);
+int						cd(char **str, int num_words, t_lists **list,
+							t_node **head);
 
 /**
  * @brief Execute the pwd command
@@ -420,7 +425,7 @@ int						cd(char **str, int num_words, t_env **env, t_env **exp);
  * @param env The len list of env
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						pwd(t_env *env);
+int						pwd(t_env *env, t_node **head);
 
 /**
  * @brief Execute the export command
@@ -430,8 +435,8 @@ int						pwd(t_env *env);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						export(char **str, int num_words, t_env **env,
-							t_env **exp);
+int						export(char **str, int num_words, t_lists **list,
+							t_node **head);
 
 /**
  * @brief Execute the unset command
@@ -441,8 +446,8 @@ int						export(char **str, int num_words, t_env **env,
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						unset(char **str, int num_words, t_env **env,
-							t_env **exp);
+int						unset(char **str, int num_words, t_lists **list,
+							t_node **head);
 
 /**
  * @brief Execute the unset command
@@ -450,14 +455,13 @@ int						unset(char **str, int num_words, t_env **env,
  * @param env The len list of env
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						ft_env(t_env *env);
+int						ft_env(t_env *env, t_node **head);
 
 /**
- * @brief Execute the unset exit
- * @returns 42
+ * @brief Execute exit
  */
-int						ft_exit(char **str);
-
+void					ft_exit(char **str, t_env **env, t_env **exp,
+							t_node **head);
 /***************************************
 		print_command_not_found
 ***************************************/
@@ -473,6 +477,8 @@ void					print_error(char *command, int erno);
 /***************************************
 				executor
 ***************************************/
+
+int						expand_commands(t_node **head);
 
 /**
  * @brief Executes one command
@@ -523,5 +529,13 @@ int						execute_commands(t_node **head, t_lists *lists);
 int						delete_backslash(t_node **head);
 
 int						set_fd(t_node **head);
+
+/***************************************
+				signals
+***************************************/
+
+void					signal_d(t_node *node, t_lists *lists);
+void					sigint_handler(int signal);
+void					init_signals(void);
 
 #endif

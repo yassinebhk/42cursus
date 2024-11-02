@@ -15,9 +15,9 @@ static int	is_valid_arg(char *str)
 	return (1);
 }
 
-int	echo(char **str, int pos, int num_words)
+int			echo(char **str, int pos, int num_words, t_node **head)
 {
-	int	flag;
+	int flag;
 
 	flag = 0;
 	while (++pos < num_words && is_valid_arg(str[pos]))
@@ -37,5 +37,6 @@ int	echo(char **str, int pos, int num_words)
 			printf(" %s", str[pos]);
 		printf("\n");
 	}
+	(*head)->error = 0;
 	return (0);
 }

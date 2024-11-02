@@ -19,7 +19,7 @@ SRCS 				:= src/main.c src/print_error.c src/env_vars.c src/builts.c src/echo.c 
 						src/count_pipes.c src/parsing.c src/export_utils.c \
 						src/translate_str.c src/invalid_character.c src/init_node.c \
 						src/process_command.c src/node_utils.c src/execute_one_command.c \
-						src/execute_commands.c src/delete_backslash.c
+						src/execute_commands.c src/delete_backslash.c src/signals.c src/expand.c
 
 OBJS 				:=$(SRCS:.c=.o)
 INCL				:= include/minishell.h

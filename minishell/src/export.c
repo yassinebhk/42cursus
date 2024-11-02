@@ -36,7 +36,7 @@ static int	set_var(char *str, t_env **exp, t_env **env, int flag)
 	return (0);
 }
 
-int	export(char **str, int num_words, t_env **env, t_env **exp)
+int	export(char **str, int num_words, t_lists **list, t_node **head)
 {
 	int	pos;
 	int	result;
@@ -44,20 +44,21 @@ int	export(char **str, int num_words, t_env **env, t_env **exp)
 	pos = 0;
 	result = 0;
 	if (num_words == 1)
-		print_export_list(*exp);
+		print_export_list((*list)->exp);
 	else
 	{
 		while (++pos < num_words && !result)
 		{
-			if (!exist_var(str[pos], env, exp))
-				result = 0;
+			if (!exist_var(str[pos], &(*list)->env, &(*list)->exp))
+				(result) = 0;
 			else if (!find_eq(str[pos]))
-				result = set_var(str[pos], exp, env, 0);
+				(result) = set_var(str[pos], &(*list)->exp, &(*list)->env, 0);
 			else if (find_eq(str[pos]) == 1)
-				result = set_var(str[pos], exp, env, 1);
+				(result) = set_var(str[pos], &(*list)->exp, &(*list)->env, 1);
 			else
-				result = set_var(str[pos], exp, env, 2);
+				(result) = set_var(str[pos], &(*list)->exp, &(*list)->env, 2);
 		}
 	}
-	return (result);
+	(*head)->error = result;
+	return ((result));
 }

@@ -1,35 +1,5 @@
 #include "minishell.h"
 
-int	init_pipes(int **pipes, t_node *head)
-{
-	int	i;
-	int	pos;
-	int	fd[2];
-
-	i = -1;
-	pos = 0;
-	*pipes = (int *)malloc(2 * sizeof(int) * (ft_len_node(head) - 1));
-	if (!(*pipes))
-		return (print_error("pipe array malloc ", ENO_MEM), 0);
-	while (++i < ft_len_node(head) - 1)
-	{
-		if (pipe(fd) == -1)
-			return (ft_putstr_fd("pipe function failed", 2), 0);
-		pipes[0][pos++] = fd[0];
-		pipes[0][pos++] = fd[1];
-	}
-	return (1);
-}
-
-void	close_pipes(int *pipes, int len)
-{
-	int	i;
-
-	i = -1;
-	while (++i < 2 * (len - 1))
-		close(pipes[i]);
-}
-
 int	ft_open(char *file, int flag, int permission, int old_fd)
 {
 	if (old_fd > 2)
@@ -164,45 +134,67 @@ void	ft_dup2(int *fd_in, int *fd_out)
 	close(*fd_out);
 }
 
-void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes,
-		int pipe_pos)
+void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
+		int prev_fd)
 {
 	char	*path_list;
 
-	if (curr->next && curr->content->num_redir == 0)
+	if (!curr->next)
+		close(fd[1]);
+	if (curr == head)
+		close(fd[0]);
+	if (!curr->content->command)
 	{
-		if (dup2(pipes[pipe_pos + 1], STDOUT_FILENO) == -1)
-			perror("dup2 fd_out failed\n");
+		free_list(head);
+		free_args(lists->env, lists->exp);
+		exit(0);
 	}
-	else if (curr->fd_out != STDOUT_FILENO)
+	if (curr->fd_out != STDOUT_FILENO)
 	{
 		if (dup2(curr->fd_out, STDOUT_FILENO) == -1)
-			perror("dup2 fd_out to file failed\n");
+		{
+			perror("dup2 fd_out to file failed ");
+			free_list(head);
+			free_args(lists->env, lists->exp);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (curr->next)
+	{
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 fd_out failed ");
+			free_list(head);
+			free_args(lists->env, lists->exp);
+			exit(EXIT_FAILURE);
+		}
+		close(fd[1]);
 	}
 	if (curr->fd_in != STDIN_FILENO)
 	{
 		if (dup2(curr->fd_in, STDIN_FILENO) == -1)
-			perror("dup2 fd_in from file failed\n");
+		{
+			perror("dup2 fd_in from file failed ");
+			free_list(head);
+			free_args(lists->env, lists->exp);
+			exit(EXIT_FAILURE);
+		}
 	}
-	else if (curr != head)
+	else
 	{
-		if (dup2(pipes[pipe_pos - 1], STDIN_FILENO) == -1)
-			perror("dup2 fd_in failed\n");
-	}
-	close_pipes(pipes, ft_len_node(head));
-	if (!curr->content->command)
-	{
-		free_list(head);
-		free(pipes);
-		free_args(lists->env, lists->exp);
-		exit(0);
+		if (dup2(prev_fd, STDIN_FILENO) == -1)
+		{
+			perror("dup2 fd_in failed ");
+			free_list(head);
+			free_args(lists->env, lists->exp);
+			exit(EXIT_FAILURE);
+		}
+		close(fd[0]);
 	}
 	if (is_built_in(curr->content->command))
 	{
-		find_built(curr->content->args, curr->content->num_args,
-			&(curr->var_list->env), &(curr->var_list->exp));
+		find_built(curr->content->args, curr->content->num_args, &lists, &head);
 		free_list(head);
-		free(pipes);
 		free_args(lists->env, lists->exp);
 		exit(0);
 	}
@@ -211,20 +203,17 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes,
 			curr))
 	{
 		free_list(head);
-		free(pipes);
 		free_args(lists->env, lists->exp);
 		exit(EXIT_FAILURE);
 	}
-	if (execv(curr->content->command, curr->content->args) == -1)
+	if (execve(curr->content->command, curr->content->args, 0) == -1)
 	{
 		perror("execv: ");
 		free_list(head);
-		free(pipes);
 		free_args(lists->env, lists->exp);
 		exit(EXIT_FAILURE);
 	}
 	free_list(head);
-	free(pipes);
 	free_args(lists->env, lists->exp);
 	exit(0);
 }
@@ -232,35 +221,45 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *pipes,
 int	execute_commands(t_node **head, t_lists *lists)
 {
 	int		pid;
-	int		pipe_pos;
-	int		*pipes;
+	int		fd[2];
+	int		prev_fd_in;
 	t_node	*tmp;
 
-	pipe_pos = 0;
 	if (!set_fd(head))
 		return (EXIT_FAILURE);
-	//print_list2(*head);
-	if (!init_pipes(&pipes, *head))
-		return (EXIT_FAILURE);
 	tmp = *head;
+	prev_fd_in = tmp->fd_in;
 	while (tmp)
 	{
+		if (pipe(fd) == -1)
+		{
+			perror("pipe function failed");
+			return (EXIT_FAILURE);
+		}
 		pid = fork();
 		if (pid < 0)
-			return (free(pipes), ft_putstr_fd("fork failed\n", 2), 1);
-		else if (!pid)
-			execute_child(lists, *head, tmp, pipes, pipe_pos);	
+		{
+			perror("fork failed");
+			return (EXIT_FAILURE);
+		}
+		if (pid == 0)
+		{
+			if (prev_fd_in != -1)
+				close(fd[0]);
+			execute_child(lists, *head, tmp, fd, prev_fd_in);
+		}
 		else
 		{
-            close(pipes[pipe_pos]);
-            close(pipes[pipe_pos + 1]);
-            waitpid(pid, NULL, 0);
+			close(fd[1]);
+			wait(0);
 		}
-		pipe_pos += 1;
+		close(prev_fd_in);
+		prev_fd_in = dup(fd[0]);
+		close(fd[0]);
 		tmp = tmp->next;
 	}
-	close_pipes(pipes, ft_len_node(*head));
-	free(pipes);
+	if (prev_fd_in != -1)
+		close(prev_fd_in);
 	return (0);
 }
 

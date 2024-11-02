@@ -1,27 +1,34 @@
 #include "minishell.h"
 
+extern int				g_signal;
+
 int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		char **environment)
 {
-	int		status_code;
 	char	*line;
 	t_lists	lists;
+	t_node	head;
 
-	status_code = 0;
 	ft_memset(&lists, 0, sizeof(t_lists));
 	lists.env = get_var(environment, 0);
 	lists.exp = get_var(environment, 1);
-	while (status_code != 42)
+	while (1)
 	{
+		init_signals();
 		line = readline("$ ");
-		if (line && line[0])
+		if (!line)
+			signal_d(&head, &lists);
+		add_history(line);
+		if (line[0])
 		{
-			add_history(line);
-			status_code = process_command(line, &lists);
+			process_command(&head, line, &lists);
+			//free(line);
+			g_signal = 0;
 		}
-		free(line);
 	}
 	free_args(lists.env, lists.exp);
 	rl_clear_history();
 	return (0);
 }
+
+// guaradr el status con el wait: wifeexit wexitstatus

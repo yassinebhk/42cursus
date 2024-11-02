@@ -102,7 +102,7 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists)
 		if (!new_node)
 			return (free_list(*head), *head = NULL, 1);
 		ft_add_node_back(head, new_node);
-		pos++;
+		//pos++;
 	}
 	return (0);
 }
