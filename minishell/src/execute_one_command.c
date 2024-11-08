@@ -73,8 +73,8 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else if (!pid)
 	{
-		if (!access((head)->content->command, X_OK))
-			execve((head)->content->command, (head)->content->args, 0);
+		//if (!access((head)->content->command, X_OK))
+		//	execve((head)->content->command, (head)->content->args, 0);
 		if (input == r_input)
 		{
 			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
@@ -89,6 +89,23 @@ static int	exec_comm(t_node *head, int input, int output)
 				exit(EXIT_FAILURE);
 			}
 			close(head->fd_in);
+		}
+		if (input == r_heredoc)
+		{
+			read_heredoc(head->content->redir[inpos].filename);
+			head->fd_in = open("/tmp/.heredoc", O_RDONLY); // cambiar por un archivo temporal 
+			if (head->fd_in < 0)
+			{
+				perror("open error");
+				exit(EXIT_FAILURE);
+			}
+			if (dup2(head->fd_in, STDIN_FILENO) < 0)
+			{
+				perror("dup2 error");
+				exit(EXIT_FAILURE);
+			}
+			close(head->fd_in);
+			unlink("/tmp/.heredoc");
 		}
 		if (output == r_output)
 		{
@@ -148,23 +165,17 @@ static int	find_output_redirection(t_command *comm)
 static int	handle_output_redirections(t_node *head, int input)
 {
 	int			outpos;
-	int			outtype;
 	t_command	*c;
 
 	outpos = -1;
 	c = head->content;
-	// aquí solo debería de ejecutar bucles que llaman a exec_comm y le indican si tiene que redirigir y hacia donde
 	while (++outpos < c->num_redir)
 	{
 		if (c->redir[outpos].type == r_output
 			|| c->redir[outpos].type == r_append)
 		{
-			if (c->redir[outpos].type == r_output)
-				outtype = r_output;
-			else if (c->redir[outpos].type == r_append)
-				outtype = r_append;
 			head->fd_out = outpos;
-			if (exec_comm(head, input, outtype))
+			if (exec_comm(head, input, c->redir[outpos].type))
 				return (1);
 		}
 	}
@@ -184,7 +195,7 @@ static int	find_input_redirection(t_command *comm)
 	return (0);
 }
 
-static int	handle_input_redirections(t_node *head)
+static int	handle_input_redirections(t_node *head, int output_exists)
 {
 	int			inpos;
 	t_command	*c;
@@ -196,7 +207,7 @@ static int	handle_input_redirections(t_node *head)
 		if (c->redir[inpos].type == r_input)
 		{
 			head->fd_in = inpos;
-			if (find_output_redirection(head->content))
+			if (output_exists)
 			{
 				if (handle_output_redirections(head, r_input))
 					return (1);
@@ -217,7 +228,7 @@ static int	redirect(t_node *head)
 	num_output = find_output_redirection(head->content);
 	if (num_input > 0)
 	{
-		if (handle_input_redirections(head))
+		if (handle_input_redirections(head, num_output))
 			return (1);
 	}
 	else if (num_output > 0)

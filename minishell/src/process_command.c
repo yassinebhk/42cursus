@@ -77,8 +77,8 @@ int	process_command(t_node *head, char *line, t_lists *lists)
 	if (head->content->command)
 		g_signal = 1;
 	print_list(head);
-	if (expand_commands(&head))
-		return (free_list(head), 1);
+	//if (expand_commands(&head))
+	//	return (free_list(head), 1);
 	// if (delete_backslash(&head))
 	// 	return (EXIT_FAILURE);
 	if (ft_len_node(head) == 1)

@@ -31,6 +31,11 @@
 # define EXPORT_FLAG 1
 # define ENV_FLAG 0
 
+// HEREDOC
+# define MAX_LINE_LENGTH 1024
+# define PROMPT_HEREDOC "heredoc> "
+# define HEREDOC_FILENAME "/tmp/.heredoc_tmp"
+
 /***************************************
 					ENUM
 ***************************************/
@@ -487,6 +492,12 @@ int						expand_commands(t_node **head);
  * @returns 1 if occurs an error. Otherwise, 0.
  */
 int						execute_one_command(t_node **head, t_lists *lists);
+
+/**
+ * @brief Creates the heredoc temporal file
+ * @param delimiter The delimiter
+ */
+void					read_heredoc(const char *delimiter);
 
 /**
  * @brief Checks if the command is a built_in
