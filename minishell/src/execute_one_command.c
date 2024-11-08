@@ -73,8 +73,6 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else if (!pid)
 	{
-		//if (!access((head)->content->command, X_OK))
-		//	execve((head)->content->command, (head)->content->args, 0);
 		if (input == r_input)
 		{
 			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
@@ -93,7 +91,7 @@ static int	exec_comm(t_node *head, int input, int output)
 		if (input == r_heredoc)
 		{
 			read_heredoc(head->content->redir[inpos].filename);
-			head->fd_in = open("/tmp/.heredoc", O_RDONLY); // cambiar por un archivo temporal 
+			head->fd_in = open(HEREDOC_FILENAME, O_RDONLY); // cambiar por un archivo temporal 
 			if (head->fd_in < 0)
 			{
 				perror("open error");
@@ -189,7 +187,8 @@ static int	find_input_redirection(t_command *comm)
 	inpos = -1;
 	while (++inpos < comm->num_redir)
 	{
-		if (comm->redir[inpos].type == r_input)
+		if (comm->redir[inpos].type == r_input
+			|| comm->redir[inpos].type == r_heredoc)
 			return (1);
 	}
 	return (0);
@@ -204,15 +203,16 @@ static int	handle_input_redirections(t_node *head, int output_exists)
 	c = head->content;
 	while (++inpos < c->num_redir)
 	{
-		if (c->redir[inpos].type == r_input)
+		if (c->redir[inpos].type == r_input
+			|| c->redir[inpos].type == r_heredoc)
 		{
 			head->fd_in = inpos;
 			if (output_exists)
 			{
-				if (handle_output_redirections(head, r_input))
+				if (handle_output_redirections(head, c->redir[inpos].type))
 					return (1);
 			}
-			else if (exec_comm(head, r_input, 0))
+			else if (exec_comm(head, c->redir[inpos].type, 0))
 				return (1);
 		}
 	}
