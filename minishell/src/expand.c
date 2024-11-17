@@ -1,98 +1,45 @@
 #include "minishell.h"
 
-// static int	find_dollar(char *str, int pos)
-// {
-// 	int next;
-
-// 	next = pos + 1;
-// 	while(str[next])
-// 	{
-// 		if (str[next] == DOLLAR && str[next - 1] != BACKSLASH)
-// 			return (next);
-// 		next++;
-// 	}
-// 	return (next);
-// }
-
-// static int	process_str(t_node *tmp, char *str)
-// {
-// 	int	pos;
-// 	int	next_dollar;
-// 	char	*new_word;
-
-// 	pos = -1;
-// 	while(str[++pos])
-// 	{
-// 		if (str[pos] == DOLLAR && !pos)
-// 		{
-// 			next_dollar = find_dollar(str, pos);
-// 			//construyo una palabra que vaya desde str[pos] hasta str[next_dollar - 1]
-// 			//esa es la variable a expandir, luego busco en tmp->var_list->env si existe
-// 			//esa variable y en caso de existir, retorno su valor
-// 			// Si encuentro la variable, la concateno a new_word
-// 			// Si no existe, no concateno nada a new_word
-// 		}
-// 		else if (str[pos] == DOLLAR && str[pos - 1] != BACKSLASH)
-// 		{
-// 			//hago lo mismo que en el if
-// 		}
-// 		else
-// 		{
-// 			//concateno el caracter a new_word
-// 		}
-// 	}
-// 	return (new_word);
-// }
-
-// int	expand_commands(t_node **head)
-// {
-// 	int		i;
-// 	t_node	*tmp;
-
-// 	tmp = head;
-// 	while(tmp)
-// 	{
-// 		i = -1;
-// 		while(++i < tmp->content->num_args)
-// 			tmp->content->args[i] = process_str(tmp, tmp->content->args[i]);
-// 		tmp = tmp->next;
-// 	}
-// }
-
-char *strndup(const char *s, size_t n)
+char	*strndup(const char *s, size_t n)
 {
-    size_t len;
-    char *new_str;
+	size_t	len;
+	char	*new_str;
+	size_t	i;
 
-    len = 0;
-    while (s[len] && len < n)
-        len++;
-    new_str = (char *)malloc(len + 1);
-    if (!new_str)
-        return (NULL);
-    for (size_t i = 0; i < len; i++)
-        new_str[i] = s[i];
-    new_str[len] = '\0';
-    return (new_str);
+	len = 0;
+	while (s[len] && len < n)
+	{
+		len++;
+	}
+	new_str = (char *)malloc(len + 1);
+	if (!new_str)
+		return (NULL);
+	i = -1;
+	while (++i < len)
+		new_str[i] = s[i];
+	new_str[len] = '\0';
+	return (new_str);
 }
 
-char *strjoin_char(const char *s1, const char *s2, char c)
+char	*strjoin_char(char *s1, char c, char terminator)
 {
-    size_t len1 = strlen(s1);
-    size_t len2 = strlen(s2);
-    char *new_str = (char *)malloc(len1 + len2 + 2); // +2 for the char and null terminator
+	size_t	len1;
+	size_t	i;
+	char	*new_str;
 
-    if (!new_str)
-        return (NULL);
-
-    strcpy(new_str, s1);
-    new_str[len1] = c;  // Insert the character
-    strcpy(new_str + len1 + 1, s2); // Copy second string
-
-    return (new_str);
+	len1 = strlen(s1);
+	new_str = (char *)malloc(len1 + 2);
+	if (!new_str)
+		return (NULL);
+	i = -1;
+	while (++i < len1)
+		new_str[i] = s1[i];
+	new_str[i] = c;
+	new_str[i + 1] = terminator;
+	return (free(s1), new_str);
 }
 
-static char *find_var_value(t_env *env_list, char *var_name)
+static char	*find_var_value(t_env *env_list, char *var_name)
 {
 	while (env_list)
 	{
@@ -103,22 +50,31 @@ static char *find_var_value(t_env *env_list, char *var_name)
 	return (NULL);
 }
 
-static char *expand_variable(t_env *env_list, char *str, int start, int end)
+static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 {
-	char *var_name;
-	char *var_value;
+	char	*var_name;
+	char	*var_value;
+	char	error_str[12];
 
-	var_name = strndup(str + start + 1, end - start - 1); // Extract variable name after $
+	var_name = strndup(str + start + 1, end - start - 1);
 	if (!var_name)
-		return (NULL); // handle allocation error
-	var_value = find_var_value(env_list, var_name);
+		return (NULL);
+	if (strcmp(var_name, "?") == 0)
+	{
+		free(var_name);
+		snprintf(error_str, sizeof(error_str), "%d", tmp->error);
+		return (strdup(error_str));
+	}
+	var_value = find_var_value(tmp->var_list->env, var_name);
 	free(var_name);
-	return (var_value ? strdup(var_value) : strdup("")); // If variable found, return value, else return empty string
+	if (var_value)
+		return (strdup(var_value));
+	return (strdup(""));
 }
 
-static int find_dollar(char *str, int pos)
+static int	find_dollar(char *str, int pos)
 {
-	int next;
+	int	next;
 
 	next = pos + 1;
 	while (str[next])
@@ -130,48 +86,55 @@ static int find_dollar(char *str, int pos)
 	return (next);
 }
 
-static char *process_str(t_node *tmp, char *str)
+static char	*process_str(t_node *tmp, char *str)
 {
-	int pos = 0, next_dollar;
-	char *new_word = strdup(""); // Start with an empty string
-	char *var_value;
-	char *temp;
+	int		pos;
+	int		next_dollar;
+	char	*new_word;
+	char	*var_value;
+	size_t	i;
 
-	while (str[pos])
+	pos = -1;
+	new_word = strdup("");
+	while (str[++pos])
 	{
 		if (str[pos] == DOLLAR && (pos == 0 || str[pos - 1] != BACKSLASH))
 		{
 			next_dollar = find_dollar(str, pos);
-			var_value = expand_variable(tmp->var_list->env, str, pos, next_dollar);
-			temp = new_word;
-			new_word = ft_strjoin(new_word, var_value); // Append the variable's value
-			free(temp);
+			var_value = expand_variable(tmp, str, pos, next_dollar);
+			i = -1;
+			while (var_value[++i] != '\0')
+				new_word = strjoin_char(new_word, var_value[i], '\0');
 			free(var_value);
-			pos = next_dollar - 1; // Move past the expanded variable
+			pos = next_dollar - 1;
 		}
 		else
-		{
-			temp = new_word;
-			new_word = strjoin_char(new_word, str[pos]); // Append regular character
-			free(temp);
-		}
-		pos++;
+			new_word = strjoin_char(new_word, str[pos], '\0');
 	}
-	return (new_word); // Return the expanded string
+	return (new_word);
 }
 
-int expand_commands(t_node **head)
+int	expand_commands(t_node **head)
 {
-	t_node *tmp = *head;
-	int i;
+	int		i;
+	t_node	*tmp;
+	char	*expanded;
 
+	tmp = *head;
 	while (tmp)
 	{
-		for (i = 0; i < tmp->content->num_args; i++)
+		i = -1;
+		while (++i < tmp->content->num_args)
 		{
-			char *expanded = process_str(tmp, tmp->content->args[i]);
-			free(tmp->content->args[i]);  // Free original argument
-			tmp->content->args[i] = expanded;  // Replace with expanded version
+			expanded = process_str(tmp, tmp->content->args[i]);
+			free(tmp->content->args[i]);
+			tmp->content->args[i] = ft_strdup(expanded);
+			if (i == 0)
+			{
+				free(tmp->content->command);
+				tmp->content->command = ft_strdup(expanded);
+			}
+			free(expanded);
 		}
 		tmp = tmp->next;
 	}

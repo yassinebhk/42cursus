@@ -27,8 +27,15 @@ int	count_pipes(char *line)
 	{
 		check_single_quote(line[pos], &single_quote);
 		check_double_quote(line[pos], &double_quote);
+		if (line[pos] == BACKSLASH)
+		{
+			pos++;
+			continue ;
+		}
 		if (line[pos] == PIPE && !single_quote && !double_quote)
+		{
 			num_pipes++;
+		}
 	}
 	return (num_pipes);
 }

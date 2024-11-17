@@ -35,6 +35,8 @@ void	find_pipe(char *line, int *pos)
 
 	single_quote_open = 0;
 	double_quote_open = 0;
+	if (line == NULL)
+		return ;
 	while (line[*pos])
 	{
 		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
@@ -42,7 +44,10 @@ void	find_pipe(char *line, int *pos)
 		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
 			double_quote_open = !double_quote_open;
 		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
-			break ;
+		{
+			if (*pos == 0 || (line[*pos - 1] != BACKSLASH))
+				break ;
+		}
 		(*pos)++;
 	}
 	(*pos)++;
@@ -67,10 +72,12 @@ char	*get_trunc_str(char *line, int init_pos, int end_pos)
 	return (str);
 }
 
-static int	is_redir(char *str)
+static int	is_redir(char *str, int pos)
 {
-	return ((*str == '>' && *(str + 1) == '>') || *str == '>' || (*str == '<'
-			&& *(str + 1) == '<') || *str == '<');
+	if (pos > 0 && str[pos - 1] == BACKSLASH)
+		return (0);
+	return ((str[pos] == '>' && *(str + 1) == '>') || str[pos] == '>'
+		|| (str[pos] == '<' && *(str + 1) == '<') || str[pos] == '<');
 }
 
 static int	ft_isspecial(char c)
@@ -79,7 +86,7 @@ static int	ft_isspecial(char c)
 		|| c == '<' || c == '>' || c == '\\' || c == '/' || c == '|');
 }
 
-static int	ft_isspace(char c)
+int	ft_isspace(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f'
 		|| c == '\v');
@@ -88,30 +95,32 @@ static int	ft_isspace(char c)
 static void	num_args(char *str, int *n_args, int *n_redir)
 {
 	int	word;
+	int	pos;
 
+	pos = 0;
 	word = 0;
-	while (*str <= ' ')
-		str++;
-	while (*str)
+	while (str[pos] <= ' ')
+		pos++;
+	while (str[pos])
 	{
-		if (is_redir(str))
+		if (is_redir(str, pos))
 		{
-			while (is_redir(str))
-				str++;
-			while (ft_isspace(*str))
-				str++;
-			while (*str > ' ' && !is_redir(str))
-				str++;
+			while (is_redir(str, pos))
+				pos++;
+			while (ft_isspace(str[pos]))
+				pos++;
+			while (str[pos] > ' ' && !is_redir(str, pos))
+				pos++;
 			(*n_redir)++;
 		}
-		while (*str > ' ' && !is_redir(str))
+		while (str[pos] > ' ' && !is_redir(str, pos))
 		{
-			str++;
+			pos++;
 			if (!word)
 				word = 1;
 		}
-		while (ft_isspace(*str))
-			str++;
+		while (ft_isspace(str[pos]))
+			pos++;
 		if (word)
 			(*n_args)++;
 		word = 0;
@@ -137,12 +146,12 @@ static t_redir	create_redir(char *str)
 	else if (ft_isspecial(str[i + 2]))
 		return (print_error("create_redir parse error", PARSING),
 			redir.valid = 0, redir);
-	while (is_redir(str + i))
+	while (is_redir(str + i, i))
 		i++;
 	while (ft_isspace(str[i]))
 		i++;
 	begin = i;
-	while (str[i] > ' ' && !is_redir(str + i))
+	while (str[i] > ' ' && !is_redir(str + i, i))
 	{
 		if (ft_isspecial(str[i]))
 			return (print_error("create_redir filename", BAD_ASSIGNMENT),
@@ -181,20 +190,20 @@ static int	create_command(char *str, t_command **command)
 		i++;
 	while (str[i])
 	{
-		if (is_redir(str + i))
+		if (is_redir(str, i))
 		{
 			(*command)->redir[redir_pos] = create_redir(str + i);
 			if (!(*command)->redir[redir_pos++].valid)
 				return (1);
-			while (is_redir(str + i))
+			while (is_redir(str, i))
 				i++;
 			while (ft_isspace(str[i]))
 				i++;
-			while (str[i] > ' ' && !is_redir(str + i))
+			while (str[i] > ' ' && !is_redir(str, i))
 				i++;
 		}
 		begin = i;
-		while (str[i] > ' ' && !is_redir(str + i))
+		while (str[i] > ' ' && !is_redir(str, i))
 		{
 			i++;
 			if (!word)
@@ -239,15 +248,15 @@ int	new_command(char *str, t_command **command)
 	num_args(str, &n_args, &n_redir);
 	(*command)->num_args = n_args;
 	(*command)->num_redir = n_redir;
-	(*command)->args = (char **)malloc(sizeof(char *)
-			* ((*command)->num_args + 1));
+	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args
+				+ 1));
 	if (!(*command)->args)
 		return (print_error("command args malloc", ENO_MEM), 0);
 	if (n_redir)
 	{
 		(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
 		if (!(*command)->redir)
-			return (print_error("command redir malloc", ENO_MEM), 0);		
+			return (print_error("command redir malloc", ENO_MEM), 0);
 	}
 	while (*str <= ' ')
 		str++;

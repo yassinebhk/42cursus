@@ -30,46 +30,47 @@ static void	process_char(char c, int *single_quote_open, int *double_quote_open,
 
 static int	new_len_str(const char *str)
 {
-	int	pos = 0, len = 0;
-	int	single_quote_open = 0, double_quote_open = 0;
+	int	pos = 0, len;
+	int	single_quote_open = 0, double_quote_open;
 
+	pos = 0, len = 0;
+	single_quote_open = 0, double_quote_open = 0;
 	while (str[pos])
 	{
 		if (str[pos] == SINGLE_QUOTE && !double_quote_open)
 			single_quote_open = !single_quote_open;
 		else if (str[pos] == DOUBLE_QUOTE && !single_quote_open)
 			double_quote_open = !double_quote_open;
-
 		len++;
 		if (single_quote_open && is_special_char(str[pos]))
 			len++;
-		else if (double_quote_open && (is_special_char(str[pos]) && str[pos] != DOLLAR))
+		else if (double_quote_open && (is_special_char(str[pos])
+				&& str[pos] != DOLLAR))
 			len++;
 		pos++;
 	}
-	return len;
+	return (len);
 }
 
 char	*translate_str(char *str)
 {
-	int		i = 0, pos = -1;
-	int		single_quote_open = 0, double_quote_open = 0;
+	int		i = 0, pos;
+	int		single_quote_open = 0, double_quote_open;
 	char	*new_str;
 
+	i = 0, pos = -1;
+	single_quote_open = 0, double_quote_open = 0;
 	if (!str)
-		return NULL;
-
+		return (NULL);
 	new_str = (char *)malloc(new_len_str(str) + 1);
 	if (!new_str)
 		return (free(str), print_error("translate str", ENO_MEM), NULL);
-
 	while (str[++pos])
-		process_char(str[pos], &single_quote_open, &double_quote_open, new_str, &i);
-
+		process_char(str[pos], &single_quote_open, &double_quote_open, new_str,
+			&i);
 	new_str[i] = '\0';
 	return (free(str), new_str);
 }
-
 
 int	translate_args(t_node *node)
 {

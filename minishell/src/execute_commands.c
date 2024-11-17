@@ -147,7 +147,6 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 	{
 		free_list(head);
 		free_args(lists->env, lists->exp);
-		exit(0);
 	}
 	if (curr->fd_out != STDOUT_FILENO)
 	{
@@ -156,7 +155,6 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 			perror("dup2 fd_out to file failed ");
 			free_list(head);
 			free_args(lists->env, lists->exp);
-			exit(EXIT_FAILURE);
 		}
 	}
 	else if (curr->next)
@@ -166,7 +164,6 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 			perror("dup2 fd_out failed ");
 			free_list(head);
 			free_args(lists->env, lists->exp);
-			exit(EXIT_FAILURE);
 		}
 		close(fd[1]);
 	}
@@ -177,7 +174,6 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 			perror("dup2 fd_in from file failed ");
 			free_list(head);
 			free_args(lists->env, lists->exp);
-			exit(EXIT_FAILURE);
 		}
 	}
 	else
@@ -187,7 +183,6 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 			perror("dup2 fd_in failed ");
 			free_list(head);
 			free_args(lists->env, lists->exp);
-			exit(EXIT_FAILURE);
 		}
 		close(fd[0]);
 	}
@@ -198,24 +193,22 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		free_args(lists->env, lists->exp);
 		exit(0);
 	}
-	path_list = get_path_list("PATH\0", curr->var_list->env);
-	if (!path_list || !get_absolute_path(path_list, curr->content->command,
-			curr))
+	else
 	{
-		free_list(head);
-		free_args(lists->env, lists->exp);
-		exit(EXIT_FAILURE);
-	}
-	if (execve(curr->content->command, curr->content->args, 0) == -1)
-	{
+		path_list = get_path_list("PATH\0", curr->var_list->env);
+		if (!path_list || !get_absolute_path(path_list, curr->content->command,
+				curr))
+		{
+			free_list(head);
+			free_args(lists->env, lists->exp);
+			exit(EXIT_FAILURE);
+		}
+		execve(curr->content->command, curr->content->args, 0);
 		perror("execv: ");
 		free_list(head);
 		free_args(lists->env, lists->exp);
 		exit(EXIT_FAILURE);
 	}
-	free_list(head);
-	free_args(lists->env, lists->exp);
-	exit(0);
 }
 
 int	execute_commands(t_node **head, t_lists *lists)

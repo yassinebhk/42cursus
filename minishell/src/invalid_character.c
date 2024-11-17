@@ -35,18 +35,34 @@ static int	check_special_or_meta(int pos, char *line)
 	return (0);
 }
 
+int	check_consecutive_pipes(int pos, char *line)
+{
+	int	next_pos;
+
+	if (line[pos] != PIPE)
+		return (0);
+	next_pos = pos + 1;
+	while (line[next_pos] == ' ')
+		next_pos++;
+	if (line[next_pos] == PIPE)
+		return (ft_putstr_fd("Syntax error: unexpected token `|'\n", 2), 1);
+	return (0);
+}
+
 int	invalid_character(char *line)
 {
 	int	pos;
 	int	single_quote_open;
 	int	double_quote_open;
 
-	pos = -1;
+	pos = 0;
 	single_quote_open = 0;
 	double_quote_open = 0;
-	if (ft_strchr(line, BACKSLASH))
-		return (1);
-	while (line[++pos])
+	while (line[pos] == ' ')
+		pos++;
+	if (line[pos] == PIPE)
+		return (ft_putstr_fd("Syntax error: unexpected token `|'\n", 2), 1);
+	while (line[pos])
 	{
 		if (line[pos] == SINGLE_QUOTE && !double_quote_open)
 			single_quote_open = !single_quote_open;
@@ -54,9 +70,10 @@ int	invalid_character(char *line)
 			double_quote_open = !double_quote_open;
 		else if (!single_quote_open && !double_quote_open)
 		{
-			if (check_special_or_meta(pos, line))
+			if (check_special_or_meta(pos, line) || check_consecutive_pipes(pos, line))
 				return (1);
 		}
+		pos++;
 	}
 	return (0);
 }

@@ -43,6 +43,7 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 		absolute_dir = ft_strjoin(tmp, command);
 		if (!access(absolute_dir, e_X_OK))
 		{
+			free(head->content->command);
 			head->content->command = ft_strdup(absolute_dir);
 			return (ft_free(split), free(tmp), free(absolute_dir), 1);
 		}
@@ -73,8 +74,10 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else if (!pid)
 	{
+		// if (!access((head)->content->command, X_OK))
+		// 	execve((head)->content->command, (head)->content->args, 0);
 		if (!access((head)->content->command, X_OK))
-			execve((head)->content->command, (head)->content->args, 0);
+			return (EXIT_FAILURE);
 		if (input == r_input)
 		{
 			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
@@ -122,9 +125,10 @@ static int	exec_comm(t_node *head, int input, int output)
 			}
 			close(head->fd_out);
 		}
-		execv((head)->content->command, (head)->content->args);
+		execve((head)->content->command, (head)->content->args, NULL);
 		perror("execv failed");
-		exit(EXIT_FAILURE);
+		free_list(head);
+		return (EXIT_FAILURE);
 	}
 	else
 		wait(&status);

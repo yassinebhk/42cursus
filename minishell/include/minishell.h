@@ -137,10 +137,11 @@ extern int				g_signal;
  * @brief Process the commands given
  * @param line The line with the commands
  * @param lists The env and export lists
+ * @param status The error status of the program
  * @return The status
  */
 int						process_command(t_node *head, char *line,
-							t_lists *lists);
+							t_lists *lists, int status);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -188,9 +189,11 @@ char					*translate_str(char *str);
  * @brief Initializates the list of commands
  * @param line The string which contains the commands
  * @param head The head of the list
+ * @param status The error status of the program
  * @returns 1 if failts. Otherwise, 0.
  */
-int						fill_nodes(char *line, t_node **head, t_lists *lists);
+int						fill_nodes(char *line, t_node **head, t_lists *lists,
+							int status);
 
 /**
  * @brief Add a new node to the command list
@@ -383,6 +386,13 @@ int						exist_var(char *str, t_env **env, t_env **exp);
  * @returns 0 if has a correct name. Otherwise 1
  */
 int						valid_var(char *var);
+
+/**
+ * @brief Checks if the character is a space
+ * @param c The character
+ * @returns 1 if it's a space. Otherwise 0
+ */
+int						ft_isspace(char c);
 
 /***************************************
 				builts

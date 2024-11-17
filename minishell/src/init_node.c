@@ -60,7 +60,7 @@ t_env	*ft_listdup(t_env *list)
 }
 
 
-t_node	*fill_node(char *line, int *pos, t_lists *lists)
+t_node	*fill_node(char *line, int *pos, t_lists *lists, int status)
 {
 	int		init_pos;
 	t_node	*new_node;
@@ -76,7 +76,7 @@ t_node	*fill_node(char *line, int *pos, t_lists *lists)
 				ENO_MEM), NULL);
 	new_node->var_list->env = ft_listdup(lists->env);
 	new_node->var_list->exp = ft_listdup(lists->exp);
-	new_node->error = 0;
+	new_node->error = status;
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->next = NULL;
@@ -88,7 +88,7 @@ t_node	*fill_node(char *line, int *pos, t_lists *lists)
 	return (new_node);
 }
 
-int	fill_nodes(char *line, t_node **head, t_lists *lists)
+int	fill_nodes(char *line, t_node **head, t_lists *lists, int status)
 {
 	int		i;
 	int		pos;
@@ -98,7 +98,7 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists)
 	pos = 0;
 	while (++i <= count_pipes(line))
 	{
-		new_node = fill_node(line, &pos, lists);
+		new_node = fill_node(line, &pos, lists, status);
 		if (!new_node)
 			return (free_list(*head), *head = NULL, 1);
 		ft_add_node_back(head, new_node);
