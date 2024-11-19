@@ -30,11 +30,15 @@ static void	process_char(char c, int *single_quote_open, int *double_quote_open,
 
 static int	new_len_str(const char *str)
 {
-	int	pos = 0, len;
-	int	single_quote_open = 0, double_quote_open;
+	int	pos;
+	int	len;
+	int	single_quote_open;
+	int	double_quote_open;
 
-	pos = 0, len = 0;
-	single_quote_open = 0, double_quote_open = 0;
+	pos = 0;
+	single_quote_open = 0;
+	len = 0;
+	double_quote_open = 0;
 	while (str[pos])
 	{
 		if (str[pos] == SINGLE_QUOTE && !double_quote_open)
@@ -54,12 +58,16 @@ static int	new_len_str(const char *str)
 
 char	*translate_str(char *str)
 {
-	int		i = 0, pos;
-	int		single_quote_open = 0, double_quote_open;
+	int		i;
+	int		pos;
+	int		single_quote_open;
+	int		double_quote_open;
 	char	*new_str;
 
-	i = 0, pos = -1;
-	single_quote_open = 0, double_quote_open = 0;
+	i = 0;
+	pos = -1;
+	single_quote_open = 0;
+	double_quote_open = 0;
 	if (!str)
 		return (NULL);
 	new_str = (char *)malloc(new_len_str(str) + 1);

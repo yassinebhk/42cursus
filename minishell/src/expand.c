@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	*strndup(const char *s, size_t n)
+char	*ft_strndup(const char *s, size_t n)
 {
 	size_t	len;
 	char	*new_str;
@@ -54,22 +54,55 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 {
 	char	*var_name;
 	char	*var_value;
-	char	error_str[12];
+	char	*error_str;
+	char	*concat_str;
+	char	*final_str;
 
-	var_name = strndup(str + start + 1, end - start - 1);
+	var_name = ft_strndup(str + start + 1, end - start - 1);
 	if (!var_name)
 		return (NULL);
-	if (strcmp(var_name, "?") == 0)
+	if (ft_strncmp(var_name, "?", 1) == 0 || ft_strncmp(var_name, "\\?",
+			2) == 0)
 	{
+		error_str = ft_itoa(tmp->error);
+		if (ft_strncmp(var_name, "?", 1) == 0)
+			start += 2;
+		else if (ft_strncmp(var_name, "\\?", 2) == 0)
+			start += 3;
 		free(var_name);
-		snprintf(error_str, sizeof(error_str), "%d", tmp->error);
-		return (strdup(error_str));
+		if (str[start] != '\0')
+		{
+			if (ft_strncmp(var_name, "?", 1) == 0)
+				start += 2;
+			else if (ft_strncmp(var_name, "\\?", 2) == 0)
+				start += 3;
+			free(var_name);
+			concat_str = ft_strndup(str + start, ft_strlen(str) - start);
+			final_str = ft_strjoin(error_str, concat_str);
+			free(concat_str);
+			free(error_str);
+			return (final_str);
+		}
+		else
+		{
+			// if (ft_strncmp(var_name, "?", 1) == 0)
+			// 	start += 1;
+			// else if (ft_strncmp(var_name, "\\?", 2) == 0)
+			// 	start += 2;
+			// free(var_name);
+			// concat_str = ft_strndup(str + start, ft_strlen(str) - start);
+			// final_str = ft_strjoin(error_str, concat_str);
+			// free(concat_str);
+			// free(error_str);
+			// return (final_str);			
+		}
+		return (error_str);
 	}
 	var_value = find_var_value(tmp->var_list->env, var_name);
 	free(var_name);
 	if (var_value)
-		return (strdup(var_value));
-	return (strdup(""));
+		return (ft_strdup(var_value));
+	return (ft_strdup(""));
 }
 
 static int	find_dollar(char *str, int pos)
@@ -95,7 +128,7 @@ static char	*process_str(t_node *tmp, char *str)
 	size_t	i;
 
 	pos = -1;
-	new_word = strdup("");
+	new_word = ft_strdup("");
 	while (str[++pos])
 	{
 		if (str[pos] == DOLLAR && (pos == 0 || str[pos - 1] != BACKSLASH))
