@@ -61,40 +61,21 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 	var_name = ft_strndup(str + start + 1, end - start - 1);
 	if (!var_name)
 		return (NULL);
-	if (ft_strncmp(var_name, "?", 1) == 0 || ft_strncmp(var_name, "\\?",
-			2) == 0)
+	if (ft_strncmp(var_name, "?", 1) == 0 || ft_strncmp(var_name, "\\?", 2) == 0)
 	{
 		error_str = ft_itoa(tmp->error);
-		if (ft_strncmp(var_name, "?", 1) == 0)
-			start += 2;
-		else if (ft_strncmp(var_name, "\\?", 2) == 0)
+		if (ft_strncmp(var_name, "\\?", 2) == 0)
 			start += 3;
+		else
+			start += 2;
 		free(var_name);
 		if (str[start] != '\0')
 		{
-			if (ft_strncmp(var_name, "?", 1) == 0)
-				start += 2;
-			else if (ft_strncmp(var_name, "\\?", 2) == 0)
-				start += 3;
-			free(var_name);
 			concat_str = ft_strndup(str + start, ft_strlen(str) - start);
 			final_str = ft_strjoin(error_str, concat_str);
 			free(concat_str);
 			free(error_str);
 			return (final_str);
-		}
-		else
-		{
-			// if (ft_strncmp(var_name, "?", 1) == 0)
-			// 	start += 1;
-			// else if (ft_strncmp(var_name, "\\?", 2) == 0)
-			// 	start += 2;
-			// free(var_name);
-			// concat_str = ft_strndup(str + start, ft_strlen(str) - start);
-			// final_str = ft_strjoin(error_str, concat_str);
-			// free(concat_str);
-			// free(error_str);
-			// return (final_str);			
 		}
 		return (error_str);
 	}
@@ -104,6 +85,8 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 		return (ft_strdup(var_value));
 	return (ft_strdup(""));
 }
+
+
 
 static int	find_dollar(char *str, int pos)
 {

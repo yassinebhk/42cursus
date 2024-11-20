@@ -19,13 +19,13 @@ int	is_only_spaces_or_tabs(char *line)
 int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		char **environment)
 {
-	int		status;
+	int		exit_code;
 	char	*line;
 	t_lists	lists;
 	t_node	head;
 
 	ft_memset(&lists, 0, sizeof(t_lists));
-	status = 0;
+	exit_code = 0;
 	lists.env = get_var(environment, 0);
 	lists.exp = get_var(environment, 1);
 	while (1)
@@ -37,7 +37,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		add_history(line);
 		if (line && !is_only_spaces_or_tabs(line))
 		{
-			status = process_command(&head, line, &lists, status);
+			exit_code = process_command(&head, line, &lists, exit_code);
 			g_signal = 0;
 		}
 	}
