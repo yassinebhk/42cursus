@@ -2,7 +2,7 @@
 
 static int	new_len_str(char *str)
 {
-	int	len;
+	int		len;
 	size_t	pos;
 
 	pos = -1;
@@ -17,9 +17,9 @@ static int	new_len_str(char *str)
 
 static char *delete (char *str)
 {
-	int			i;
-	size_t		pos;
-	char		*new_str;
+	int		i;
+	size_t	pos;
+	char	*new_str;
 
 	i = 0;
 	pos = -1;

@@ -470,7 +470,7 @@ int						ft_env(t_env *env, t_node **head);
 /**
  * @brief Execute exit
  */
-void					ft_exit(char **str, t_env **env, t_env **exp,
+int						ft_exit(char **str, t_env **env, t_env **exp,
 							t_node **head);
 /***************************************
 		print_command_not_found

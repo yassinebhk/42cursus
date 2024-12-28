@@ -61,9 +61,9 @@ void	print_list(t_node *node)
 
 int	process_command(t_node *head, char *line, t_lists *lists, int exit_code)
 {
-	int		status;
-	int		saved_stdin;
-	int		saved_stdout;
+	int	status;
+	int	saved_stdin;
+	int	saved_stdout;
 
 	status = -1;
 	head = NULL;
@@ -72,7 +72,7 @@ int	process_command(t_node *head, char *line, t_lists *lists, int exit_code)
 	if (!even_quotes(line) || invalid_character(line))
 		return (free_list(head), 1);
 	line = translate_str(line);
-	//printf("\n%s\n", line);
+	// printf("\n%s\n", line);
 	if (fill_nodes(line, &head, lists, exit_code))
 		return (free(line), free_list(head), 1);
 	free(line);
@@ -82,14 +82,16 @@ int	process_command(t_node *head, char *line, t_lists *lists, int exit_code)
 		return (free_list(head), 1);
 	if (delete_backslash(&head))
 		return (EXIT_FAILURE);
-	//print_list(head);
+	// print_list(head);
 	if (ft_len_node(head) == 1)
 		status = execute_one_command(&head, lists);
 	else
 		status = execute_commands(&head, lists);
 	if (dup2(saved_stdin, STDIN_FILENO) == -1)
-		return (free_list(head), perror("Failed to restore stdin"), EXIT_FAILURE);
+		return (free_list(head), perror("Failed to restore stdin"),
+			EXIT_FAILURE);
 	if (dup2(saved_stdout, STDOUT_FILENO) == -1)
-		return (free_list(head), perror("Failed to restore stdout"), EXIT_FAILURE);
+		return (free_list(head), perror("Failed to restore stdout"),
+			EXIT_FAILURE);
 	return (free_list(head), status);
 }

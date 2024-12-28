@@ -25,24 +25,24 @@ static int ft_mtxlen(char **str)
 	return (len);
 }
 
-void	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
+int	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
 {
     int exit_code;
 
     exit_code = 1;
-    if (ft_mtxlen(str) > 2)
-        perror("exit: too many arguments");
-    else if (ft_mtxlen(str) == 2)
+    if (ft_mtxlen(str) == 2)
     {
         if (!isnum(str[1]))
         {
             printf("%s%s%s", "exit: ", str[1], " numeric argument required\n");
             free_args(*env, *exp);
             free_list(*head);
-            exit(255);
+            exit(2);
         }
         exit_code = ft_atoi(str[1]);
     }
+    else if (ft_mtxlen(str) > 2)
+        return (ft_putstr_fd(" too many arguments", 2), 1);
     printf("exit\n");
     free_list(*head);
     free_args(*env, *exp);
