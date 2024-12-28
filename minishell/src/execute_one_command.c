@@ -74,6 +74,10 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else if (!pid)
 	{
+		if (!access((head)->content->command, X_OK))
+			execve((head)->content->command, (head)->content->args, 0);
+		if (!access((head)->content->command, X_OK))
+			return (EXIT_FAILURE);
 		if (input == r_input)
 		{
 			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);

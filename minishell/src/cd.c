@@ -70,7 +70,9 @@ static int	change_directory(t_env **env, t_env **exp, char *var, int flag)
 
 int	cd_env(char **str, int num_words, t_lists **list, t_node **head)
 {
-	if (num_words == 1 || !ft_strcmp(str[1], "~"))
+	if (num_words > 2)
+		return (ft_putstr_fd(" too many arguments", 2), 1);
+	if (num_words == 1 || !ft_strcmp(str[1], "~\0"))
 	{
 		if (change_directory(&(*list)->env, &(*list)->exp, "HOME\0", 1))
 			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
@@ -80,12 +82,12 @@ int	cd_env(char **str, int num_words, t_lists **list, t_node **head)
 		if (change_directory(&(*list)->env, &(*list)->exp, NULL, 0))
 			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
 	}
-	else if (!ft_strcmp(str[1], "-"))
+	else if (!ft_strcmp(str[1], "-\0"))
 	{
 		if (change_directory(&(*list)->env, &(*list)->exp, "OLDPWD\0", 1))
 			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
 	}
-	else if (ft_strcmp(str[1], "."))
+	else if (ft_strcmp(str[1], ".\0"))
 		return (move_to_path_env(str[1], &(*list)->env, &(*list)->exp));
 	return (0);
 }

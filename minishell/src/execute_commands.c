@@ -201,7 +201,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		{
 			free_list(head);
 			free_args(lists->env, lists->exp);
-			exit(EXIT_FAILURE);
+			exit(COMMAND_NOT_FOUND);
 		}
 		execve(curr->content->command, curr->content->args, 0);
 		perror("execv: ");
