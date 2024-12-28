@@ -78,11 +78,11 @@ int	process_command(t_node *head, char *line, t_lists *lists, int exit_code)
 	free(line);
 	if (head->content->command)
 		g_signal = 1;
-	if (expand_commands(&head))
-		return (free_list(head), 1);
-	if (delete_backslash(&head))
-		return (EXIT_FAILURE);
-	//print_list(head);
+	print_list(head);
+	//if (expand_commands(&head))
+	//	return (free_list(head), 1);
+	// if (delete_backslash(&head))
+	// 	return (EXIT_FAILURE);
 	if (ft_len_node(head) == 1)
 		status = execute_one_command(&head, lists);
 	else

@@ -125,7 +125,12 @@ static char	*process_str(t_node *tmp, char *str)
 			pos = next_dollar - 1;
 		}
 		else
-			new_word = strjoin_char(new_word, str[pos], '\0');
+		{
+			temp = new_word;
+			new_word = strjoin_char(new_word, temp, str[pos]); // Append regular character
+			free(temp);
+		}
+		pos++;
 	}
 	return (new_word);
 }
