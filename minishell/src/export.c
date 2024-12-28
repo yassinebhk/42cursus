@@ -27,8 +27,8 @@ if (valid_var(str))
 		str = rm_eq(str);
 		if (!str)
 			return (ENO_MEM);
-		ft_add_back(exp, ft_new_node(str, '\0', EXPORT_FLAG));
-		ft_add_back(env, ft_new_node(str, '\0', ENV_FLAG));
+		ft_add_back(exp, ft_new_node(str, NULL, EXPORT_FLAG));
+		ft_add_back(env, ft_new_node(str, NULL, ENV_FLAG));
 		free(str);
 	}
 	else

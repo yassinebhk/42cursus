@@ -234,7 +234,7 @@ static int	create_command(char *str, t_command **command)
 			i++;
 		word = 0;
 	}
-	(*command)->args[args_pos] = '\0';
+	(*command)->args[args_pos] = NULL;
 	return (0);
 }
 
