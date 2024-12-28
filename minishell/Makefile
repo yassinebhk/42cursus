@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
+#    Updated: 2024/12/28 21:04:44 by maxgarci         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Colors
 MAGENTA = \033[35;1m
 YELLOW  = \033[33;1m
@@ -11,45 +23,66 @@ BOLD	= \033[1m
 RED		= \033[31;1m
 
 NAME				:= minishell
-cc 					:= gcc
-flags 				:= -g -Wall -Wextra -Werror -Iinclude -Ilibft #-fsanitize=address
-SRCS 				:= src/main.c src/print_error.c src/env_vars.c src/builts.c src/echo.c \
-						src/cd.c src/free.c src/list_utils.c src/list_utils_two.c src/pwd.c src/export.c \
-						src/unset.c src/print_lists.c src/export_two.c src/exit.c src/cd_update.c \
-						src/count_pipes.c src/parsing.c src/export_utils.c \
-						src/translate_str.c src/invalid_character.c src/init_node.c \
-						src/process_command.c src/node_utils.c src/execute_one_command.c \
-						src/execute_commands.c src/delete_backslash.c src/signals.c src/expand.c \
-						src/expand_utils.c \
-						src/heredoc.c
 
-OBJS 				:=$(SRCS:.c=.o)
+CC 					:= cc
+CFLAGS 				:= -g -Wall -Wextra -Werror 
+INCLUDES 			:= -I./include -I./libft #-fsanitize=address
+LIBRARIES			:= -lreadline 
+
+LIBFT_PATH			:= libft/
+LIBFT				:= $(LIBFT_PATH)libft.a
+
+SRC_PATH			:= src/
+SRC 				:= main.c print_error.c env_vars.c builts.c echo.c \
+						cd.c free.c list_utils.c list_utils_two.c pwd.c export.c \
+						unset.c print_lists.c export_two.c exit.c cd_update.c \
+						count_pipes.c parsing.c export_utils.c \
+						translate_str.c invalid_character.c init_node.c \
+						process_command.c node_utils.c execute_one_command.c \
+						execute_commands.c delete_backslash.c signals.c expand.c \
+						expand_utils.c heredoc.c
+
+SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
+
+OBJ_PATH			:= obj/
+OBJ 				:= $(SRC:.c=.o)
+OBJS				:= $(addprefix $(OBJ_PATH), $(OBJ))
+
 INCL				:= include/minishell.h
 
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
 #bonus: $(NAME_BONUS)
 
-%.o: %.c $(INCL)
-	@gcc $(flags) -c $< -o $@
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
 
-$(NAME):$(OBJS)
+$(OBJ_PATH):
+	@mkdir -p $(OBJ_PATH)
+
+$(OBJS): $(OBJ_PATH)
+
+$(LIBFT):
+	@echo "Libft being created . . ."
+	@make -C $(LIBFT_PATH)
+	@echo "Libft created!✅"
+
+$(NAME): $(OBJS)
 	@echo "\n $(BLUE)---------------------------------------------\n"
 	@echo " $(CYAN)LINKING$(YELLOW)$(ITALIC) $(SRCS) libft.a $(CYAN) to $(YELLOW)$(ITALIC) $(NAME)\n"
-	@make -C libft
-	@mv libft/libft.a .
-	@$(cc) $(flags) $(OBJS) libft.a -lreadline -o $(NAME)
-	@echo "$(MAGENTA)$(ITALIC) minishell compiled!$(RESET)"
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) $(LIBFT) -o $(NAME) $(LIBRARIES)
+	@echo "$(MAGENTA)$(ITALIC)Minishell compiled!✅$(RESET)"
 
 clean:
-	@echo "$(YELLOW)Cleaning...$(RESET)"
-	@$(MAKE) -C libft clean
-	@rm -f src/*.o
-	@rm -f libft.a
+	@echo "$(YELLOW)Removing object files . . .$(RESET)"
+	@make clean -C $(LIBFT_PATH)
+	@rm -rf $(OBJ_PATH)
 	
 fclean:clean
-	@/bin/rm -f $(NAME)
+	@echo "$(YELLOW)Removing minishell . . ."
+	@rm -f $(NAME)
+	@make fclean -C $(LIBFT_PATH)
 	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
 
 re:fclean all
@@ -60,7 +93,7 @@ norm:
 	@echo "$(GREEN)Completed!$(RESET)"
 	@echo
 	@echo "$(BLUE)$(DIM)SRC$(RESET)"
-	@norminette src/*.c include/$(NAME).h
+	@norminette $(SRCS) $(INCL)
 	@echo "$(GREEN)Completed!$(RESET)"
 
 .PHONY: all clean fclean re
