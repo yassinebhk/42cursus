@@ -18,7 +18,6 @@ int	valid_var(char *var)
 	int		j;
 
 	j = -1;
-	printf("\n |%s|\n", var);
 	while (var[++j])
 	{
 		if (var[j] == '\\' || (j > 0 && var[j - 1] == '\\'))

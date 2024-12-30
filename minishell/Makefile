@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2024/12/28 21:04:44 by maxgarci         ###   ########.fr        #
+#    Updated: 2024/12/30 14:53:19 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ NAME				:= minishell
 
 CC 					:= cc
 CFLAGS 				:= -g -Wall -Wextra -Werror 
-INCLUDES 			:= -I./include -I./libft #-fsanitize=address
+INCLUDES 			:= -I./include -I./libft 
 LIBRARIES			:= -lreadline 
 
 LIBFT_PATH			:= libft/
@@ -51,8 +51,6 @@ OBJS				:= $(addprefix $(OBJ_PATH), $(OBJ))
 INCL				:= include/minishell.h
 
 all: $(LIBFT) $(NAME)
-
-#bonus: $(NAME_BONUS)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
