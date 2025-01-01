@@ -74,10 +74,6 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else if (!pid)
 	{
-		if (!access((head)->content->command, X_OK))
-			execve((head)->content->command, (head)->content->args, 0);
-		if (!access((head)->content->command, X_OK))
-			return (EXIT_FAILURE);
 		if (input == r_input)
 		{
 			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
@@ -142,8 +138,12 @@ static int	exec_comm(t_node *head, int input, int output)
 			}
 			close(head->fd_out);
 		}
-		execve((head)->content->command, (head)->content->args, NULL);
-		perror("execv failed");
+
+		if (!access((head)->content->command, X_OK))
+			execve((head)->content->command, (head)->content->args, NULL);
+		else
+			print_error(head->content->command, NO_EXEC_PERM);
+		perror("execve failed");
 		free_list(head);
 		return (EXIT_FAILURE);
 	}

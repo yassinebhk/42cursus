@@ -12,6 +12,8 @@ void	print_error(char *command, int erno)
 		ft_putstr_fd("command not found: ", 2);
 	if (erno == VARIABLE_NOT_FOUND)
 		ft_putstr_fd("variable not found: ", 2);
+	if (erno == NO_EXEC_PERM)
+		ft_putstr_fd("Permission denied: ", 2);
 	ft_putstr_fd(command, 2);
 	ft_putchar_fd('\n', 2);
 }

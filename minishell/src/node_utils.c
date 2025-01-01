@@ -146,7 +146,7 @@ static t_redir	create_redir(char *str)
 	else if (ft_isspecial(str[i + 2]))
 		return (print_error("create_redir parse error", PARSING),
 			redir.valid = 0, redir);
-	while (is_redir(str + i, i))
+	while (is_redir(str, i))
 		i++;
 	while (ft_isspace(str[i]))
 		i++;
