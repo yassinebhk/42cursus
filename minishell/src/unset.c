@@ -23,7 +23,7 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	return (0);
 }
 
-static void delete (char *key, t_env **list)
+static void	delete(char *key, t_env **list)
 {
 	t_env	tmp;
 	t_env	*aux;

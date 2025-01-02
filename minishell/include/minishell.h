@@ -184,7 +184,23 @@ int						translate_args(t_node *node);
  * @param str The string
  * @returns The modified string
  */
+
+/***************************************
+				expand
+***************************************/
+
 char					*translate_str(char *str);
+
+char					*ft_strndup(const char *s, size_t n);
+
+char					*strjoin_char(char *s1, char c, char terminator);
+
+char					*process_str(t_node *tmp, char *str);
+
+int						find_dollar(char *str, int pos);
+
+void					process_char(char c, int *single_quote_open,
+							int *double_quote_open, char *new_str, int *i);
 
 /***************************************
 				commands list

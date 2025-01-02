@@ -44,7 +44,6 @@ t_env	*ft_listdup(t_env *list)
 	new_env = ft_nodedup(list);
 	if (!new_env)
 		return (NULL);
-	
 	tmp = new_env;
 	list = list->next;
 	while (list)
@@ -58,7 +57,6 @@ t_env	*ft_listdup(t_env *list)
 	}
 	return (new_env);
 }
-
 
 t_node	*fill_node(char *line, int *pos, t_lists *lists, int status)
 {
@@ -102,7 +100,7 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists, int status)
 		if (!new_node)
 			return (free_list(*head), *head = NULL, 1);
 		ft_add_node_back(head, new_node);
-		//pos++;
+		// pos++;
 	}
 	return (0);
 }

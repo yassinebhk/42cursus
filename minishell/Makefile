@@ -6,7 +6,7 @@
 #    By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2024/12/30 14:53:19 by ybouhaik         ###   ########.fr        #
+#    Updated: 2025/01/02 22:55:25 by ybouhaik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRC 				:= main.c print_error.c env_vars.c builts.c echo.c \
 						translate_str.c invalid_character.c init_node.c \
 						process_command.c node_utils.c execute_one_command.c \
 						execute_commands.c delete_backslash.c signals.c expand.c \
-						expand_utils.c heredoc.c
+						expand_utils.c heredoc.c translate_str_utils.c \
 
 SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
 

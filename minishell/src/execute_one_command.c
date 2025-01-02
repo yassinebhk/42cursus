@@ -96,7 +96,8 @@ static int	exec_comm(t_node *head, int input, int output)
 		if (input == r_heredoc)
 		{
 			read_heredoc(head->content->redir[inpos].filename);
-			head->fd_in = open(HEREDOC_FILENAME, O_RDONLY); // cambiar por un archivo temporal 
+			head->fd_in = open(HEREDOC_FILENAME, O_RDONLY);
+				// cambiar por un archivo temporal
 			if (head->fd_in < 0)
 			{
 				perror("open error");

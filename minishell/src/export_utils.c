@@ -15,13 +15,13 @@ static int	valid_char(char c, int index)
 
 int	valid_var(char *var)
 {
-	int		j;
+	int	j;
 
 	j = -1;
 	while (var[++j])
 	{
 		if (var[j] == '\\' || (j > 0 && var[j - 1] == '\\'))
-			continue;
+			continue ;
 		if (!(valid_char(var[j], j)))
 			return (1);
 	}

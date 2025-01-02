@@ -70,7 +70,8 @@ int	invalid_character(char *line)
 			double_quote_open = !double_quote_open;
 		else if (!single_quote_open && !double_quote_open)
 		{
-			if (check_special_or_meta(pos, line) || check_consecutive_pipes(pos, line))
+			if (check_special_or_meta(pos, line) || check_consecutive_pipes(pos,
+					line))
 				return (1);
 		}
 		pos++;

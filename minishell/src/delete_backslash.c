@@ -15,7 +15,7 @@ static int	new_len_str(char *str)
 	return (len);
 }
 
-static char *delete (char *str)
+static char	*delete(char *str)
 {
 	int		i;
 	size_t	pos;

@@ -15,6 +15,6 @@ int	find_built(char **str, int num_words, t_lists **lists, t_node **head)
 	else if (!ft_strcmp(str[0], "env"))
 		return (ft_env((*lists)->env, head));
 	else
-		return(ft_exit(str, &(*lists)->env, &(*lists)->exp, head));
+		return (ft_exit(str, &(*lists)->env, &(*lists)->exp, head));
 	return (0);
 }

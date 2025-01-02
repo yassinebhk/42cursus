@@ -75,24 +75,24 @@ int	cd_env(char **str, int num_words, t_lists **list, t_node **head)
 	if (num_words == 1 || !ft_strcmp(str[1], "~\0"))
 	{
 		if (change_directory(&(*list)->env, &(*list)->exp, "HOME\0", 1))
-			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
+			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR, 1);
 	}
 	else if (!ft_strcmp(str[1], "..\0"))
 	{
 		if (change_directory(&(*list)->env, &(*list)->exp, NULL, 0))
-			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
+			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR, 1);
 	}
 	else if (!ft_strcmp(str[1], "-\0"))
 	{
 		if (change_directory(&(*list)->env, &(*list)->exp, "OLDPWD\0", 1))
-			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
+			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR, 1);
 	}
 	else if (ft_strcmp(str[1], ".\0"))
 		return (move_to_path_env(str[1], &(*list)->env, &(*list)->exp));
 	return (0);
 }
 
-int			cd(char **str, int num_words, t_lists **list, t_node **head)
+int	cd(char **str, int num_words, t_lists **list, t_node **head)
 {
 	if (cd_env(str, num_words, list, head))
 		return (free(NULL), (*head)->error = 1, 1);
