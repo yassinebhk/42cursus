@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 09:34:08 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/01/29 11:28:31 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	count_quotes(const char *line, int *single_quote_count,
@@ -33,12 +45,12 @@ int	check_quotes_balance(int single_quote_count, int double_quote_count)
 {
 	if (single_quote_count % 2 != 0)
 	{
-		ft_putstr_fd(SINGLE_QUOTE_ERROR, 2);
+		perror(SINGLE_QUOTE_ERROR);
 		return (0);
 	}
 	if (double_quote_count % 2 != 0)
 	{
-		ft_putstr_fd(DOUBLE_QUOTE_ERROR, 2);
+		perror(DOUBLE_QUOTE_ERROR);
 		return (0);
 	}
 	return (1);
@@ -46,13 +58,9 @@ int	check_quotes_balance(int single_quote_count, int double_quote_count)
 
 int	even_quotes(char *line)
 {
-	int	single_quote_count;
-	int	double_quote_count;
+	int	s_quotes;
+	int	d_quotes;
 
-	count_quotes(line, &single_quote_count, &double_quote_count);
-	if (!check_quotes_balance(single_quote_count, double_quote_count))
-	{
-		return (0);
-	}
-	return (1);
+	count_quotes(line, &s_quotes, &d_quotes);
+	return (check_quotes_balance(s_quotes, d_quotes));
 }

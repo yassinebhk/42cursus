@@ -6,16 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:03:11 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/11/17 20:37:20 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:43:35 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	ft_isspace(int c)
-{
-	return ((c >= 9 && c <= 13) || c == ' ');
-}
 
 long	ft_atoi(const char *nptr)
 {

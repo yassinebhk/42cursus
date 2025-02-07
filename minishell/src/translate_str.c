@@ -1,98 +1,50 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   translate_str.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 11:33:24 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/01/31 19:03:31 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int	is_special_char(char c)
+void clear_spaces(char *str, int *read_pos)
 {
-	return (!isalnum((unsigned char)c) && !isspace((unsigned char)c));
+	while (ft_isspace(str[*read_pos]))
+		++(*read_pos);
 }
 
-static void	process_char(char c, int *single_quote_open, int *double_quote_open,
-		char *new_str, int *i)
+void	translate_str(char *str)
 {
-	if (c == SINGLE_QUOTE && !(*double_quote_open))
-		*single_quote_open = !(*single_quote_open);
-	else if (c == DOUBLE_QUOTE && !(*single_quote_open))
-		*double_quote_open = !(*double_quote_open);
-	else
-	{
-		if (*single_quote_open)
-		{
-			if (is_special_char(c))
-				new_str[(*i)++] = BACKSLASH;
-		}
-		else if (*double_quote_open)
-		{
-			if (is_special_char(c) && c != DOLLAR)
-				new_str[(*i)++] = BACKSLASH;
-		}
-		new_str[(*i)++] = c;
-	}
-}
-
-static int	new_len_str(const char *str)
-{
-	int	pos;
-	int	len;
-	int	single_quote_open;
-	int	double_quote_open;
-
-	pos = 0;
-	single_quote_open = 0;
-	len = 0;
-	double_quote_open = 0;
-	while (str[pos])
-	{
-		if (str[pos] == SINGLE_QUOTE && !double_quote_open)
-			single_quote_open = !single_quote_open;
-		else if (str[pos] == DOUBLE_QUOTE && !single_quote_open)
-			double_quote_open = !double_quote_open;
-		len++;
-		if (single_quote_open && is_special_char(str[pos]))
-			len++;
-		else if (double_quote_open && (is_special_char(str[pos])
-				&& str[pos] != DOLLAR))
-			len++;
-		pos++;
-	}
-	return (len);
-}
-
-char	*translate_str(char *str)
-{
-	int		i;
-	int		pos;
+	int		read_pos;
+	int		write_pos;
 	int		single_quote_open;
 	int		double_quote_open;
-	char	*new_str;
 
-	i = 0;
-	pos = -1;
+	read_pos = 0;
+	write_pos = 0;
 	single_quote_open = 0;
 	double_quote_open = 0;
 	if (!str)
-		return (NULL);
-	new_str = (char *)malloc(new_len_str(str) + 1);
-	if (!new_str)
-		return (free(str), print_error("translate str", ENO_MEM), NULL);
-	while (str[++pos])
-		process_char(str[pos], &single_quote_open, &double_quote_open, new_str,
-			&i);
-	new_str[i] = '\0';
-	return (free(str), new_str);
-}
-
-int	translate_args(t_node *node)
-{
-	int	pos;
-
-	pos = -1;
-	node->content->command = translate_str(node->content->command);
-	if (!node->content->command)
-		return (0);
-	while (++pos < node->content->num_args)
+		return ;
+	clear_spaces(str, &read_pos);
+	while (str[read_pos])
 	{
-		node->content->args[pos] = translate_str(node->content->args[pos]);
-		if (!node->content->args[pos])
-			return (0);
+		str[write_pos++] = str[read_pos];
+		check_quotes(str[read_pos], &single_quote_open, &double_quote_open);
+		if (ft_isspace(str[read_pos]) && !single_quote_open && !double_quote_open)
+			clear_spaces(str, &read_pos);
+		else if (str[read_pos] == PIPE)
+		{
+			++read_pos;
+			clear_spaces(str, &read_pos);
+		}
+		else
+			read_pos++;
 	}
-	return (1);
+	str[write_pos] = '\0';
 }

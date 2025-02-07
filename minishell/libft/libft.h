@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:09:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/11/04 14:06:06 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:21 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,15 @@ int					ft_isalnum(int c);
 		returns non-zero if the character tests true
 */
 int					ft_isalpha(int c);
+
+/**
+ * @brief Checks if the character passed as argument is considered a 'space' 
+		character
+ * @param c The character
+ * @returns Returns one if the character is a space character and
+		returns zero if the character is not a space character
+*/
+int			ft_isspace(int c);
 /**
  * @brief Converts a lower-case letter to the corresponding
 		upper-case letter.  The argument must be representable as an unsigned

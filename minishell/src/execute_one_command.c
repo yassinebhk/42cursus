@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_one_command.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
+/*   Updated: 2025/02/07 16:09:45 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 char	*get_path_list(char *command, t_env *env)
 {
@@ -142,7 +154,7 @@ static int	exec_comm(t_node *head, int input, int output)
 		if (!access((head)->content->command, X_OK))
 			execve((head)->content->command, (head)->content->args, NULL);
 		else
-			print_error(head->content->command, NO_EXEC_PERM);
+			perror(NO_EXEC_PERM_ERROR);
 		perror("execve failed");
 		free_list(head);
 		return (EXIT_FAILURE);

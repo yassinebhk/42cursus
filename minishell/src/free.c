@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/07 16:26:19 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 void	ft_free(char **str)
 {
@@ -42,7 +54,6 @@ void	free_content(t_command *command)
 
 	if (!command)
 		return ;
-	free(command->command);
 	if (command->num_redir > 0 && command->redir)
 	{
 		pos = -1;

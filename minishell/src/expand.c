@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 17:09:35 by maxgarci          #+#    #+#             */
+/*   Updated: 2025/02/07 17:44:11 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 char	*ft_strndup(const char *s, size_t n)
 {
@@ -8,9 +20,7 @@ char	*ft_strndup(const char *s, size_t n)
 
 	len = 0;
 	while (s[len] && len < n)
-	{
 		len++;
-	}
 	new_str = (char *)malloc(len + 1);
 	if (!new_str)
 		return (NULL);
@@ -144,12 +154,6 @@ int	expand_commands(t_node **head)
 			expanded = process_str(tmp, tmp->content->args[i]);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
-			if (i == 0)
-			{
-				free(tmp->content->command);
-				tmp->content->command = ft_strdup(expanded);
-			}
-			free(expanded);
 		}
 		tmp = tmp->next;
 	}

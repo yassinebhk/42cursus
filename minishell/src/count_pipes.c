@@ -1,15 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   count_pipes.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/31 10:30:18 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/01/31 16:08:37 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static void	check_double_quote(char c, int *double_quote)
-{
-	if (c == DOUBLE_QUOTE)
-		*double_quote = !(*double_quote);
-}
-
-static void	check_single_quote(char c, int *single_quote)
+void	check_quotes(char c, int* single_quote, int *double_quote)
 {
 	if (c == SINGLE_QUOTE)
 		*single_quote = !(*single_quote);
+	if (c == DOUBLE_QUOTE)
+		*double_quote = !(*double_quote);
 }
 
 int	count_pipes(char *line)
@@ -25,17 +33,14 @@ int	count_pipes(char *line)
 	num_pipes = 0;
 	while (line[++pos])
 	{
-		check_single_quote(line[pos], &single_quote);
-		check_double_quote(line[pos], &double_quote);
+		check_quotes(line[pos], &single_quote, &double_quote);
 		if (line[pos] == BACKSLASH)
 		{
 			pos++;
 			continue ;
 		}
 		if (line[pos] == PIPE && !single_quote && !double_quote)
-		{
 			num_pipes++;
-		}
 	}
 	return (num_pipes);
 }

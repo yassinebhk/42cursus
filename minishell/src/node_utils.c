@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   node_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
+/*   Updated: 2025/02/07 17:58:35 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 static t_node	*ft_last_node(t_node *lst)
 {
@@ -15,7 +27,7 @@ void	ft_add_node_back(t_node **head, t_node *new_node)
 
 	if (!new_node)
 	{
-		print_error("ft_add_back", ENO_MEM);
+		perror(ENO_MEM_ERROR);
 		return ;
 	}
 	if (!*head)
@@ -61,7 +73,7 @@ char	*get_trunc_str(char *line, int init_pos, int end_pos)
 	pos = 0;
 	str = (char *)malloc(end_pos - init_pos);
 	if (!str)
-		return (print_error("new_command malloc", ENO_MEM), NULL);
+		return (perror(ENO_MEM_ERROR), NULL);
 	while (init_pos < end_pos - 1)
 	{
 		str[pos] = line[init_pos];
@@ -80,27 +92,36 @@ static int	is_redir(char *str, int pos)
 		|| (str[pos] == '<' && *(str + 1) == '<') || str[pos] == '<');
 }
 
-static int	ft_isspecial(char c)
+static inline int	ft_isspecial(char c)
 {
 	return (c == '*' || c == '?' || c == '!' || c == '$' || c == '&' || c == '#'
 		|| c == '<' || c == '>' || c == '\\' || c == '/' || c == '|');
 }
 
-int	ft_isspace(char c)
+static int	skip_argument(char *str, int *read_pos)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f'
-		|| c == '\v');
+	int squote_opened;
+	int dquote_opened;
+	int	quoted_arg;
+
+	squote_opened = 0;
+	dquote_opened = 0;
+	quoted_arg = 0;
+	while ((str[*read_pos] > ' ' && !is_redir(str, *read_pos)) || squote_opened || dquote_opened)
+	{
+		check_quotes(str[*read_pos], &squote_opened, &dquote_opened);
+		if (!quoted_arg && (squote_opened || dquote_opened))
+			quoted_arg = 1;
+		++(*read_pos);
+	}
+	return (quoted_arg);
 }
 
 static void	num_args(char *str, int *n_args, int *n_redir)
 {
-	int	word;
 	int	pos;
 
 	pos = 0;
-	word = 0;
-	while (str[pos] <= ' ')
-		pos++;
 	while (str[pos])
 	{
 		if (is_redir(str, pos))
@@ -113,17 +134,9 @@ static void	num_args(char *str, int *n_args, int *n_redir)
 				pos++;
 			(*n_redir)++;
 		}
-		while (str[pos] > ' ' && !is_redir(str, pos))
-		{
-			pos++;
-			if (!word)
-				word = 1;
-		}
-		while (ft_isspace(str[pos]))
-			pos++;
-		if (word)
-			(*n_args)++;
-		word = 0;
+		skip_argument(str, &pos); 
+		clear_spaces(str, &pos);
+		(*n_args)++;
 	}
 }
 
@@ -144,7 +157,7 @@ static t_redir	create_redir(char *str)
 	else if (str[i] == '<')
 		redir.type = r_input;
 	else if (ft_isspecial(str[i + 2]))
-		return (print_error("create_redir parse error", PARSING),
+		return (perror(PARSING_ERROR),
 			redir.valid = 0, redir);
 	while (is_redir(str, i))
 		i++;
@@ -154,13 +167,13 @@ static t_redir	create_redir(char *str)
 	while (str[i] > ' ' && !is_redir(str + i, i))
 	{
 		if (ft_isspecial(str[i]))
-			return (print_error("create_redir filename", BAD_ASSIGNMENT),
+			return (perror(BAD_ASSIGNMENT_ERROR),
 				redir.valid = 0, redir);
 		i++;
 	}
 	redir.filename = (char *)malloc(sizeof(char) * (i - begin + 1));
 	if (!redir.filename)
-		return (print_error("create_redir malloc", ENO_MEM), redir.valid = 0,
+		return (perror(ENO_MEM_ERROR), redir.valid = 0,
 			redir);
 	cp_i = 0;
 	while (begin < i)
@@ -175,67 +188,53 @@ static int	create_command(char *str, t_command **command)
 	int	redir_pos;
 	int	args_pos;
 	int	cp_i;
-	int	word;
-	int	comm_word;
 	int	i;
-	int	begin;
-	int	str_i;
+	int	new_arg_index;
+	int	quoted_arg;
 
 	redir_pos = 0;
 	args_pos = 0;
-	word = 0;
-	comm_word = 1;
 	i = 0;
-	while (str[i] <= ' ')
-		i++;
 	while (str[i])
 	{
 		if (is_redir(str, i))
 		{
 			(*command)->redir[redir_pos] = create_redir(str + i);
 			if (!(*command)->redir[redir_pos++].valid)
-				return (1);
+				return (PARSING);
 			while (is_redir(str, i))
-				i++;
+				++i;
 			while (ft_isspace(str[i]))
-				i++;
+				++i;
 			while (str[i] > ' ' && !is_redir(str, i))
-				i++;
+				++i;
 		}
-		begin = i;
-		while (str[i] > ' ' && !is_redir(str, i))
-		{
-			i++;
-			if (!word)
-				word = 1;
-		}
-		if (word)
-		{
-			cp_i = 0;
-			str_i = begin;
-			if (comm_word)
-			{
-				free((*command)->command);
-				(*command)->command = (char *)ft_calloc((i - begin + 1),
-						sizeof(char));
-				while (begin < i)
-					(*command)->command[cp_i++] = str[begin++];
-				(*command)->command[cp_i] = '\0';
-				comm_word = 0;
-				cp_i = 0;
-			}
+		cp_i = 0;
+		new_arg_index = i;
+		quoted_arg = skip_argument(str, &i);
+		if (!quoted_arg)
 			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
-						- str_i + 1));
-			while (str_i < i)
-				(*command)->args[args_pos][cp_i++] = str[str_i++];
-			(*command)->args[args_pos++][cp_i] = '\0';
+						- new_arg_index + 1));
+		else
+			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
+						- new_arg_index - 1));
+
+		if (!(*command)->args[args_pos])
+			return(perror(ENO_MEM_ERROR), ENO_MEM);
+		while (new_arg_index < i)
+		{
+			if (str[new_arg_index] != SINGLE_QUOTE && str[new_arg_index] != DOUBLE_QUOTE)
+				(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
+			else
+				++new_arg_index;
 		}
-		while (ft_isspace(str[i]))
-			i++;
-		word = 0;
+		(*command)->args[args_pos++][cp_i] = '\0';
+		if (args_pos - 1 == 0)
+			(*command)->command = (*command)->args[0];
+		clear_spaces(str, &i);
 	}
 	(*command)->args[args_pos] = NULL;
-	return (0);
+	return (FN_SUCCESS);
 }
 
 int	new_command(char *str, t_command **command)
@@ -251,18 +250,18 @@ int	new_command(char *str, t_command **command)
 	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args
 				+ 1));
 	if (!(*command)->args)
-		return (print_error("command args malloc", ENO_MEM), 0);
+		return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	if (n_redir)
 	{
 		(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
 		if (!(*command)->redir)
-			return (print_error("command redir malloc", ENO_MEM), 0);
+			return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	}
 	while (*str <= ' ')
 		str++;
 	if (create_command(str, command))
-		return (print_error("error command creation", 0), 0);
-	return (1);
+		return (perror(PARSING_ERROR), FN_FAILURE);
+	return (FN_SUCCESS);
 }
 
 int	ft_len_node(t_node *head)

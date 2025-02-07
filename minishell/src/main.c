@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/07 16:16:31 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/07 16:19:34 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 extern int	g_signal;
 
@@ -46,4 +58,4 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 	return (0);
 }
 
-// guaradr el status con el wait: wifeexit wexitstatus
+// guardar el status con el wait: wifeexit wexitstatus
