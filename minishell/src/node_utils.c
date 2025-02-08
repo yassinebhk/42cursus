@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/07 17:58:35 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/08 18:46:46 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,23 +98,18 @@ static inline int	ft_isspecial(char c)
 		|| c == '<' || c == '>' || c == '\\' || c == '/' || c == '|');
 }
 
-static int	skip_argument(char *str, int *read_pos)
+static void	skip_argument(char *str, int *read_pos)
 {
 	int squote_opened;
 	int dquote_opened;
-	int	quoted_arg;
 
 	squote_opened = 0;
 	dquote_opened = 0;
-	quoted_arg = 0;
 	while ((str[*read_pos] > ' ' && !is_redir(str, *read_pos)) || squote_opened || dquote_opened)
 	{
 		check_quotes(str[*read_pos], &squote_opened, &dquote_opened);
-		if (!quoted_arg && (squote_opened || dquote_opened))
-			quoted_arg = 1;
 		++(*read_pos);
 	}
-	return (quoted_arg);
 }
 
 static void	num_args(char *str, int *n_args, int *n_redir)
@@ -190,7 +185,6 @@ static int	create_command(char *str, t_command **command)
 	int	cp_i;
 	int	i;
 	int	new_arg_index;
-	int	quoted_arg;
 
 	redir_pos = 0;
 	args_pos = 0;
@@ -211,23 +205,13 @@ static int	create_command(char *str, t_command **command)
 		}
 		cp_i = 0;
 		new_arg_index = i;
-		quoted_arg = skip_argument(str, &i);
-		if (!quoted_arg)
-			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
+		skip_argument(str, &i);
+		(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
 						- new_arg_index + 1));
-		else
-			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
-						- new_arg_index - 1));
-
 		if (!(*command)->args[args_pos])
 			return(perror(ENO_MEM_ERROR), ENO_MEM);
 		while (new_arg_index < i)
-		{
-			if (str[new_arg_index] != SINGLE_QUOTE && str[new_arg_index] != DOUBLE_QUOTE)
 				(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
-			else
-				++new_arg_index;
-		}
 		(*command)->args[args_pos++][cp_i] = '\0';
 		if (args_pos - 1 == 0)
 			(*command)->command = (*command)->args[0];
