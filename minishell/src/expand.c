@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/07 17:44:11 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 10:34:21 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,46 +97,55 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 	return (ft_strdup(""));
 }
 
-static int	find_dollar(char *str, int pos)
+static int	var_char_is_valid(char c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_');
+}
+
+static int	find_var_delimeter(char *str, int pos)
 {
 	int	next;
+	int	valid_char;
 
 	next = pos + 1;
 	while (str[next])
 	{
-		if (str[next] == DOLLAR && str[next - 1] != BACKSLASH)
+		valid_char = var_char_is_valid(str[next]);
+		if (!valid_char)
 			return (next);
 		next++;
 	}
+	if (str[next - 1] == SINGLE_QUOTE || str[next - 1] == DOUBLE_QUOTE)
+		return (next - 1);
 	return (next);
 }
 
 static char	*process_str(t_node *tmp, char *str)
 {
 	int		pos;
-	int		next_dollar;
-	char	*new_word;
+	int		var_end_pos;
+	char	*new_arg;
 	char	*var_value;
 	size_t	i;
 
 	pos = -1;
-	new_word = ft_strdup("");
+	new_arg = ft_strdup("");
 	while (str[++pos])
 	{
-		if (str[pos] == DOLLAR && (pos == 0 || str[pos - 1] != BACKSLASH))
+		if (str[0] != SINGLE_QUOTE && str[pos] == DOLLAR && (pos == 0 || str[pos - 1] != BACKSLASH))
 		{
-			next_dollar = find_dollar(str, pos);
-			var_value = expand_variable(tmp, str, pos, next_dollar);
+			var_end_pos = find_var_delimeter(str, pos);
+			var_value = expand_variable(tmp, str, pos, var_end_pos);
 			i = -1;
 			while (var_value[++i] != '\0')
-				new_word = strjoin_char(new_word, var_value[i], '\0');
+				new_arg = strjoin_char(new_arg, var_value[i], '\0');
 			free(var_value);
-			pos = next_dollar - 1;
+			pos = var_end_pos - 1;
 		}
-		else
-			new_word = strjoin_char(new_word, str[pos], '\0');
+		else if (str[pos] != SINGLE_QUOTE && str[pos] != DOUBLE_QUOTE)
+			new_arg = strjoin_char(new_arg, str[pos], '\0');
 	}
-	return (new_word);
+	return (new_arg);
 }
 
 int	expand_commands(t_node **head)

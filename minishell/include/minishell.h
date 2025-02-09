@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/08 18:40:59 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 09:14:01 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -517,7 +517,7 @@ void					print_error(char *command, int erno);
 ***************************************/
 
 /**
- * @brief Assigns args of the commands
+ * @brief Assings args of the commands by expanding variables
  *  @param head The head of the commands list
  */
 int						expand_commands(t_node **head);
