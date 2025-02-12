@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 10:34:21 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:28:01 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*strjoin_char(char *s1, char c, char terminator)
 	size_t	i;
 	char	*new_str;
 
-	len1 = strlen(s1);
+	len1 = ft_strlen(s1);
 	new_str = (char *)malloc(len1 + 2);
 	if (!new_str)
 		return (NULL);
@@ -80,7 +80,7 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 			start += 3;
 		else
 			start += 2;
-		error_str = ft_itoa(tmp->error);
+		error_str = ft_itoa(tmp->status);
 		free(var_name);
 		if (str[start] != '\0')
 		{
@@ -148,9 +148,24 @@ static char	*process_str(t_node *tmp, char *str)
 	return (new_arg);
 }
 
+static int	dollar_exists(char *arg)
+{
+	int	i;
+
+	i = 0;
+	while (arg[i])
+	{
+		if (arg[i] == DOLLAR)
+			return (1);
+		++i;
+	}
+	return (0);
+}
+
 int	expand_commands(t_node **head)
 {
 	int		i;
+	int		arg_needs_expansion;
 	t_node	*tmp;
 	char	*expanded;
 
@@ -160,11 +175,14 @@ int	expand_commands(t_node **head)
 		i = -1;
 		while (++i < tmp->content->num_args)
 		{
+			arg_needs_expansion = dollar_exists(tmp->content->args[i]);
+			if (!arg_needs_expansion)
+				continue;
 			expanded = process_str(tmp, tmp->content->args[i]);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
 		}
 		tmp = tmp->next;
 	}
-	return (0);
+	return (FN_SUCCESS);
 }

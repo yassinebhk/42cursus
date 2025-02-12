@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/12 16:42:30 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/27 22:00:23 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2025/02/09 14:12:26 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,3 @@ int	ft_strcmp(char *s1, char *s2)
 		diff = *s1 - *s2;
 	return (diff);
 }
-/*#include <stdio.h>
-
-int main (void)
-{
-	char s1 [] = "hola";
-	char s2 [] = "holb";
-	int dif = ft_strcmp(s1,s2);
-	printf ("diferencia:%d", dif);
-	return (0);
-}*/

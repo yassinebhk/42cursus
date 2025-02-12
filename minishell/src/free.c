@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/07 16:26:19 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:11:06 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,19 @@ void	free_content(t_command *command)
 
 	if (!command)
 		return ;
-	if (command->num_redir > 0 && command->redir)
-	{
-		pos = -1;
-		while (++pos < command->num_redir)
-			free(command->redir[pos].filename);
-		free(command->redir);
-	}
 	if (command->num_args > 0 && command->args)
 	{
 		pos = -1;
 		while (++pos < command->num_args)
 			free(command->args[pos]);
 		free(command->args);
+	}
+	if (command->num_redir > 0 && command->redir)
+	{
+		pos = -1;
+		while (++pos < command->num_redir)
+			free(command->redir[pos].filename);
+		free(command->redir);
 	}
 }
 

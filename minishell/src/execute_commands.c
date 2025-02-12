@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_commands.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 17:05:56 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 17:06:30 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 int	ft_open(char *file, int flag, int permission, int old_fd)
 {
@@ -188,7 +200,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 	}
 	if (is_built_in(curr->content->command))
 	{
-		find_built(curr->content->args, curr->content->num_args, &lists, &head);
+		find_built(&head, &lists);
 		free_list(head);
 		free_args(lists->env, lists->exp);
 		exit(0);

@@ -6,13 +6,13 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 10:30:18 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/01/31 16:08:37 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 11:33:11 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_quotes(char c, int* single_quote, int *double_quote)
+void	check_quotes(char c, int *single_quote, int *double_quote)
 {
 	if (c == SINGLE_QUOTE)
 		*single_quote = !(*single_quote);

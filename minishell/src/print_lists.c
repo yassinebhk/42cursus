@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_lists.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 16:52:10 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 16:52:32 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 static t_env	*set_index(t_env *exp)
 {
@@ -52,7 +64,7 @@ void	print_export_list(t_env *exp)
 	}
 }
 
-int	ft_env(t_env *env, t_node **head)
+int	ft_env(t_env *env)
 {
 	while (env)
 	{
@@ -62,6 +74,5 @@ int	ft_env(t_env *env, t_node **head)
 		ft_putstr_fd("\n", 1);
 		env = env->next;
 	}
-	(*head)->error = 0;
 	return (0);
 }

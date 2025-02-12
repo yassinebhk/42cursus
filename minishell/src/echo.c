@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 11:33:33 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 16:32:10 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 static int	is_valid_arg(char *str)
 {
@@ -15,28 +27,29 @@ static int	is_valid_arg(char *str)
 	return (1);
 }
 
-int			echo(char **str, int pos, int num_words, t_node **head)
+int	echo(char **args, int num_args)
 {
-	int flag;
+	int	flag;
+	int	pos;
 
 	flag = 0;
-	while (++pos < num_words && is_valid_arg(str[pos]))
+	pos = 0;
+	while (++pos < num_args && is_valid_arg(args[pos]))
 		flag = 1;
 	if (flag)
 	{
-		if (pos < num_words)
-			printf("%s", str[pos]);
-		while (++(pos) < num_words)
-			printf(" %s", str[pos]);
+		if (pos < num_args)
+			printf("%s", args[pos]);
+		while (++(pos) < num_args)
+			printf(" %s", args[pos]);
 	}
 	else
 	{
-		if (pos < num_words)
-			printf("%s", str[pos]);
-		while (++(pos) < num_words)
-			printf(" %s", str[pos]);
+		if (pos < num_args)
+			printf("%s", args[pos]);
+		while (++(pos) < num_args)
+			printf(" %s", args[pos]);
 		printf("\n");
 	}
-	(*head)->error = 0;
 	return (0);
 }

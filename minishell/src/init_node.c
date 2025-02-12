@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/01/31 19:05:45 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 17:05:22 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists, int status)
 		return (free(new_node), perror(ENO_MEM_ERROR), NULL);
 	new_node->var_list->env = ft_listdup(lists->env);
 	new_node->var_list->exp = ft_listdup(lists->exp);
-	new_node->error = status;
+	new_node->status = status;
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->next = NULL;

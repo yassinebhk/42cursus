@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 16:36:42 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 16:48:13 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 static int	set_var_and_value(char *str, t_env **exp, t_env **env)
 {
@@ -36,29 +48,28 @@ if (valid_var(str))
 	return (0);
 }
 
-int	export(char **str, int num_words, t_lists **list, t_node **head)
+int	export(char **args, int num_args, t_lists **lists)
 {
 	int	pos;
 	int	result;
 
 	pos = 0;
 	result = 0;
-	if (num_words == 1)
-		print_export_list((*list)->exp);
+	if (num_args == 1)
+		print_export_list((*lists)->exp);
 	else
 	{
-		while (++pos < num_words && !result)
+		while (++pos < num_args && !result)
 		{
-			if (!exist_var(str[pos], &(*list)->env, &(*list)->exp))
+			if (!exist_var(args[pos], &(*lists)->env, &(*lists)->exp))
 				(result) = 0;
-			else if (!find_eq(str[pos]))
-				(result) = set_var(str[pos], &(*list)->exp, &(*list)->env, 0);
-			else if (find_eq(str[pos]) == 1)
-				(result) = set_var(str[pos], &(*list)->exp, &(*list)->env, 1);
+			else if (!find_eq(args[pos]))
+				(result) = set_var(args[pos], &(*lists)->exp, &(*lists)->env, 0);
+			else if (find_eq(args[pos]) == 1)
+				(result) = set_var(args[pos], &(*lists)->exp, &(*lists)->env, 1);
 			else
-				(result) = set_var(str[pos], &(*list)->exp, &(*list)->env, 2);
+				(result) = set_var(args[pos], &(*lists)->exp, &(*lists)->env, 2);
 		}
 	}
-	(*head)->error = result;
-	return ((result));
+	return (result);
 }

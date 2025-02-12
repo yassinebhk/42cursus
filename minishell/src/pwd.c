@@ -1,15 +1,26 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 11:35:47 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 16:44:42 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	pwd(t_env *env, t_node **head)
+#include "../include/minishell.h"
+
+int	pwd(t_env *env)
 {
 	char	*pwd;
 
 	(void)env;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (free(NULL), (*head)->error = 1, 1);
+		return (free(NULL), 1);
 	printf("%s\n", pwd);
 	free(pwd);
-	(*head)->error = 0;
 	return (0);
 }

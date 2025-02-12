@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 11:34:43 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 16:46:47 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 static int	check_var(char *str, t_env *env, t_env *exp)
 {
@@ -23,13 +35,13 @@ static int	check_var(char *str, t_env *env, t_env *exp)
 	return (0);
 }
 
-static void delete (char *key, t_env **list)
+static void	delete(char *key, t_env **lists)
 {
 	t_env	tmp;
 	t_env	*aux;
 	t_env	*curr;
 
-	tmp.next = *list;
+	tmp.next = *lists;
 	curr = &tmp;
 	while (curr->next)
 	{
@@ -44,7 +56,7 @@ static void delete (char *key, t_env **list)
 		}
 		curr = curr->next;
 	}
-	*list = tmp.next;
+	*lists = tmp.next;
 }
 
 void	delete_var(char *str, t_env **env, t_env **exp, int flag)
@@ -75,21 +87,20 @@ char	*add_eq(char *str)
 	return (rmv);
 }
 
-int	unset(char **str, int num_words, t_lists **list, t_node **head)
+int	unset(char **args, int num_args, t_lists **lists)
 {
 	int	pos;
 
 	pos = 0;
-	if (num_words > 1)
+	if (num_args > 1)
 	{
-		while (++pos < num_words)
+		while (++pos < num_args)
 		{
-			if (check_var(str[pos], (*list)->env, (*list)->exp) == 1)
-				delete_var(str[pos], &(*list)->env, &(*list)->exp, 0);
-			else if (check_var(str[pos], (*list)->env, (*list)->exp) == 2)
-				delete_var(str[pos], &(*list)->env, &(*list)->exp, 1);
+			if (check_var(args[pos], (*lists)->env, (*lists)->exp) == 1)
+				delete_var(args[pos], &(*lists)->env, &(*lists)->exp, 0);
+			else if (check_var(args[pos], (*lists)->env, (*lists)->exp) == 2)
+				delete_var(args[pos], &(*lists)->env, &(*lists)->exp, 1);
 		}
 	}
-	(*head)->error = 0;
 	return (0);
 }

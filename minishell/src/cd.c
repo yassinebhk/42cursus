@@ -1,4 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/09 11:30:24 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/02/09 17:05:02 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/minishell.h"
 
 char	*get_env(t_env *env, char *key)
 {
@@ -8,7 +20,7 @@ char	*get_env(t_env *env, char *key)
 			return (env->var);
 		env = env->next;
 	}
-	printf("\n❌ Error: no %s key was found.\n\n", key);
+	printf("\nError: no %s key was found.\n\n", key);
 	return (NULL);
 }
 
@@ -68,33 +80,33 @@ static int	change_directory(t_env **env, t_env **exp, char *var, int flag)
 	return (0);
 }
 
-int	cd_env(char **str, int num_words, t_lists **list, t_node **head)
+int	cd_env(char **args, int num_args, t_lists **lists)
 {
-	if (num_words > 2)
+	if (num_args > 2)
 		return (ft_putstr_fd(" too many arguments", 2), 1);
-	if (num_words == 1 || !ft_strcmp(str[1], "~\0"))
+	if (num_args == 1 || !ft_strcmp(args[1], "~\0"))
 	{
-		if (change_directory(&(*list)->env, &(*list)->exp, "HOME\0", 1))
-			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
+		if (change_directory(&(*lists)->env, &(*lists)->exp, "HOME\0", 1))
+			return (free(NULL), CANNOT_CHANGE_DIR);
 	}
-	else if (!ft_strcmp(str[1], "..\0"))
+	else if (!ft_strcmp(args[1], "..\0"))
 	{
-		if (change_directory(&(*list)->env, &(*list)->exp, NULL, 0))
-			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
+		if (change_directory(&(*lists)->env, &(*lists)->exp, NULL, 0))
+			return (free(NULL), CANNOT_CHANGE_DIR);
 	}
-	else if (!ft_strcmp(str[1], "-\0"))
+	else if (!ft_strcmp(args[1], "-\0"))
 	{
-		if (change_directory(&(*list)->env, &(*list)->exp, "OLDPWD\0", 1))
-			return (free(NULL), (*head)->error = CANNOT_CHANGE_DIR ,1);
+		if (change_directory(&(*lists)->env, &(*lists)->exp, "OLDPWD\0", 1))
+			return (free(NULL), CANNOT_CHANGE_DIR);
 	}
-	else if (ft_strcmp(str[1], ".\0"))
-		return (move_to_path_env(str[1], &(*list)->env, &(*list)->exp));
+	else if (ft_strcmp(args[1], ".\0"))
+		return (move_to_path_env(args[1], &(*lists)->env, &(*lists)->exp));
 	return (0);
 }
 
-int			cd(char **str, int num_words, t_lists **list, t_node **head)
+int	cd(char **args, int num_args, t_lists **lists)
 {
-	if (cd_env(str, num_words, list, head))
-		return (free(NULL), (*head)->error = 1, 1);
-	return (free(NULL), (*head)->error = 0, 0);
+	if (cd_env(args, num_args, lists))
+		return (free(NULL), 1);
+	return (free(NULL), 0);
 }

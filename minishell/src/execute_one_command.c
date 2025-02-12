@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/07 16:09:45 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 16:54:31 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ char	*get_path_list(char *command, t_env *env)
 
 int	is_built_in(char *command)
 {
-	if (!ft_strcmp(command, "echo\0") || !ft_strcmp(command, "cd\0")
-		|| !ft_strcmp(command, "pwd\0") || !ft_strcmp(command, "export\0")
-		|| !ft_strcmp(command, "unset\0") || !ft_strcmp(command, "env\0")
-		|| !ft_strcmp(command, "exit\0"))
+	if (!ft_strcmp(command, "echo") || !ft_strcmp(command, "cd")
+		|| !ft_strcmp(command, "pwd") || !ft_strcmp(command, "export")
+		|| !ft_strcmp(command, "unset") || !ft_strcmp(command, "env")
+		|| !ft_strcmp(command, "exit"))
 		return (1);
 	return (0);
 }
@@ -116,7 +116,6 @@ static int	exec_comm(t_node *head, int input, int output)
 				exit(EXIT_FAILURE);
 			}
 			close(head->fd_in);
-			unlink("/tmp/.heredoc");
 		}
 		if (output == r_output)
 		{
@@ -150,7 +149,10 @@ static int	exec_comm(t_node *head, int input, int output)
 			}
 			close(head->fd_out);
 		}
-
+		for(int i = 0; i < (head)->content->num_args; ++i) {
+			printf("arg[%d]: %s\n", i, (head)->content->args[i]);
+		}
+		printf("\n");
 		if (!access((head)->content->command, X_OK))
 			execve((head)->content->command, (head)->content->args, NULL);
 		else
@@ -161,6 +163,8 @@ static int	exec_comm(t_node *head, int input, int output)
 	}
 	else
 		wait(&status);
+	if (input == r_heredoc)
+		unlink(HEREDOC_FILENAME);
 	return (status);
 }
 
@@ -264,11 +268,9 @@ static int	redirect(t_node *head)
 
 int	execute_built(t_node **head, t_lists *lists)
 {
-	int	status;
 	int	saved_stdin;
 	int	saved_stdout;
 
-	status = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdin == -1 || saved_stdout == -1)
@@ -287,14 +289,13 @@ int	execute_built(t_node **head, t_lists *lists)
 			return (perror("dup2 fd_out failed"), 1);
 		close((*head)->fd_out);
 	}
-	status = find_built((*head)->content->args, (*head)->content->num_args,
-			&lists, head);
+	(*head)->status = find_built(head, &lists);
 	if (dup2(saved_stdin, STDIN_FILENO) == -1 || dup2(saved_stdout,
 			STDOUT_FILENO) == -1)
 		return (perror("Error restoring original fd"), 1);
 	close(saved_stdin);
 	close(saved_stdout);
-	return (status);
+	return ((*head)->status);
 }
 
 int	execute_one_command(t_node **head, t_lists *lists)

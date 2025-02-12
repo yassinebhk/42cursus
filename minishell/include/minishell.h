@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 09:14:01 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 16:56:06 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ typedef struct s_command
 
 typedef struct s_node
 {
-	int					error;
+	int					status;
 	int					fd_in;
 	int					fd_out;
 	struct s_lists		*var_list;
@@ -434,8 +434,7 @@ int						valid_var(char *var);
  * @param exp The export variables list
  * @returns The len list
  */
-int						find_built(char **str, int num_words, t_lists **lists,
-							t_node **head);
+int						find_built(t_node **head, t_lists **lists);
 
 /**
  * @brief Execute the echo command
@@ -444,7 +443,7 @@ int						find_built(char **str, int num_words, t_lists **lists,
  * @param num_words The number of words of str
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						echo(char **str, int pos, int num_words, t_node **head);
+int						echo(char **args, int num_args);
 
 /**
  * @brief Execute the cd command
@@ -454,8 +453,7 @@ int						echo(char **str, int pos, int num_words, t_node **head);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						cd(char **str, int num_words, t_lists **list,
-							t_node **head);
+int						cd(char **args, int num_args, t_lists **lists);
 
 /**
  * @brief Execute the pwd command
@@ -463,7 +461,7 @@ int						cd(char **str, int num_words, t_lists **list,
  * @param env The len list of env
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						pwd(t_env *env, t_node **head);
+int						pwd(t_env *env);
 
 /**
  * @brief Execute the export command
@@ -473,8 +471,7 @@ int						pwd(t_env *env, t_node **head);
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						export(char **str, int num_words, t_lists **list,
-							t_node **head);
+int						export(char **args, int num_args, t_lists **lists);
 
 /**
  * @brief Execute the unset command
@@ -484,8 +481,7 @@ int						export(char **str, int num_words, t_lists **list,
  * @param exp The export variables list
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						unset(char **str, int num_words, t_lists **list,
-							t_node **head);
+int						unset(char **args, int num_args, t_lists **lists);
 
 /**
  * @brief Execute the unset command
@@ -493,7 +489,7 @@ int						unset(char **str, int num_words, t_lists **list,
  * @param env The len list of env
  * @returns 1 if it occurs an error. Otherwise 0.
  */
-int						ft_env(t_env *env, t_node **head);
+int						ft_env(t_env *env);
 
 /**
  * @brief Execute exit

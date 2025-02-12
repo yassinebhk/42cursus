@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 10:58:52 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/09 13:36:18 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,9 +135,12 @@ static void	num_args(char *str, int *n_args, int *n_redir)
 				pos++;
 			(*n_redir)++;
 		}
-		skip_argument(str, &pos); 
-		clear_spaces(str, &pos);
-		(*n_args)++;
+		else
+		{
+			skip_argument(str, &pos); 
+			clear_spaces(str, &pos);
+			(*n_args)++;
+		}
 	}
 }
 
@@ -223,7 +226,6 @@ static int	create_command(char *str, t_command **command)
 			(*command)->command = (*command)->args[0];
 		clear_spaces(str, &i);
 	}
-	(*command)->args[args_pos] = NULL;
 	return (FN_SUCCESS);
 }
 
@@ -237,8 +239,7 @@ int	new_command(char *str, t_command **command)
 	num_args(str, &n_args, &n_redir);
 	(*command)->num_args = n_args;
 	(*command)->num_redir = n_redir;
-	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args
-				+ 1));
+	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args));
 	if (!(*command)->args)
 		return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	if (n_redir)
