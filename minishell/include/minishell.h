@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 16:56:06 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:44:55 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ extern int				g_signal;
  * @return The status
  */
 int						process_command(t_node *head, char *line,
-							t_lists *lists, int status);
+							t_lists *lists, int last_exit_status);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -226,8 +226,7 @@ void					translate_str(char *str);
  * @param status The error status of the program
  * @returns 1 if failts. Otherwise, 0.
  */
-int						fill_nodes(char *line, t_node **head, t_lists *lists,
-							int status);
+int						fill_nodes(char *line, t_node **head, t_lists *lists);
 
 /**
  * @brief Add a new node to the command list
@@ -516,7 +515,7 @@ void					print_error(char *command, int erno);
  * @brief Assings args of the commands by expanding variables
  *  @param head The head of the commands list
  */
-int						expand_commands(t_node **head);
+int						expand_commands(t_node **head, int last_exit_status);
 
 /**
  * @brief Executes one command

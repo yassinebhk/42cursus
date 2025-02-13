@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/12 19:28:01 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/12 21:00:21 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*find_var_value(t_env *env_list, char *var_name)
 	return (NULL);
 }
 
-static char	*expand_variable(t_node *tmp, char *str, int start, int end)
+static char	*expand_variable(t_node *tmp, char *str, int start, int end, int last_exit_status)
 {
 	char	*var_name;
 	char	*var_value;
@@ -80,7 +80,7 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 			start += 3;
 		else
 			start += 2;
-		error_str = ft_itoa(tmp->status);
+		error_str = ft_itoa(last_exit_status);
 		free(var_name);
 		if (str[start] != '\0')
 		{
@@ -99,7 +99,7 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end)
 
 static int	var_char_is_valid(char c)
 {
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_');
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '?');
 }
 
 static int	find_var_delimeter(char *str, int pos)
@@ -120,7 +120,7 @@ static int	find_var_delimeter(char *str, int pos)
 	return (next);
 }
 
-static char	*process_str(t_node *tmp, char *str)
+static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 {
 	int		pos;
 	int		var_end_pos;
@@ -135,7 +135,7 @@ static char	*process_str(t_node *tmp, char *str)
 		if (str[0] != SINGLE_QUOTE && str[pos] == DOLLAR && (pos == 0 || str[pos - 1] != BACKSLASH))
 		{
 			var_end_pos = find_var_delimeter(str, pos);
-			var_value = expand_variable(tmp, str, pos, var_end_pos);
+			var_value = expand_variable(tmp, str, pos, var_end_pos, last_exit_status);
 			i = -1;
 			while (var_value[++i] != '\0')
 				new_arg = strjoin_char(new_arg, var_value[i], '\0');
@@ -148,21 +148,22 @@ static char	*process_str(t_node *tmp, char *str)
 	return (new_arg);
 }
 
-static int	dollar_exists(char *arg)
+static int	dollar_or_quotes(char *arg)
 {
 	int	i;
 
 	i = 0;
 	while (arg[i])
 	{
-		if (arg[i] == DOLLAR)
+		if (arg[i] == DOLLAR || arg[i] == SINGLE_QUOTE || 
+			arg[i] == DOUBLE_QUOTE)
 			return (1);
 		++i;
 	}
 	return (0);
 }
 
-int	expand_commands(t_node **head)
+int	expand_commands(t_node **head, int last_exit_status)
 {
 	int		i;
 	int		arg_needs_expansion;
@@ -175,10 +176,10 @@ int	expand_commands(t_node **head)
 		i = -1;
 		while (++i < tmp->content->num_args)
 		{
-			arg_needs_expansion = dollar_exists(tmp->content->args[i]);
+			arg_needs_expansion = dollar_or_quotes(tmp->content->args[i]);
 			if (!arg_needs_expansion)
 				continue;
-			expanded = process_str(tmp, tmp->content->args[i]);
+			expanded = process_str(tmp, tmp->content->args[i], last_exit_status);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
 		}

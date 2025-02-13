@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 15:46:15 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:48:36 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,22 @@ void	print_list(t_node *node)
 	printf("\n-----------------------------------------------\n");
 }
 
-int	process_command(t_node *head, char *line, t_lists *lists, int exit_code)
+int	process_command(t_node *head, char *line, t_lists *lists, int last_exit_status)
 {
 	int	status;
 
 	status = -1;
 	head = NULL;
 	if (!even_quotes(line) || invalid_character(line))
-		return (free_list(head), 1);
+		return (free_list(head), FN_FAILURE);
 	translate_str(line);
-	if (fill_nodes(line, &head, lists, exit_code))
-		return (free(line), free_list(head), 1);
+	if (fill_nodes(line, &head, lists))
+		return (free(line), free_list(head), FN_FAILURE);
 	free(line);
 	if (head->content->command)
 		g_signal = 1;
-	if (expand_commands(&head))
-		return (free_list(head), 1);
+	if (expand_commands(&head, last_exit_status))
+		return (free_list(head), FN_FAILURE);
 	/*if (delete_backslash(&head))*/
 	/*	return (EXIT_FAILURE);*/
 	if (ft_len_node(head) == 1)

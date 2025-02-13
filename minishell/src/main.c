@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:16:31 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/07 16:19:34 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/12 20:24:53 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ int	is_only_spaces_or_tabs(char *line)
 int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		char **environment)
 {
-	int		exit_code;
+	int		last_exit_status;
 	char	*line;
 	t_lists	lists;
 	t_node	head;
 
+	last_exit_status = 0;
 	ft_memset(&lists, 0, sizeof(t_lists));
-	exit_code = 0;
 	lists.env = get_var(environment, 0);
 	lists.exp = get_var(environment, 1);
 	while (1)
@@ -49,7 +49,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		add_history(line);
 		if (line && !is_only_spaces_or_tabs(line))
 		{
-			exit_code = process_command(&head, line, &lists, exit_code);
+			last_exit_status = process_command(&head, line, &lists, last_exit_status);
 			g_signal = 0;
 		}
 	}

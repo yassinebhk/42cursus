@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 10:30:18 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 11:33:11 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:41:55 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	check_quotes(char c, int *single_quote, int *double_quote)
 {
-	if (c == SINGLE_QUOTE)
+	if (c == SINGLE_QUOTE && !(*double_quote))
 		*single_quote = !(*single_quote);
-	if (c == DOUBLE_QUOTE)
+	if (c == DOUBLE_QUOTE && !(*single_quote))
 		*double_quote = !(*double_quote);
 }
 

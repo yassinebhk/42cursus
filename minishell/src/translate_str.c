@@ -6,11 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:33:24 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/01/31 19:03:31 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/12 20:27:22 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 void clear_spaces(char *str, int *read_pos)
 {

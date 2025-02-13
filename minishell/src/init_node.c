@@ -6,11 +6,12 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 17:05:22 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:56:41 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <unistd.h>
 
 static t_command	*get_content(char *line, int init_pos, int end_pos)
 {
@@ -75,7 +76,7 @@ static t_env	*ft_listdup(t_env *list)
 }
 
 
-static t_node	*fill_node(char *line, int *pos, t_lists *lists, int status)
+static t_node	*fill_node(char *line, int *pos, t_lists *lists)
 {
 	int		init_pos;
 	t_node	*new_node;
@@ -90,9 +91,9 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists, int status)
 		return (free(new_node), perror(ENO_MEM_ERROR), NULL);
 	new_node->var_list->env = ft_listdup(lists->env);
 	new_node->var_list->exp = ft_listdup(lists->exp);
-	new_node->status = status;
-	new_node->fd_in = 0;
-	new_node->fd_out = 1;
+	new_node->status = FN_SUCCESS;
+	new_node->fd_in = STDIN_FILENO;
+	new_node->fd_out = STDOUT_FILENO;
 	new_node->next = NULL;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
@@ -102,7 +103,7 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists, int status)
 	return (new_node);
 }
 
-int	fill_nodes(char *line, t_node **head, t_lists *lists, int status)
+int	fill_nodes(char *line, t_node **head, t_lists *lists)
 {
 	int		i;
 	int		pos;
@@ -114,10 +115,10 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists, int status)
 	npipes = count_pipes(line);
 	while (++i <= npipes)
 	{
-		new_node = fill_node(line, &pos, lists, status);
+		new_node = fill_node(line, &pos, lists);
 		if (!new_node)
 			return (free_list(*head), *head = NULL, 1);
 		ft_add_node_back(head, new_node);
 	}
-	return (0);
+	return (FN_SUCCESS);
 }

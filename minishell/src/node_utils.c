@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 13:36:18 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:54:20 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ static void	skip_argument(char *str, int *read_pos)
 			in_quotes = 1;
 		check_quotes(str[*read_pos], &squote_opened, &dquote_opened);
 		++(*read_pos);
-		if (in_quotes && !squote_opened && !dquote_opened)
-			return ;
 	}
 }
 
