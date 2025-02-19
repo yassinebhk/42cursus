@@ -120,9 +120,6 @@ void	print_command2(t_command *cmd)
 
 void	print_list2(t_node *node)
 {
-	int	node_count;
-
-	node_count = 0;
 	while (node)
 	{
 		printf("       Command content     \n");
@@ -133,7 +130,6 @@ void	print_list2(t_node *node)
 		printf("    fd_in: %d\n", node->fd_in);
 		printf("    fd_out: %d\n", node->fd_out);
 		node = node->next;
-		node_count++;
 	}
 	printf("\n-----------------------------------------------\n");
 }

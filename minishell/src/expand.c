@@ -122,17 +122,27 @@ static int	find_var_delimeter(char *str, int pos)
 
 static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 {
-	int		pos;
-	int		var_end_pos;
+	int	pos;
+	int	var_end_pos;
+	int	i;
+	int	quotes;
 	char	*new_arg;
 	char	*var_value;
-	size_t	i;
 
 	pos = -1;
+	quotes = 0;
 	new_arg = ft_strdup("");
 	while (str[++pos])
 	{
-		if (str[0] != SINGLE_QUOTE && str[pos] == DOLLAR && (pos == 0 || str[pos - 1] != BACKSLASH))
+		if (!quotes && str[pos] == SINGLE_QUOTE)
+			quotes = 1;
+		else if (!quotes && str[pos] == DOUBLE_QUOTE)
+			quotes = 2;
+		else if (quotes == 1 && str[pos] == SINGLE_QUOTE)
+			quotes = 0;
+		else if (quotes == 2 && str[pos] == DOUBLE_QUOTE)
+			quotes = 0;
+		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR && str[pos - 1] != BACKSLASH)
 		{
 			var_end_pos = find_var_delimeter(str, pos);
 			var_value = expand_variable(tmp, str, pos, var_end_pos, last_exit_status);
@@ -142,7 +152,7 @@ static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 			free(var_value);
 			pos = var_end_pos - 1;
 		}
-		else if (str[pos] != SINGLE_QUOTE && str[pos] != DOUBLE_QUOTE)
+		else
 			new_arg = strjoin_char(new_arg, str[pos], '\0');
 	}
 	return (new_arg);
