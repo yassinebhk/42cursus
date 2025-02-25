@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/12 19:48:36 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:59:55 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	print_redir(t_redir redir)
 {
 	printf("    Redirection type: %d\n", redir.type);
-	printf("    Valid: %d\n", redir.valid);
 	printf("    Filename: %s. (%ld)\n", redir.filename,
 		ft_strlen(redir.filename));
 }
@@ -77,8 +76,7 @@ int	process_command(t_node *head, char *line, t_lists *lists, int last_exit_stat
 		return (free_list(head), FN_FAILURE);
 	translate_str(line);
 	if (fill_nodes(line, &head, lists))
-		return (free(line), free_list(head), FN_FAILURE);
-	free(line);
+		return (free_list(head), FN_FAILURE);
 	if (head->content->command)
 		g_signal = 1;
 	if (expand_commands(&head, last_exit_status))

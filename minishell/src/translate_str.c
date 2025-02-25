@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:33:24 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/12 20:27:22 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/24 10:22:45 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	translate_str(char *str)
 		check_quotes(str[read_pos], &single_quote_open, &double_quote_open);
 		if (ft_isspace(str[read_pos]) && !single_quote_open && !double_quote_open)
 			clear_spaces(str, &read_pos);
-		else if (str[read_pos] == PIPE)
+		else if (str[read_pos] == PIPE && !single_quote_open && !double_quote_open)
 		{
 			++read_pos;
 			clear_spaces(str, &read_pos);

@@ -6,12 +6,11 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/13 10:56:41 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/22 10:41:00 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <unistd.h>
 
 static t_command	*get_content(char *line, int init_pos, int end_pos)
 {

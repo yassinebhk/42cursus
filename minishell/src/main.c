@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:16:31 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/12 20:24:53 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/21 11:53:08 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 	t_node	head;
 
 	last_exit_status = 0;
+	line = NULL;
 	ft_memset(&lists, 0, sizeof(t_lists));
 	lists.env = get_var(environment, 0);
 	lists.exp = get_var(environment, 1);
@@ -51,6 +52,8 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 		{
 			last_exit_status = process_command(&head, line, &lists, last_exit_status);
 			g_signal = 0;
+			free(line);
+			line = NULL;
 		}
 	}
 	free_args(lists.env, lists.exp);

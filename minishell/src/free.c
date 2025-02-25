@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 13:11:06 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:56:31 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,29 @@ void	free_content(t_command *command)
 
 	if (!command)
 		return ;
+	free(command->command);
+	command->command = NULL;
 	if (command->num_args > 0 && command->args)
 	{
 		pos = -1;
 		while (++pos < command->num_args)
+		{
 			free(command->args[pos]);
+			command->args[pos] = NULL;
+		}
 		free(command->args);
+		command->args = NULL;
 	}
 	if (command->num_redir > 0 && command->redir)
 	{
 		pos = -1;
 		while (++pos < command->num_redir)
+		{
 			free(command->redir[pos].filename);
+			command->redir[pos].filename = NULL;
+		}
 		free(command->redir);
+		command->redir = NULL;
 	}
 }
 
@@ -79,9 +89,12 @@ void	free_list(t_node *head)
 		tmp = head->next;
 		free_args(head->var_list->env, head->var_list->exp);
 		free(head->var_list);
+		head->var_list = NULL;
 		free_content(head->content);
 		free(head->content);
+		head->content = NULL;
 		free(head);
 		head = tmp;
 	}
+	head = NULL;
 }

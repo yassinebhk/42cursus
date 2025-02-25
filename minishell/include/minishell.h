@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/12 19:44:55 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:01:08 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ enum					e_access_mode
 typedef struct s_redir
 {
 	int					type;
-	int					valid;
 	char				*filename;
 }						t_redir;
 

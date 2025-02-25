@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/09 16:54:31 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/22 10:44:46 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,8 @@ static int	exec_comm(t_node *head, int input, int output)
 			}
 			close(head->fd_out);
 		}
-		for(int i = 0; i < (head)->content->num_args; ++i) {
-			printf("arg[%d]: %s\n", i, (head)->content->args[i]);
-		}
-		printf("\n");
 		if (!access((head)->content->command, X_OK))
-			execve((head)->content->command, (head)->content->args, NULL);
+			execve(head->content->command, head->content->args, NULL);
 		else
 			perror(NO_EXEC_PERM_ERROR);
 		perror("execve failed");

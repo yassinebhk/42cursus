@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node_utils.c                                       :+:      :+:    :+:   */
+/*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/13 10:54:20 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:00:57 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,7 @@ static t_redir	create_redir(char *str)
 	else if (str[i] == '<')
 		redir.type = r_input;
 	else if (ft_isspecial(str[i + 2]))
-		return (perror(PARSING_ERROR),
-			redir.valid = 0, redir);
+		return (perror(PARSING_ERROR), NULL);
 	while (is_redir(str, i))
 		i++;
 	while (ft_isspace(str[i]))
@@ -221,7 +220,12 @@ static int	create_command(char *str, t_command **command)
 				(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
 		(*command)->args[args_pos++][cp_i] = '\0';
 		if (args_pos - 1 == 0)
-			(*command)->command = (*command)->args[0];
+		{
+			(*command)->command = malloc(sizeof(char) * (strlen((*command)->args[0]) + 1));
+			if (!(*command)->command)
+				perror("malloc error");
+			strcpy((*command)->command, (*command)->args[0]);
+		}
 		clear_spaces(str, &i);
 	}
 	return (FN_SUCCESS);
@@ -237,17 +241,18 @@ int	new_command(char *str, t_command **command)
 	num_args(str, &n_args, &n_redir);
 	(*command)->num_args = n_args;
 	(*command)->num_redir = n_redir;
-	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args));
+	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args + 1));
 	if (!(*command)->args)
 		return (perror(ENO_MEM_ERROR), FN_FAILURE);
+	(*command)->args[n_args] = NULL;
 	if (n_redir)
 	{
 		(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
 		if (!(*command)->redir)
 			return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	}
-	while (*str <= ' ')
-		str++;
+	else
+		(*command)->redir = NULL;
 	if (create_command(str, command))
 		return (perror(PARSING_ERROR), FN_FAILURE);
 	return (FN_SUCCESS);

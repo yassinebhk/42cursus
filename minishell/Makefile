@@ -6,7 +6,7 @@
 #    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2024/12/28 21:04:44 by maxgarci         ###   ########.fr        #
+#    Updated: 2025/02/24 10:45:31 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ SRC 				:= main.c print_error.c env_vars.c builts.c echo.c \
 						unset.c print_lists.c export_two.c exit.c cd_update.c \
 						count_pipes.c parsing.c export_utils.c \
 						translate_str.c invalid_character.c init_node.c \
-						process_command.c node_utils.c execute_one_command.c \
+						process_command.c node_creation.c execute_one_command.c \
 						execute_commands.c delete_backslash.c signals.c expand.c \
 						expand_utils.c heredoc.c
 
