@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/24 19:01:08 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:48:18 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@
  * ERROR MACROS
  */
 
-# define ENO_MEM_ERROR "ERROR: Allocation failed, no memory available"
-# define PARSING_ERROR "ERROR: Parsing failed"
-# define BAD_ASSIGNMENT_ERROR "ERROR: Bad assignment"
-# define COMMAND_NOT_FOUND_ERROR "ERROR: Command not found"
-# define VARIABLE_NOT_FOUND_ERROR "ERROR: Variable not found"
-# define NO_EXEC_PERM_ERROR "ERROR: Permission denied"
-# define SINGLE_QUOTE_ERROR "ERROR: Missing single quote"
-# define DOUBLE_QUOTE_ERROR "ERROR: Missing double quote"
+# define ENO_MEM_ERROR "minishell: Allocation failed, no memory available"
+# define PARSING_ERROR "minishell: Parsing failed"
+# define BAD_ASSIGNMENT_ERROR "minishell: Bad assignment"
+# define COMMAND_NOT_FOUND_ERROR "minishell: Command not found"
+# define VARIABLE_NOT_FOUND_ERROR "minishell: Variable not found"
+# define NO_EXEC_PERM_ERROR "minishell: Permission denied"
+# define SINGLE_QUOTE_ERROR "minishell: Missing single quote"
+# define DOUBLE_QUOTE_ERROR "minishell: Missing double quote"
 
 # define NUM_ERRORS 2
 # define EXPORT_FLAG 1
@@ -140,7 +140,7 @@ typedef struct s_command
 	int					num_redir;
 	char				*command;
 	char				**args;
-	struct s_redir		*redir;
+	struct s_redir		**redir;
 }						t_command;
 
 typedef struct s_node
@@ -166,6 +166,9 @@ extern int				g_signal;
  * @param status The error status of the program
  * @return The status
  */
+
+void					print_command(t_command *cmd);
+
 int						process_command(t_node *head, char *line,
 							t_lists *lists, int last_exit_status);
 

@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/24 19:00:57 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:01:37 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int	is_redir(char *str, int pos)
 		|| (str[pos] == '<' && *(str + 1) == '<') || str[pos] == '<');
 }
 
-static inline int	ft_isspecial(char c)
+static inline int	valid_char_filename(char c)
 {
 	return (c == '*' || c == '?' || c == '!' || c == '$' || c == '&' || c == '#'
 		|| c == '<' || c == '>' || c == '\\' || c == '/' || c == '|');
@@ -142,23 +142,26 @@ static void	num_args(char *str, int *n_args, int *n_redir)
 	}
 }
 
-static t_redir	create_redir(char *str)
+static t_redir	*create_redir(char *str)
 {
 	int		i;
 	int		begin;
 	int		cp_i;
-	t_redir	redir;
+	t_redir	*redir;
 
+	redir = malloc(sizeof(t_redir));
+	if (!redir)
+		return (perror(ENO_MEM_ERROR), NULL);
 	i = 0;
 	if (str[i] == '>' && str[i + 1] == '>')
-		redir.type = r_append;
+		redir->type = r_append;
 	else if (str[i] == '>')
-		redir.type = r_output;
+		redir->type = r_output;
 	else if (str[i] == '<' && str[i + 1] == '<')
-		redir.type = r_heredoc;
+		redir->type = r_heredoc;
 	else if (str[i] == '<')
-		redir.type = r_input;
-	else if (ft_isspecial(str[i + 2]))
+		redir->type = r_input;
+	else if (valid_char_filename(str[i + 2]))
 		return (perror(PARSING_ERROR), NULL);
 	while (is_redir(str, i))
 		i++;
@@ -167,20 +170,17 @@ static t_redir	create_redir(char *str)
 	begin = i;
 	while (str[i] > ' ' && !is_redir(str + i, i))
 	{
-		if (ft_isspecial(str[i]))
-			return (perror(BAD_ASSIGNMENT_ERROR),
-				redir.valid = 0, redir);
+		if (valid_char_filename(str[i]))
+			return (perror(BAD_ASSIGNMENT_ERROR), redir);
 		i++;
 	}
-	redir.filename = (char *)malloc(sizeof(char) * (i - begin + 1));
-	if (!redir.filename)
-		return (perror(ENO_MEM_ERROR), redir.valid = 0,
-			redir);
+	redir->filename = (char *)malloc(sizeof(char) * (i - begin + 1));
+	if (!redir->filename)
+		return (perror(ENO_MEM_ERROR), redir);
 	cp_i = 0;
 	while (begin < i)
-		redir.filename[cp_i++] = str[begin++];
-	redir.filename[cp_i] = '\0';
-	redir.valid = 1;
+		redir->filename[cp_i++] = str[begin++];
+	redir->filename[cp_i] = '\0';
 	return (redir);
 }
 
@@ -200,7 +200,7 @@ static int	create_command(char *str, t_command **command)
 		if (is_redir(str, i))
 		{
 			(*command)->redir[redir_pos] = create_redir(str + i);
-			if (!(*command)->redir[redir_pos++].valid)
+			if (!((*command)->redir[redir_pos++]))
 				return (PARSING);
 			while (is_redir(str, i))
 				++i;
@@ -209,22 +209,25 @@ static int	create_command(char *str, t_command **command)
 			while (str[i] > ' ' && !is_redir(str, i))
 				++i;
 		}
-		cp_i = 0;
-		new_arg_index = i;
-		skip_argument(str, &i);
-		(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
-						- new_arg_index + 1));
-		if (!(*command)->args[args_pos])
-			return(perror(ENO_MEM_ERROR), ENO_MEM);
-		while (new_arg_index < i)
-				(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
-		(*command)->args[args_pos++][cp_i] = '\0';
-		if (args_pos - 1 == 0)
+		else
 		{
-			(*command)->command = malloc(sizeof(char) * (strlen((*command)->args[0]) + 1));
-			if (!(*command)->command)
-				perror("malloc error");
-			strcpy((*command)->command, (*command)->args[0]);
+			cp_i = 0;
+			new_arg_index = i;
+			skip_argument(str, &i);
+			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
+							- new_arg_index + 1));
+			if (!(*command)->args[args_pos])
+				return(perror(ENO_MEM_ERROR), ENO_MEM);
+			while (new_arg_index < i)
+					(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
+			(*command)->args[args_pos++][cp_i] = '\0';
+			if (args_pos - 1 == 0)
+			{
+				(*command)->command = malloc(sizeof(char) * (strlen((*command)->args[0]) + 1));
+				if (!(*command)->command)
+					perror(ENO_MEM_ERROR);
+				strcpy((*command)->command, (*command)->args[0]);
+			}
 		}
 		clear_spaces(str, &i);
 	}
@@ -247,7 +250,7 @@ int	new_command(char *str, t_command **command)
 	(*command)->args[n_args] = NULL;
 	if (n_redir)
 	{
-		(*command)->redir = (t_redir *)malloc(sizeof(t_redir) * n_redir);
+		(*command)->redir = (t_redir **)malloc(sizeof(t_redir *) * n_redir);
 		if (!(*command)->redir)
 			return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	}

@@ -6,17 +6,17 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/24 18:59:55 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:51:11 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	print_redir(t_redir redir)
+void	print_redir(t_redir *redir)
 {
-	printf("    Redirection type: %d\n", redir.type);
-	printf("    Filename: %s. (%ld)\n", redir.filename,
-		ft_strlen(redir.filename));
+	printf("    Redirection type: %d\n", redir->type);
+	printf("    Filename: %s. (%ld)\n", redir->filename,
+		ft_strlen(redir->filename));
 }
 
 void	print_command(t_command *cmd)

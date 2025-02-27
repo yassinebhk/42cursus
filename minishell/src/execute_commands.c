@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:05:56 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 17:06:30 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:53:45 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	open_and_get_fd(t_node *tmp, int i, int *fd_in, int *fd_out)
 	int		redir;
 	char	*file;
 
-	redir = tmp->content->redir[i].type;
-	file = tmp->content->redir[i].filename;
+	redir = tmp->content->redir[i]->type;
+	file = tmp->content->redir[i]->filename;
 	if (redir == 1)
 		*fd_out = ft_open(file, O_CREAT | O_WRONLY | O_TRUNC, 1, tmp->fd_out);
 	else if (redir == 2)
@@ -79,12 +79,11 @@ int	set_fd(t_node **head)
 	return (1);
 }
 
-void	print_redir2(t_redir redir)
+void	print_redir2(t_redir *redir)
 {
-	printf("    Redirection type: %d\n", redir.type);
-	printf("    Valid: %d\n", redir.valid);
-	printf("    Filename: %s. (%ld)\n", redir.filename,
-		ft_strlen(redir.filename));
+	printf("    Redirection->type: %d\n", redir->type);
+	printf("    Filename: %s. (%ld)\n", redir->filename,
+		ft_strlen(redir->filename));
 }
 
 void	print_command2(t_command *cmd)

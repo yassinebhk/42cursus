@@ -6,11 +6,12 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/22 10:44:46 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:50:35 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <unistd.h>
 
 char	*get_path_list(char *command, t_env *env)
 {
@@ -57,15 +58,15 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 		{
 			free(head->content->command);
 			head->content->command = ft_strdup(absolute_dir);
-			return (ft_free(split), free(tmp), free(absolute_dir), 1);
+			return (ft_free(split), free(tmp), free(absolute_dir), FN_SUCCESS);
 		}
 		free(tmp);
 		free(absolute_dir);
 	}
 	ft_putstr_fd(command, 2);
 	ft_putstr_fd(": ", 2);
-	ft_putstr_fd("absolute path not found.\n", 2);
-	return (ft_free(split), 0);
+	ft_putstr_fd("command not found\n", 2);
+	return (ft_free(split), FN_FAILURE);
 }
 
 static int	exec_comm(t_node *head, int input, int output)
@@ -88,7 +89,7 @@ static int	exec_comm(t_node *head, int input, int output)
 	{
 		if (input == r_input)
 		{
-			head->fd_in = open(head->content->redir[inpos].filename, O_RDONLY);
+			head->fd_in = open(head->content->redir[inpos]->filename, O_RDONLY);
 			if (head->fd_in < 0)
 			{
 				perror("open error");
@@ -103,7 +104,7 @@ static int	exec_comm(t_node *head, int input, int output)
 		}
 		if (input == r_heredoc)
 		{
-			read_heredoc(head->content->redir[inpos].filename);
+			read_heredoc(head->content->redir[inpos]->filename);
 			head->fd_in = open(HEREDOC_FILENAME, O_RDONLY); // cambiar por un archivo temporal 
 			if (head->fd_in < 0)
 			{
@@ -119,7 +120,7 @@ static int	exec_comm(t_node *head, int input, int output)
 		}
 		if (output == r_output)
 		{
-			head->fd_out = open(head->content->redir[outpos].filename,
+			head->fd_out = open(head->content->redir[outpos]->filename,
 					O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (head->fd_out < 0)
 			{
@@ -135,7 +136,7 @@ static int	exec_comm(t_node *head, int input, int output)
 		}
 		if (output == r_append)
 		{
-			head->fd_out = open(head->content->redir[outpos].filename,
+			head->fd_out = open(head->content->redir[outpos]->filename,
 					O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (head->fd_out < 0)
 			{
@@ -155,7 +156,7 @@ static int	exec_comm(t_node *head, int input, int output)
 			perror(NO_EXEC_PERM_ERROR);
 		perror("execve failed");
 		free_list(head);
-		return (EXIT_FAILURE);
+		exit (EXIT_FAILURE);
 	}
 	else
 		wait(&status);
@@ -171,8 +172,8 @@ static int	find_output_redirection(t_command *comm)
 	outpos = -1;
 	while (++outpos < comm->num_redir)
 	{
-		if (comm->redir[outpos].type == r_output
-			|| comm->redir[outpos].type == r_append)
+		if (comm->redir[outpos]->type == r_output
+			|| comm->redir[outpos]->type == r_append)
 			return (1);
 	}
 	return (0);
@@ -187,11 +188,11 @@ static int	handle_output_redirections(t_node *head, int input)
 	c = head->content;
 	while (++outpos < c->num_redir)
 	{
-		if (c->redir[outpos].type == r_output
-			|| c->redir[outpos].type == r_append)
+		if (c->redir[outpos]->type == r_output
+			|| c->redir[outpos]->type == r_append)
 		{
 			head->fd_out = outpos;
-			if (exec_comm(head, input, c->redir[outpos].type))
+			if (exec_comm(head, input, c->redir[outpos]->type))
 				return (1);
 		}
 	}
@@ -205,8 +206,8 @@ static int	find_input_redirection(t_command *comm)
 	inpos = -1;
 	while (++inpos < comm->num_redir)
 	{
-		if (comm->redir[inpos].type == r_input
-			|| comm->redir[inpos].type == r_heredoc)
+		if (comm->redir[inpos]->type == r_input
+			|| comm->redir[inpos]->type == r_heredoc)
 			return (1);
 	}
 	return (0);
@@ -221,16 +222,16 @@ static int	handle_input_redirections(t_node *head, int output_exists)
 	c = head->content;
 	while (++inpos < c->num_redir)
 	{
-		if (c->redir[inpos].type == r_input
-			|| c->redir[inpos].type == r_heredoc)
+		if (c->redir[inpos]->type == r_input
+			|| c->redir[inpos]->type == r_heredoc)
 		{
 			head->fd_in = inpos;
 			if (output_exists)
 			{
-				if (handle_output_redirections(head, c->redir[inpos].type))
+				if (handle_output_redirections(head, c->redir[inpos]->type))
 					return (1);
 			}
-			else if (exec_comm(head, c->redir[inpos].type, 0))
+			else if (exec_comm(head, c->redir[inpos]->type, 0))
 				return (1);
 		}
 	}
@@ -303,7 +304,7 @@ int	execute_one_command(t_node **head, t_lists *lists)
 	path_list = get_path_list("PATH\0", lists->env);
 	if (!path_list)
 		return (VARIABLE_NOT_FOUND);
-	if (!get_absolute_path(path_list, (*head)->content->command, *head))
+	if (get_absolute_path(path_list, (*head)->content->command, *head))
 		return (COMMAND_NOT_FOUND);
 	if (redirect(*head))
 		return (1);
