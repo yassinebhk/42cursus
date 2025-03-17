@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 12:57:13 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/03/14 12:59:02 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	valid_char(char c, int index)
@@ -21,7 +33,7 @@ int	valid_var(char *var)
 	while (var[++j])
 	{
 		if (var[j] == '\\' || (j > 0 && var[j - 1] == '\\'))
-			continue;
+			continue ;
 		if (!(valid_char(var[j], j)))
 			return (1);
 	}

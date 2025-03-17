@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/27 11:49:59 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:42:03 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_free(char **str)
 	free(str);
 }
 
-void	free_args(t_env *env, t_env *exp)
+void	free_lists(t_env *env, t_env *exp)
 {
 	t_env	*tmp;
 
@@ -87,7 +87,7 @@ void	free_list(t_node *head)
 	while (head)
 	{
 		tmp = head->next;
-		free_args(head->var_list->env, head->var_list->exp);
+		free_lists(head->var_list->env, head->var_list->exp);
 		free(head->var_list);
 		head->var_list = NULL;
 		free_content(head->content);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/07 17:09:35 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/12 21:00:21 by maxgarci         ###   ########.fr       */
+/*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/03/14 13:22:49 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*find_var_value(t_env *env_list, char *var_name)
 	return (NULL);
 }
 
-static char	*expand_variable(t_node *tmp, char *str, int start, int end, int last_exit_status)
+static char	*expand_variable(t_node *tmp, char *str, int arr[3])
 {
 	char	*var_name;
 	char	*var_value;
@@ -70,21 +70,21 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end, int las
 
 	if (ft_strlen(str) == 1)
 		return (ft_strdup("$"));
-	var_name = ft_strndup(str + start + 1, end - start - 1);
+	var_name = ft_strndup(str + arr[0] + 1, arr[1] - arr[0] - 1);
 	if (!var_name)
 		return (NULL);
 	if (ft_strncmp(var_name, "?", 1) == 0 || ft_strncmp(var_name, "\\?",
 			2) == 0)
 	{
 		if (ft_strncmp(var_name, "\\?", 2) == 0)
-			start += 3;
+			arr[0] += 3;
 		else
-			start += 2;
-		error_str = ft_itoa(last_exit_status);
+			arr[0] += 2;
+		error_str = ft_itoa(arr[2]);
 		free(var_name);
-		if (str[start] != '\0')
+		if (str[arr[0]] != '\0')
 		{
-			concat_str = ft_strndup(str + start, ft_strlen(str) - start);
+			concat_str = ft_strndup(str + arr[0], ft_strlen(str) - arr[0]);
 			final_str = ft_strjoin(error_str, concat_str);
 			return (free(concat_str), free(error_str), final_str);
 		}
@@ -99,7 +99,8 @@ static char	*expand_variable(t_node *tmp, char *str, int start, int end, int las
 
 static int	var_char_is_valid(char c)
 {
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '?');
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') \
+			|| c == '_' || c == '?');
 }
 
 static int	find_var_delimeter(char *str, int pos)
@@ -122,10 +123,10 @@ static int	find_var_delimeter(char *str, int pos)
 
 static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 {
-	int	pos;
-	int	var_end_pos;
-	int	i;
-	int	quotes;
+	int		pos;
+	int		var_end_pos;
+	int		i;
+	int		quotes;
 	char	*new_arg;
 	char	*var_value;
 
@@ -142,10 +143,11 @@ static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 			quotes = 0;
 		else if (quotes == 2 && str[pos] == DOUBLE_QUOTE)
 			quotes = 0;
-		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR && str[pos - 1] != BACKSLASH)
+		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR \
+				&& str[pos - 1] != BACKSLASH)
 		{
 			var_end_pos = find_var_delimeter(str, pos);
-			var_value = expand_variable(tmp, str, pos, var_end_pos, last_exit_status);
+			var_value = expand_variable(tmp, str, (int[]){pos, var_end_pos, last_exit_status});
 			i = -1;
 			while (var_value[++i] != '\0')
 				new_arg = strjoin_char(new_arg, var_value[i], '\0');
@@ -188,8 +190,9 @@ int	expand_commands(t_node **head, int last_exit_status)
 		{
 			arg_needs_expansion = dollar_or_quotes(tmp->content->args[i]);
 			if (!arg_needs_expansion)
-				continue;
-			expanded = process_str(tmp, tmp->content->args[i], last_exit_status);
+				continue ;
+			expanded = process_str(tmp, tmp->content->args[i], \
+									last_exit_status);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
 		}

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/27 11:51:11 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/15 10:00:18 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	print_list(t_node *node)
 		printf("       Command content     \n");
 		print_command(node->content);
 		printf("  fd:\n");
-		// Print additional fields (env, exp) if necessary
-		// ...
 		printf("    fd_in: %d\n", node->fd_in);
 		printf("    fd_out: %d\n", node->fd_out);
 		node = node->next;
@@ -66,13 +64,14 @@ void	print_list(t_node *node)
 	printf("\n-----------------------------------------------\n");
 }
 
-int	process_command(t_node *head, char *line, t_lists *lists, int last_exit_status)
+int	process_command(t_node *head, char *line, t_lists *lists, \
+					int last_exit_status)
 {
 	int	status;
 
 	status = -1;
 	head = NULL;
-	if (!even_quotes(line) || invalid_character(line))
+	if (!line || !even_quotes(line) || invalid_character(line))
 		return (free_list(head), FN_FAILURE);
 	translate_str(line);
 	if (fill_nodes(line, &head, lists))

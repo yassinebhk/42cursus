@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/27 14:48:18 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:01:07 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <stdlib.h>
 
 /***************************************
 	DEFINE
@@ -266,13 +267,6 @@ int						new_command(char *str, t_command **command);
 char					*get_trunc_str(char *line, int init_pos, int end_pos);
 
 /**
- * @brief Finds the first occurence of a pipe
- * @param line The string
- * @param pos The current position in the string
- */
-void					find_pipe(char *line, int *pos);
-
-/**
  * @brief Calculates the length of the command list
  * @param head The head of the command list
  * @returns The length of the command list
@@ -282,6 +276,10 @@ int						ft_len_node(t_node *head);
 /***************************************
 		lists utils
 ***************************************/
+
+t_env					*ft_nodedup(t_env *node);
+
+t_env					*ft_listdup(t_env *list);
 
 /**
  * @brief Calculates the lent of a t_env list
@@ -332,7 +330,7 @@ void					free_content(t_command *command);
 
 void					free_list(t_node *head);
 
-void					free_args(t_env *env, t_env *exp);
+void					free_lists(t_env *env, t_env *exp);
 
 /***************************************
 		environment variables
@@ -426,6 +424,14 @@ int						valid_var(char *var);
 /***************************************
 		builts
 ***************************************/
+
+/**
+ * @brief executes built command with input and output redirected
+ * @param head first node
+ * @param lists env and exp lists
+ * @returns exit state of the command
+*/
+int						execute_built(t_node **head, t_lists *lists);
 
 /**
  * @brief Find the built in and execute his routine

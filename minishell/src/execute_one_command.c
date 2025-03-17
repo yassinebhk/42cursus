@@ -6,12 +6,11 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/27 14:50:35 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:02:13 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <unistd.h>
 
 char	*get_path_list(char *command, t_env *env)
 {
@@ -261,38 +260,6 @@ static int	redirect(t_node *head)
 			return (1);
 	}
 	return (0);
-}
-
-int	execute_built(t_node **head, t_lists *lists)
-{
-	int	saved_stdin;
-	int	saved_stdout;
-
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	if (saved_stdin == -1 || saved_stdout == -1)
-		return (perror("Error saving original fd"), 1);
-	if (!set_fd(head))
-		return (1);
-	if ((*head)->fd_in != STDIN_FILENO && (*head)->fd_in != -1)
-	{
-		if (dup2((*head)->fd_in, STDIN_FILENO) == -1)
-			return (perror("dup2 fd_in failed"), 1);
-		close((*head)->fd_in);
-	}
-	if ((*head)->fd_out != STDOUT_FILENO && (*head)->fd_out != -1)
-	{
-		if (dup2((*head)->fd_out, STDOUT_FILENO) == -1)
-			return (perror("dup2 fd_out failed"), 1);
-		close((*head)->fd_out);
-	}
-	(*head)->status = find_built(head, &lists);
-	if (dup2(saved_stdin, STDIN_FILENO) == -1 || dup2(saved_stdout,
-			STDOUT_FILENO) == -1)
-		return (perror("Error restoring original fd"), 1);
-	close(saved_stdin);
-	close(saved_stdout);
-	return ((*head)->status);
 }
 
 int	execute_one_command(t_node **head, t_lists *lists)

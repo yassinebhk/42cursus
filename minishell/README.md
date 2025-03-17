@@ -70,3 +70,6 @@ NOTAS:
    -> HACER cd - (me lleva al oldpwd) (cd -- directorio raiz)
    -> cd cuando no es . .. - 
    -> pwd con argumento no valido
+
+COSAS POR HACER
+Flag de echo es mejorable en código usando ft_strcmp para ver si el primer argumento es el flag y así eliminar otro parseo más

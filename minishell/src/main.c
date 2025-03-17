@@ -6,11 +6,12 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:16:31 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/21 11:53:08 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:41:33 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <unistd.h>
 
 extern int	g_signal;
 
@@ -56,7 +57,7 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 			line = NULL;
 		}
 	}
-	free_args(lists.env, lists.exp);
+	free_lists(lists.env, lists.exp);
 	rl_clear_history();
 	return (0);
 }

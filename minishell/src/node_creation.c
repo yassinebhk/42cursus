@@ -6,83 +6,11 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/27 17:01:37 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:28:04 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-static t_node	*ft_last_node(t_node *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-void	ft_add_node_back(t_node **head, t_node *new_node)
-{
-	t_node	*last;
-
-	if (!new_node)
-	{
-		perror(ENO_MEM_ERROR);
-		return ;
-	}
-	if (!*head)
-		*head = new_node;
-	else
-	{
-		last = ft_last_node(*head);
-		if (last)
-			last->next = new_node;
-	}
-}
-
-void	find_pipe(char *line, int *pos)
-{
-	int	single_quote_open;
-	int	double_quote_open;
-
-	single_quote_open = 0;
-	double_quote_open = 0;
-	if (line == NULL)
-		return ;
-	while (line[*pos])
-	{
-		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
-			single_quote_open = !single_quote_open;
-		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
-			double_quote_open = !double_quote_open;
-		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
-		{
-			if (*pos == 0 || (line[*pos - 1] != BACKSLASH))
-				break ;
-		}
-		(*pos)++;
-	}
-	(*pos)++;
-}
-
-char	*get_trunc_str(char *line, int init_pos, int end_pos)
-{
-	int		pos;
-	char	*str;
-
-	pos = 0;
-	str = (char *)malloc(end_pos - init_pos);
-	if (!str)
-		return (perror(ENO_MEM_ERROR), NULL);
-	while (init_pos < end_pos - 1)
-	{
-		str[pos] = line[init_pos];
-		pos++;
-		init_pos++;
-	}
-	str[pos] = '\0';
-	return (str);
-}
 
 static int	is_redir(char *str, int pos)
 {
@@ -94,20 +22,21 @@ static int	is_redir(char *str, int pos)
 
 static inline int	valid_char_filename(char c)
 {
-	return (c == '*' || c == '?' || c == '!' || c == '$' || c == '&' || c == '#'
-		|| c == '<' || c == '>' || c == '\\' || c == '/' || c == '|');
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-' \
+			|| c == '_' || c == '.');
 }
 
 static void	skip_argument(char *str, int *read_pos)
 {
-	int squote_opened;
-	int dquote_opened;
+	int	squote_opened;
+	int	dquote_opened;
 	int	in_quotes;
 
 	squote_opened = 0;
 	dquote_opened = 0;
 	in_quotes = 0;
-	while ((str[*read_pos] && !ft_isspace(str[*read_pos]) && !is_redir(str, *read_pos)) || squote_opened || dquote_opened)
+	while ((str[*read_pos] && !ft_isspace(str[*read_pos]) && \
+			!is_redir(str, *read_pos)) || squote_opened || dquote_opened)
 	{
 		if (!in_quotes && (squote_opened || dquote_opened))
 			in_quotes = 1;
@@ -116,7 +45,7 @@ static void	skip_argument(char *str, int *read_pos)
 	}
 }
 
-static void	num_args(char *str, int *n_args, int *n_redir)
+static void	count_args_redir(char *str, int *n_args, int *n_redir)
 {
 	int	pos;
 
@@ -135,10 +64,10 @@ static void	num_args(char *str, int *n_args, int *n_redir)
 		}
 		else
 		{
-			skip_argument(str, &pos); 
-			clear_spaces(str, &pos);
+			skip_argument(str, &pos);
 			(*n_args)++;
 		}
+		clear_spaces(str, &pos);
 	}
 }
 
@@ -161,7 +90,7 @@ static t_redir	*create_redir(char *str)
 		redir->type = r_heredoc;
 	else if (str[i] == '<')
 		redir->type = r_input;
-	else if (valid_char_filename(str[i + 2]))
+	else if (!valid_char_filename(str[i + 2]))
 		return (perror(PARSING_ERROR), NULL);
 	while (is_redir(str, i))
 		i++;
@@ -170,7 +99,7 @@ static t_redir	*create_redir(char *str)
 	begin = i;
 	while (str[i] > ' ' && !is_redir(str + i, i))
 	{
-		if (valid_char_filename(str[i]))
+		if (!valid_char_filename(str[i]))
 			return (perror(BAD_ASSIGNMENT_ERROR), redir);
 		i++;
 	}
@@ -214,16 +143,17 @@ static int	create_command(char *str, t_command **command)
 			cp_i = 0;
 			new_arg_index = i;
 			skip_argument(str, &i);
-			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * (i
-							- new_arg_index + 1));
+			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * \
+												(i - new_arg_index + 1));
 			if (!(*command)->args[args_pos])
-				return(perror(ENO_MEM_ERROR), ENO_MEM);
+				return (perror(ENO_MEM_ERROR), ENO_MEM);
 			while (new_arg_index < i)
-					(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
+				(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
 			(*command)->args[args_pos++][cp_i] = '\0';
 			if (args_pos - 1 == 0)
 			{
-				(*command)->command = malloc(sizeof(char) * (strlen((*command)->args[0]) + 1));
+				(*command)->command = malloc(sizeof(char) * \
+								(strlen((*command)->args[0]) + 1));
 				if (!(*command)->command)
 					perror(ENO_MEM_ERROR);
 				strcpy((*command)->command, (*command)->args[0]);
@@ -241,10 +171,11 @@ int	new_command(char *str, t_command **command)
 
 	n_args = 0;
 	n_redir = 0;
-	num_args(str, &n_args, &n_redir);
+	count_args_redir(str, &n_args, &n_redir);
 	(*command)->num_args = n_args;
 	(*command)->num_redir = n_redir;
-	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args + 1));
+	(*command)->args = (char **)malloc(sizeof(char *) * \
+									((*command)->num_args + 1));
 	if (!(*command)->args)
 		return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	(*command)->args[n_args] = NULL;
@@ -259,19 +190,4 @@ int	new_command(char *str, t_command **command)
 	if (create_command(str, command))
 		return (perror(PARSING_ERROR), FN_FAILURE);
 	return (FN_SUCCESS);
-}
-
-int	ft_len_node(t_node *head)
-{
-	int		size;
-	t_node	*tmp;
-
-	size = 0;
-	tmp = head;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		size++;
-	}
-	return (size);
 }

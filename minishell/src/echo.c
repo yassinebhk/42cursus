@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:33:33 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 16:32:10 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/02/28 09:41:05 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,5 @@ int	echo(char **args, int num_args)
 			printf(" %s", args[pos]);
 		printf("\n");
 	}
-	return (0);
+	return (FN_SUCCESS);
 }

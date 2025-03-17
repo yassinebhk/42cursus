@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/02/22 10:41:00 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:27:55 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static t_command	*get_content(char *line, int init_pos, int end_pos)
 	command = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (!command)
 		return (perror(ENO_MEM_ERROR), NULL);
-	//str = get_trunc_str(line, init_pos, end_pos);
-	str = (char *)ft_calloc(1, sizeof(char)*(end_pos - init_pos));
+	str = (char *)ft_calloc(1, sizeof(char) * (end_pos - init_pos));
 	size = ft_strlcpy(str, line + init_pos, end_pos - init_pos);
 	if (!size)
 		return (free(command), NULL);
@@ -31,49 +30,30 @@ static t_command	*get_content(char *line, int init_pos, int end_pos)
 	return (free(str), command);
 }
 
-static t_env	*ft_nodedup(t_env *node)
+static void	find_pipe(char *line, int *pos)
 {
-	t_env	*new_node;
+	int	single_quote_open;
+	int	double_quote_open;
 
-	new_node = (t_env *)malloc(sizeof(t_env));
-	if (!new_node)
-		return (perror(ENO_MEM_ERROR), NULL);
-	new_node->index = node->index;
-	new_node->key = ft_strdup(node->key);
-	new_node->next = NULL;
-	if (node->var)
-		new_node->var = ft_strdup(node->var);
-	else
-		new_node->var = NULL;
-	return (new_node);
-}
-
-static t_env	*ft_listdup(t_env *list)
-{
-	t_env	*new_env;
-	t_env	*tmp;
-	t_env	*curr;
-
-	if (!list)
-		return (NULL);
-	new_env = ft_nodedup(list);
-	if (!new_env)
-		return (NULL);
-	
-	tmp = new_env;
-	list = list->next;
-	while (list)
+	single_quote_open = 0;
+	double_quote_open = 0;
+	if (line == NULL)
+		return ;
+	while (line[*pos])
 	{
-		curr = ft_nodedup(list);
-		if (!curr)
-			return (NULL);
-		tmp->next = curr;
-		tmp = tmp->next;
-		list = list->next;
+		if (line[*pos] == SINGLE_QUOTE && !double_quote_open)
+			single_quote_open = !single_quote_open;
+		else if (line[*pos] == DOUBLE_QUOTE && !single_quote_open)
+			double_quote_open = !double_quote_open;
+		else if (line[*pos] == PIPE && !single_quote_open && !double_quote_open)
+		{
+			if (*pos == 0 || (line[*pos - 1] != BACKSLASH))
+				break ;
+		}
+		(*pos)++;
 	}
-	return (new_env);
+	(*pos)++;
 }
-
 
 static t_node	*fill_node(char *line, int *pos, t_lists *lists)
 {
@@ -96,7 +76,7 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists)
 	new_node->next = NULL;
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
-		return (free_args(new_node->var_list->env, new_node->var_list->exp),
+		return (free_lists(new_node->var_list->env, new_node->var_list->exp),
 			free(new_node->var_list), free(new_node),
 			perror(ENO_MEM_ERROR), NULL);
 	return (new_node);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   invalid_character.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/15 09:46:23 by ybouhaik          #+#    #+#             */
+/*   Updated: 2025/03/15 09:50:35 by maxgarci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	special_char(char c)
@@ -28,14 +40,14 @@ static int	is_not_meta(int pos, char *line)
 	return (0);
 }
 
-static int	check_special_or_meta(int pos, char *line)
+static int	special_or_meta(int pos, char *line)
 {
 	if (special_char(line[pos]) == 2 || is_not_meta(pos, line))
 		return (1);
 	return (0);
 }
 
-int	check_consecutive_pipes(int pos, char *line)
+static int	check_pipes(int pos, char *line)
 {
 	int	next_pos;
 
@@ -70,7 +82,7 @@ int	invalid_character(char *line)
 			double_quote_open = !double_quote_open;
 		else if (!single_quote_open && !double_quote_open)
 		{
-			if (check_special_or_meta(pos, line) || check_consecutive_pipes(pos, line))
+			if (special_or_meta(pos, line) || check_pipes(pos, line))
 				return (1);
 		}
 		pos++;

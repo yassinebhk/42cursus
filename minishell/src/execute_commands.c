@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:05:56 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/27 11:53:45 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:08:52 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@ int	ft_open(char *file, int flag, int permission, int old_fd)
 		return (open(file, flag));
 }
 
-int	heredoc(void)
+int	heredoc(char *file)
 {
-	return (1);
+	int	fd_in;
+
+	read_heredoc(file);
+	fd_in = open(HEREDOC_FILENAME, O_RDONLY);
+	return (fd_in);
 }
 
 int	open_and_get_fd(t_node *tmp, int i, int *fd_in, int *fd_out)
@@ -41,17 +45,16 @@ int	open_and_get_fd(t_node *tmp, int i, int *fd_in, int *fd_out)
 	else if (redir == 3)
 		*fd_in = ft_open(file, O_RDONLY, 0, tmp->fd_in);
 	else if (redir == 4)
-		*fd_in = heredoc();
-	// hay que hacer el heredoc antes de pasar al siguiente (foto)
-	if (*fd_in == -1 || *fd_out == -1)
+		*fd_in = heredoc(file);
+	if (*fd_in < 0 || *fd_out < 0)
 	{
 		ft_putstr_fd("Error opening ", 2);
 		ft_putstr_fd(file, 2);
-		ft_putstr_fd(" : ", 2);
+		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
-		return (0);
+		return (FN_FAILURE);
 	}
-	return (1);
+	return (FN_SUCCESS);
 }
 
 int	set_fd(t_node **head)
@@ -69,79 +72,17 @@ int	set_fd(t_node **head)
 		fd_in = 0;
 		while (++i < tmp->content->num_redir)
 		{
-			if (!open_and_get_fd(tmp, i, &fd_in, &fd_out))
-				return (0);
+			if (open_and_get_fd(tmp, i, &fd_in, &fd_out))
+				return (FN_FAILURE);
 		}
 		tmp->fd_in = fd_in;
 		tmp->fd_out = fd_out;
 		tmp = tmp->next;
 	}
-	return (1);
+	return (FN_SUCCESS);
 }
 
-void	print_redir2(t_redir *redir)
-{
-	printf("    Redirection->type: %d\n", redir->type);
-	printf("    Filename: %s. (%ld)\n", redir->filename,
-		ft_strlen(redir->filename));
-}
-
-void	print_command2(t_command *cmd)
-{
-	if (!cmd)
-	{
-		printf("    (null)\n");
-		return ;
-	}
-	printf("  Command: %s\n", cmd->command);
-	printf("  Number of arguments: %d\n", cmd->num_args);
-	if (cmd->num_args > 0 && cmd->args)
-	{
-		printf("  Arguments:\n");
-		for (int i = 0; i < cmd->num_args; i++)
-			printf("    arg[%d]: %s. (%ld)\n", i, cmd->args[i],
-				ft_strlen(cmd->args[i]));
-	}
-	else
-	{
-		printf("  No arguments.\n");
-	}
-	printf("  Number of redirs: %d\n", cmd->num_redir);
-	if (cmd->num_redir && cmd->redir)
-	{
-		printf("  Redirections:\n");
-		for (int i = 0; i < cmd->num_redir; i++)
-			print_redir2(cmd->redir[i]);
-	}
-	else
-		printf("  No redirections.\n");
-}
-
-void	print_list2(t_node *node)
-{
-	while (node)
-	{
-		printf("       Command content     \n");
-		print_command2(node->content);
-		printf("  fd:\n");
-		// Print additional fields (env, exp) if necessary
-		// ...
-		printf("    fd_in: %d\n", node->fd_in);
-		printf("    fd_out: %d\n", node->fd_out);
-		node = node->next;
-	}
-	printf("\n-----------------------------------------------\n");
-}
-
-void	ft_dup2(int *fd_in, int *fd_out)
-{
-	dup2(*fd_in, STDIN_FILENO);
-	dup2(*fd_out, STDOUT_FILENO);
-	close(*fd_in);
-	close(*fd_out);
-}
-
-void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
+int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		int prev_fd)
 {
 	char	*path_list;
@@ -153,7 +94,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 	if (!curr->content->command)
 	{
 		free_list(head);
-		free_args(lists->env, lists->exp);
+		free_lists(lists->env, lists->exp);
 	}
 	if (curr->fd_out != STDOUT_FILENO)
 	{
@@ -161,7 +102,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		{
 			perror("dup2 fd_out to file failed ");
 			free_list(head);
-			free_args(lists->env, lists->exp);
+			free_lists(lists->env, lists->exp);
 		}
 	}
 	else if (curr->next)
@@ -170,7 +111,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		{
 			perror("dup2 fd_out failed ");
 			free_list(head);
-			free_args(lists->env, lists->exp);
+			free_lists(lists->env, lists->exp);
 		}
 		close(fd[1]);
 	}
@@ -180,7 +121,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		{
 			perror("dup2 fd_in from file failed ");
 			free_list(head);
-			free_args(lists->env, lists->exp);
+			free_lists(lists->env, lists->exp);
 		}
 	}
 	else
@@ -189,7 +130,7 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		{
 			perror("dup2 fd_in failed ");
 			free_list(head);
-			free_args(lists->env, lists->exp);
+			free_lists(lists->env, lists->exp);
 		}
 		close(fd[0]);
 	}
@@ -197,23 +138,23 @@ void	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 	{
 		find_built(&head, &lists);
 		free_list(head);
-		free_args(lists->env, lists->exp);
-		exit(0);
+		free_lists(lists->env, lists->exp);
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		path_list = get_path_list("PATH\0", curr->var_list->env);
-		if (!path_list || !get_absolute_path(path_list, curr->content->command,
+		if (!path_list || get_absolute_path(path_list, curr->content->command,
 				curr))
 		{
 			free_list(head);
-			free_args(lists->env, lists->exp);
-			exit(COMMAND_NOT_FOUND);
+			free_lists(lists->env, lists->exp);
+			exit(EXIT_FAILURE);
 		}
 		execve(curr->content->command, curr->content->args, 0);
 		perror("execv: ");
 		free_list(head);
-		free_args(lists->env, lists->exp);
+		free_lists(lists->env, lists->exp);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -223,9 +164,10 @@ int	execute_commands(t_node **head, t_lists *lists)
 	int		pid;
 	int		fd[2];
 	int		prev_fd_in;
+	int		status;
 	t_node	*tmp;
 
-	if (!set_fd(head))
+	if (set_fd(head))
 		return (EXIT_FAILURE);
 	tmp = *head;
 	prev_fd_in = tmp->fd_in;
@@ -234,13 +176,13 @@ int	execute_commands(t_node **head, t_lists *lists)
 		if (pipe(fd) == -1)
 		{
 			perror("pipe function failed");
-			return (EXIT_FAILURE);
+			return (FN_FAILURE);
 		}
 		pid = fork();
 		if (pid < 0)
 		{
 			perror("fork failed");
-			return (EXIT_FAILURE);
+			return (FN_FAILURE);
 		}
 		if (pid == 0)
 		{
@@ -251,16 +193,15 @@ int	execute_commands(t_node **head, t_lists *lists)
 		else
 		{
 			close(fd[1]);
-			wait(0);
+			wait(&status);
 		}
-		close(prev_fd_in);
+		if (prev_fd_in)
+			close(prev_fd_in);
 		prev_fd_in = dup(fd[0]);
 		close(fd[0]);
 		tmp = tmp->next;
 	}
 	if (prev_fd_in != -1)
 		close(prev_fd_in);
-	return (0);
+	return (status);
 }
-
-// checker comandos para que no me entren caracteres especiales en el command
