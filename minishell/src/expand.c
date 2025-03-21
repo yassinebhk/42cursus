@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/14 13:22:49 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/21 09:58:28 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,7 @@ static char	*expand_variable(t_node *tmp, char *str, int arr[3])
 	char	*var_name;
 	char	*var_value;
 	char	*error_str;
-	char	*concat_str;
-	char	*final_str;
 
-	if (ft_strlen(str) == 1)
-		return (ft_strdup("$"));
 	var_name = ft_strndup(str + arr[0] + 1, arr[1] - arr[0] - 1);
 	if (!var_name)
 		return (NULL);
@@ -82,12 +78,6 @@ static char	*expand_variable(t_node *tmp, char *str, int arr[3])
 			arr[0] += 2;
 		error_str = ft_itoa(arr[2]);
 		free(var_name);
-		if (str[arr[0]] != '\0')
-		{
-			concat_str = ft_strndup(str + arr[0], ft_strlen(str) - arr[0]);
-			final_str = ft_strjoin(error_str, concat_str);
-			return (free(concat_str), free(error_str), final_str);
-		}
 		return (error_str);
 	}
 	var_value = find_var_value(tmp->var_list->env, var_name);
@@ -144,7 +134,8 @@ static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 		else if (quotes == 2 && str[pos] == DOUBLE_QUOTE)
 			quotes = 0;
 		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR \
-				&& str[pos - 1] != BACKSLASH)
+				&& str[pos - 1] != BACKSLASH && (!ft_isspace(str[pos + 1]) \
+				&& str[pos + 1] != DOUBLE_QUOTE))
 		{
 			var_end_pos = find_var_delimeter(str, pos);
 			var_value = expand_variable(tmp, str, (int[]){pos, var_end_pos, last_exit_status});
