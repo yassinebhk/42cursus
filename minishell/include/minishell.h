@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/14 17:01:07 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:46:29 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ typedef struct s_command
 
 typedef struct s_node
 {
-	int					status;
+	int					last_status;
 	int					fd_in;
 	int					fd_out;
 	struct s_lists		*var_list;
@@ -171,7 +171,7 @@ extern int				g_signal;
 void					print_command(t_command *cmd);
 
 int						process_command(t_node *head, char *line,
-							t_lists *lists, int last_exit_status);
+							t_lists *lists);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -523,7 +523,7 @@ void					print_error(char *command, int erno);
  * @brief Assings args of the commands by expanding variables
  *  @param head The head of the commands list
  */
-int						expand_commands(t_node **head, int last_exit_status);
+int						expand_commands(t_node **head);
 
 /**
  * @brief Executes one command

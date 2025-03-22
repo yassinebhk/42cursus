@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/15 10:00:18 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:33:21 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,11 @@ void	print_list(t_node *node)
 	printf("\n-----------------------------------------------\n");
 }
 
-int	process_command(t_node *head, char *line, t_lists *lists, \
-					int last_exit_status)
+int	process_command(t_node *head, char *line, t_lists *lists)
 {
 	int	status;
 
 	status = -1;
-	head = NULL;
 	if (!line || !even_quotes(line) || invalid_character(line))
 		return (free_list(head), FN_FAILURE);
 	translate_str(line);
@@ -78,7 +76,7 @@ int	process_command(t_node *head, char *line, t_lists *lists, \
 		return (free_list(head), FN_FAILURE);
 	if (head->content->command)
 		g_signal = 1;
-	if (expand_commands(&head, last_exit_status))
+	if (expand_commands(&head))
 		return (free_list(head), FN_FAILURE);
 	/*if (delete_backslash(&head))*/
 	/*	return (EXIT_FAILURE);*/

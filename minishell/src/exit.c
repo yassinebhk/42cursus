@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/02/09 16:11:28 by ybouhaik		  #+#	#+#			 */
-/*   Updated: 2025/03/14 13:41:02 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:47:05 by maxgarci         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ static int	ft_mtxlen(char **str)
 
 int	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
 {
-	int	exit_code;
+	int	exit_status;
 
-	exit_code = 1;
+	exit_status = (*head)->last_status;
 	if (ft_mtxlen(str) == 2)
 	{
 		if (!isnum(str[1]))
@@ -51,12 +51,12 @@ int	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
 			free_list(*head);
 			exit(2);
 		}
-		exit_code = ft_atoi(str[1]);
+		exit_status = ft_atoi(str[1]);
 	}
 	else if (ft_mtxlen(str) > 2)
 		return (ft_putstr_fd(" too many arguments", 2), 1);
 	printf("exit\n");
 	free_list(*head);
 	free_lists(*env, *exp);
-	exit(exit_code);
+	exit(exit_status);
 }

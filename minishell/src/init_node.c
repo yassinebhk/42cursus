@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/14 14:27:55 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:55:25 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	find_pipe(char *line, int *pos)
 	(*pos)++;
 }
 
-static t_node	*fill_node(char *line, int *pos, t_lists *lists)
+static t_node	*fill_node(char *line, int *pos, t_lists *lists, int last_status)
 {
 	int		init_pos;
 	t_node	*new_node;
@@ -70,7 +70,7 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists)
 		return (free(new_node), perror(ENO_MEM_ERROR), NULL);
 	new_node->var_list->env = ft_listdup(lists->env);
 	new_node->var_list->exp = ft_listdup(lists->exp);
-	new_node->status = FN_SUCCESS;
+	new_node->last_status = last_status;
 	new_node->fd_in = STDIN_FILENO;
 	new_node->fd_out = STDOUT_FILENO;
 	new_node->next = NULL;
@@ -94,10 +94,13 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists)
 	npipes = count_pipes(line);
 	while (++i <= npipes)
 	{
-		new_node = fill_node(line, &pos, lists);
+		new_node = fill_node(line, &pos, lists, (*head)->last_status);
 		if (!new_node)
 			return (free_list(*head), *head = NULL, 1);
-		ft_add_node_back(head, new_node);
+		if (!i)
+			*head = new_node;
+		else
+			ft_add_node_back(head, new_node);
 	}
 	return (FN_SUCCESS);
 }

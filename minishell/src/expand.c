@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/21 09:58:28 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:47:23 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ static int	dollar_or_quotes(char *arg)
 	return (0);
 }
 
-int	expand_commands(t_node **head, int last_exit_status)
+int	expand_commands(t_node **head)
 {
 	int		i;
 	int		arg_needs_expansion;
@@ -183,7 +183,7 @@ int	expand_commands(t_node **head, int last_exit_status)
 			if (!arg_needs_expansion)
 				continue ;
 			expanded = process_str(tmp, tmp->content->args[i], \
-									last_exit_status);
+									(*head)->last_status);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
 		}

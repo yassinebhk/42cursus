@@ -6,11 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:24:40 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/14 14:03:06 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:55:36 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	len_env(char **environment)
 {
@@ -51,14 +51,9 @@ void	ft_add_node_back(t_node **head, t_node *new_node)
 		perror(ENO_MEM_ERROR);
 		return ;
 	}
-	if (!*head)
-		*head = new_node;
-	else
-	{
-		last = ft_last_node(*head);
-		if (last)
-			last->next = new_node;
-	}
+	last = ft_last_node(*head);
+	if (last)
+		last->next = new_node;
 }
 
 int	ft_len_node(t_node *head)

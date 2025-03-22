@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:29:00 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/15 12:32:58 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:46:56 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ int	execute_built(t_node **head, t_lists *lists)
 			return (perror("dup2 fd_out failed"), 1);
 		close((*head)->fd_out);
 	}
-	(*head)->status = find_built(head, &lists);
+	(*head)->last_status = find_built(head, &lists);
 	if (dup2(saved_stdin, STDIN_FILENO) == -1 || dup2(saved_stdout,
 			STDOUT_FILENO) == -1)
 		return (perror("Error restoring original fd"), 1);
 	close(saved_stdin);
 	close(saved_stdout);
-	return ((*head)->status);
+	return ((*head)->last_status);
 }
 
 int	find_built(t_node **head, t_lists **lists)
