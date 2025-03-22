@@ -6,7 +6,7 @@
 #    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2025/03/14 14:25:19 by maxgarci         ###   ########.fr        #
+#    Updated: 2025/03/22 10:06:12 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ RED		= \033[31;1m
 
 NAME				:= minishell
 
-CC 					:= cc
+CC 				:= cc
 CFLAGS 				:= -g -Wall -Wextra -Werror 
 INCLUDES 			:= -I./include -I./libft #-fsanitize=address
 LIBRARIES			:= -lreadline 
@@ -47,21 +47,20 @@ SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
 OBJ_PATH			:= obj/
 OBJ 				:= $(SRC:.c=.o)
 OBJS				:= $(addprefix $(OBJ_PATH), $(OBJ))
+DEPS				:= $(OBJS:.o=.d)
 
 INCL				:= include/minishell.h
 
 all: $(LIBFT) $(NAME)
 
-#bonus: $(NAME_BONUS)
-
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
-
 $(OBJ_PATH):
 	@mkdir -p $(OBJ_PATH)
 
-$(OBJS): $(OBJ_PATH)
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c | $(OBJ_PATH)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
+
+-include $(DEPS)
 
 $(LIBFT):
 	@echo "Libft being created . . ."
@@ -85,7 +84,7 @@ fclean:clean
 	@make fclean -C $(LIBFT_PATH)
 	@echo "$(GREEN)$(INVERT)Completed$(RESET)"
 
-re:fclean all
+re: fclean all
 
 norm:
 	@echo "$(BLUE)$(DIM)LIBFT$(RESET)"
@@ -96,4 +95,4 @@ norm:
 	@norminette $(SRCS) $(INCL)
 	@echo "$(GREEN)Completed!$(RESET)"
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re norm
