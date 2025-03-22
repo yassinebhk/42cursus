@@ -6,7 +6,7 @@
 #    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2025/03/22 10:06:12 by maxgarci         ###   ########.fr        #
+#    Updated: 2025/03/22 10:08:31 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
 OBJ_PATH			:= obj/
 OBJ 				:= $(SRC:.c=.o)
 OBJS				:= $(addprefix $(OBJ_PATH), $(OBJ))
-DEPS				:= $(OBJS:.o=.d)
 
 INCL				:= include/minishell.h
 
@@ -59,8 +58,6 @@ $(OBJ_PATH):
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c | $(OBJ_PATH)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	@echo " $(BLUE)COMPILING $(YELLOW)$(ITALIC) $^ $(CYAN) to $(YELLOW)$(ITALIC)$@\n"
-
--include $(DEPS)
 
 $(LIBFT):
 	@echo "Libft being created . . ."

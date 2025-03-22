@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/14 17:02:13 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/22 10:32:12 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	get_absolute_path(char *path_list, char *command, t_node *head)
 	pos = -1;
 	split = ft_split(path_list, ':');
 	if (!access((head)->content->command, X_OK))
-		return (1);
+		return (FN_SUCCESS);
 	while (split[++pos])
 	{
 		path = split[pos];
@@ -271,7 +271,7 @@ int	execute_one_command(t_node **head, t_lists *lists)
 	path_list = get_path_list("PATH\0", lists->env);
 	if (!path_list)
 		return (VARIABLE_NOT_FOUND);
-	if (get_absolute_path(path_list, (*head)->content->command, *head))
+	if (get_absolute_path(path_list, (*head)->content->command, *head) == 1)
 		return (COMMAND_NOT_FOUND);
 	if (redirect(*head))
 		return (1);
