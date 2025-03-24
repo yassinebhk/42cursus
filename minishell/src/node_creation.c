@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/14 14:28:04 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:39:30 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	is_redir(char *str, int pos)
 static inline int	valid_char_filename(char c)
 {
 	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-' \
-			|| c == '_' || c == '.');
+			|| c == '_' || c == '.' || ((c >= '0') && (c <= '9')));
 }
 
 static void	skip_argument(char *str, int *read_pos)
@@ -71,6 +71,27 @@ static void	count_args_redir(char *str, int *n_args, int *n_redir)
 	}
 }
 
+static int	handle_redir(char *str, int *pos, t_redir *redir)
+{
+	if (!redir)
+		return (perror(ENO_MEM_ERROR), FN_FAILURE);
+	if (str[*pos] == '>' && str[*pos + 1] == '>')
+		redir->type = r_append;
+	else if (str[*pos] == '>')
+		redir->type = r_output;
+	else if (str[*pos] == '<' && str[*pos + 1] == '<')
+		redir->type = r_heredoc;
+	else if (str[*pos] == '<')
+		redir->type = r_input;
+	else if (!valid_char_filename(str[*pos + 2]))
+		return (perror(PARSING_ERROR), FN_FAILURE);
+	while (is_redir(str, *pos))
+		(*pos)++;
+	while (ft_isspace(str[*pos]))
+		(*pos)++;
+	return (FN_SUCCESS);
+}
+
 static t_redir	*create_redir(char *str)
 {
 	int		i;
@@ -79,23 +100,9 @@ static t_redir	*create_redir(char *str)
 	t_redir	*redir;
 
 	redir = malloc(sizeof(t_redir));
-	if (!redir)
-		return (perror(ENO_MEM_ERROR), NULL);
 	i = 0;
-	if (str[i] == '>' && str[i + 1] == '>')
-		redir->type = r_append;
-	else if (str[i] == '>')
-		redir->type = r_output;
-	else if (str[i] == '<' && str[i + 1] == '<')
-		redir->type = r_heredoc;
-	else if (str[i] == '<')
-		redir->type = r_input;
-	else if (!valid_char_filename(str[i + 2]))
-		return (perror(PARSING_ERROR), NULL);
-	while (is_redir(str, i))
-		i++;
-	while (ft_isspace(str[i]))
-		i++;
+	if (handle_redir(str, &i, redir))
+		return (NULL);
 	begin = i;
 	while (str[i] > ' ' && !is_redir(str + i, i))
 	{
