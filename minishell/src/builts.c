@@ -6,11 +6,28 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:29:00 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/22 14:46:56 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/08 09:02:08 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+static int dup_file_descriptors(t_node **head)
+{
+  if ((*head)->fd_in != STDIN_FILENO && (*head)->fd_in != -1)
+	{
+		if (dup2((*head)->fd_in, STDIN_FILENO) == -1)
+			return (perror("dup2 fd_in failed"), 1);
+		close((*head)->fd_in);
+	}
+	if ((*head)->fd_out != STDOUT_FILENO && (*head)->fd_out != -1)
+	{
+		if (dup2((*head)->fd_out, STDOUT_FILENO) == -1)
+			return (perror("dup2 fd_out failed"), 1);
+		close((*head)->fd_out);
+	}
+  return (0);
+}
 
 int	execute_built(t_node **head, t_lists *lists)
 {
@@ -23,18 +40,7 @@ int	execute_built(t_node **head, t_lists *lists)
 		return (perror("Error saving original fd"), 1);
 	if (set_fd(head))
 		return (FN_FAILURE);
-	if ((*head)->fd_in != STDIN_FILENO && (*head)->fd_in != -1)
-	{
-		if (dup2((*head)->fd_in, STDIN_FILENO) == -1)
-			return (perror("dup2 fd_in failed"), 1);
-		close((*head)->fd_in);
-	}
-	if ((*head)->fd_out != STDOUT_FILENO && (*head)->fd_out != -1)
-	{
-		if (dup2((*head)->fd_out, STDOUT_FILENO) == -1)
-			return (perror("dup2 fd_out failed"), 1);
-		close((*head)->fd_out);
-	}
+	dup_file_descriptors(head);
 	(*head)->last_status = find_built(head, &lists);
 	if (dup2(saved_stdin, STDIN_FILENO) == -1 || dup2(saved_stdout,
 			STDOUT_FILENO) == -1)

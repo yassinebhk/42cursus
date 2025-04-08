@@ -12,58 +12,6 @@
 
 #include "../include/minishell.h"
 
-void	print_redir(t_redir *redir)
-{
-	printf("    Redirection type: %d\n", redir->type);
-	printf("    Filename: %s. (%ld)\n", redir->filename,
-		ft_strlen(redir->filename));
-}
-
-void	print_command(t_command *cmd)
-{
-	if (!cmd)
-	{
-		printf("    (null)\n");
-		return ;
-	}
-	printf("  Command: %s\n", cmd->command);
-	printf("  Number of arguments: %d\n", cmd->num_args);
-	if (cmd->num_args > 0 && cmd->args)
-	{
-		printf("  Arguments:\n");
-		for (int i = 0; i < cmd->num_args; i++)
-			printf("    arg[%d]: %s. (%ld)\n", i, cmd->args[i],
-				ft_strlen(cmd->args[i]));
-	}
-	else
-	{
-		printf("  No arguments.\n");
-	}
-	printf("  Number of redirs: %d\n", cmd->num_redir);
-	if (cmd->num_redir && cmd->redir)
-	{
-		printf("  Redirections:\n");
-		for (int i = 0; i < cmd->num_redir; i++)
-			print_redir(cmd->redir[i]);
-	}
-	else
-		printf("  No redirections.\n");
-}
-
-void	print_list(t_node *node)
-{
-	while (node)
-	{
-		printf("       Command content     \n");
-		print_command(node->content);
-		printf("  fd:\n");
-		printf("    fd_in: %d\n", node->fd_in);
-		printf("    fd_out: %d\n", node->fd_out);
-		node = node->next;
-	}
-	printf("\n-----------------------------------------------\n");
-}
-
 int	process_command(t_node *head, char *line, t_lists *lists)
 {
 	int	status;
