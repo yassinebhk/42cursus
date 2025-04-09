@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/14 13:42:03 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 11:29:06 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_content(t_command *command)
 	if (command->num_args > 0 && command->args)
 	{
 		pos = -1;
-		while (++pos < command->num_args)
+		while (++pos <= command->num_args)
 		{
 			free(command->args[pos]);
 			command->args[pos] = NULL;
@@ -80,7 +80,7 @@ void	free_content(t_command *command)
 	}
 }
 
-void	free_list(t_node *head)
+void	free_node(t_node *head)
 {
 	t_node	*tmp;
 

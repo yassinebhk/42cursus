@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/22 14:55:25 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:46:46 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists)
 	{
 		new_node = fill_node(line, &pos, lists, (*head)->last_status);
 		if (!new_node)
-			return (free_list(*head), *head = NULL, 1);
+			return (free_node(*head), *head = NULL, 1);
 		if (!i)
 			*head = new_node;
 		else

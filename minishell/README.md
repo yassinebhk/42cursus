@@ -72,4 +72,5 @@ NOTAS:
    -> pwd con argumento no valido
 
 COSAS POR HACER
-Flag de echo es mejorable en código usando ft_strcmp para ver si el primer argumento es el flag y así eliminar otro parseo más
+is_redir ha dado invalid read en valgrind cuando ejecutas heredoc
+echo $? ha dado invalid read

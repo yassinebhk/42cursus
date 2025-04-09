@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/22 14:46:29 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:47:58 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +328,7 @@ void					ft_free(char **str);
  */
 void					free_content(t_command *command);
 
-void					free_list(t_node *head);
+void					free_node(t_node *head);
 
 void					free_lists(t_env *env, t_env *exp);
 

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/22 14:47:23 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:46:15 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ int	expand_commands(t_node **head)
 									(*head)->last_status);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
+      free(expanded);
 		}
 		tmp = tmp->next;
 	}

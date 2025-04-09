@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:05:56 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/03/22 11:00:11 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:45:41 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		close(fd[0]);
 	if (!curr->content->command)
 	{
-		free_list(head);
+		free_node(head);
 		free_lists(lists->env, lists->exp);
 	}
 	if (curr->fd_out != STDOUT_FILENO)
@@ -101,7 +101,7 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		if (dup2(curr->fd_out, STDOUT_FILENO) == -1)
 		{
 			perror("dup2 fd_out to file failed ");
-			free_list(head);
+			free_node(head);
 			free_lists(lists->env, lists->exp);
 		}
 	}
@@ -110,7 +110,7 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 fd_out failed ");
-			free_list(head);
+			free_node(head);
 			free_lists(lists->env, lists->exp);
 		}
 		close(fd[1]);
@@ -120,7 +120,7 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		if (dup2(curr->fd_in, STDIN_FILENO) == -1)
 		{
 			perror("dup2 fd_in from file failed ");
-			free_list(head);
+			free_node(head);
 			free_lists(lists->env, lists->exp);
 		}
 	}
@@ -129,7 +129,7 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
 		{
 			perror("dup2 fd_in failed ");
-			free_list(head);
+			free_node(head);
 			free_lists(lists->env, lists->exp);
 		}
 		close(fd[0]);
@@ -137,7 +137,7 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 	if (is_built_in(curr->content->command))
 	{
 		find_built(&head, &lists);
-		free_list(head);
+		free_node(head);
 		free_lists(lists->env, lists->exp);
 		exit(EXIT_SUCCESS);
 	}
@@ -147,13 +147,13 @@ int	execute_child(t_lists *lists, t_node *head, t_node *curr, int *fd,
 		if (!path_list || get_absolute_path(path_list, curr->content->command,
 				curr))
 		{
-			free_list(head);
+			free_node(head);
 			free_lists(lists->env, lists->exp);
 			exit(EXIT_FAILURE);
 		}
 		execve(curr->content->command, curr->content->args, 0);
 		perror("execv: ");
-		free_list(head);
+		free_node(head);
 		free_lists(lists->env, lists->exp);
 		exit(EXIT_FAILURE);
 	}

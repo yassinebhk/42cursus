@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/08 09:54:49 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:45:53 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ static int	exec_comm(t_node *head, int input, int output)
 		else
 			perror(NO_EXEC_PERM_ERROR);
 		perror("execve failed");
-		free_list(head);
+		free_node(head);
 		exit (EXIT_FAILURE);
 	}
 	else

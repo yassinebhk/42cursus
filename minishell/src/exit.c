@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/02/09 16:11:28 by ybouhaik		  #+#	#+#			 */
-/*   Updated: 2025/03/22 14:47:05 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:46:08 by maxgarci         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
 		{
 			printf("%s%s%s", "exit: ", str[1], " numeric argument required\n");
 			free_lists(*env, *exp);
-			free_list(*head);
+			free_node(*head);
 			exit(2);
 		}
 		exit_status = ft_atoi(str[1]);
@@ -56,7 +56,7 @@ int	ft_exit(char **str, t_env **env, t_env **exp, t_node **head)
 	else if (ft_mtxlen(str) > 2)
 		return (ft_putstr_fd(" too many arguments", 2), 1);
 	printf("exit\n");
-	free_list(*head);
+	free_node(*head);
 	free_lists(*env, *exp);
 	exit(exit_status);
 }
