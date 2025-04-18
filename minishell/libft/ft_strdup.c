@@ -6,38 +6,35 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 16:39:54 by ybouhaik          #+#    #+#             */
-/*   Updated: 2024/08/29 01:59:00 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:17:46 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_strcpy(char *dest, char *src)
-{
-	char	letter;
-	int		cont;
-
-	cont = 0;
-	if (!src)
-		return (NULL);
-	letter = *src;
-	while (letter != '\0')
-	{
-		*(dest + cont) = letter;
-		letter = *(src + cont + 1);
-		cont++;
-	}
-	*(dest + cont) = letter;
-	return (dest);
-}
-
 char	*ft_strdup(const char *s1)
 {
-	char	*str;
+	char	*ptr;
+	int		i;
+	int		tam;
 
-	str = (char *)malloc((ft_strlen((char *)s1) + 1) * sizeof(char));
-	if (str == NULL)
-		return (0);
-	str = ft_strcpy(str, (char *)s1);
-	return (str);
+	tam = ft_strlen(s1);
+	if (tam == -1)
+		write(2, "hola", 4);
+	if (tam == 0)
+	{
+		ptr = malloc(sizeof(char));
+		if (ptr == NULL)
+			return (NULL);
+		*ptr = '\0';
+		return (ptr);
+	}
+	ptr = (char *)malloc((tam + 1) * sizeof(char));
+	if (ptr == NULL)
+		return (NULL);
+	i = -1;
+	while (++i < tam)
+		ptr[i] = s1[i];
+	ptr[tam] = '\0';
+	return (ptr);
 }

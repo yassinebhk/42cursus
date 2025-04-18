@@ -6,30 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/09 12:46:15 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:41:37 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*ft_strndup(const char *s, size_t n)
-{
-	size_t	len;
-	char	*new_str;
-	size_t	i;
-
-	len = 0;
-	while (s[len] && len < n)
-		len++;
-	new_str = (char *)malloc(len + 1);
-	if (!new_str)
-		return (NULL);
-	i = -1;
-	while (++i < len)
-		new_str[i] = s[i];
-	new_str[len] = '\0';
-	return (new_str);
-}
 
 char	*strjoin_char(char *s1, char c, char terminator)
 {
@@ -49,18 +30,7 @@ char	*strjoin_char(char *s1, char c, char terminator)
 	return (free(s1), new_str);
 }
 
-static char	*find_var_value(t_env *env_list, char *var_name)
-{
-	while (env_list)
-	{
-		if (strcmp(env_list->key, var_name) == 0)
-			return (env_list->var);
-		env_list = env_list->next;
-	}
-	return (NULL);
-}
-
-static char	*expand_variable(t_node *tmp, char *str, int arr[3])
+char	*expand_variable(t_node *tmp, char *str, int arr[3])
 {
 	char	*var_name;
 	char	*var_value;
@@ -87,13 +57,7 @@ static char	*expand_variable(t_node *tmp, char *str, int arr[3])
 	return (ft_strdup(""));
 }
 
-static int	var_char_is_valid(char c)
-{
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') \
-			|| c == '_' || c == '?');
-}
-
-static int	find_var_delimeter(char *str, int pos)
+int	find_var_delimeter(char *str, int pos)
 {
 	int	next;
 	int	valid_char;
@@ -111,14 +75,11 @@ static int	find_var_delimeter(char *str, int pos)
 	return (next);
 }
 
-static char	*process_str(t_node *tmp, char *str, int last_exit_status)
+static char	*process_str(t_node *tmp, char *str, int last_status)
 {
 	int		pos;
-	int		var_end_pos;
-	int		i;
 	int		quotes;
 	char	*new_arg;
-	char	*var_value;
 
 	pos = -1;
 	quotes = 0;
@@ -134,36 +95,13 @@ static char	*process_str(t_node *tmp, char *str, int last_exit_status)
 		else if (quotes == 2 && str[pos] == DOUBLE_QUOTE)
 			quotes = 0;
 		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR \
-				&& str[pos - 1] != BACKSLASH && (!ft_isspace(str[pos + 1]) \
+				&& (!ft_isspace(str[pos + 1]) \
 				&& str[pos + 1] != DOUBLE_QUOTE))
-		{
-			var_end_pos = find_var_delimeter(str, pos);
-			var_value = expand_variable(tmp, str, (int[]){pos, var_end_pos, last_exit_status});
-			i = -1;
-			while (var_value[++i] != '\0')
-				new_arg = strjoin_char(new_arg, var_value[i], '\0');
-			free(var_value);
-			pos = var_end_pos - 1;
-		}
+			new_arg = load_variable(tmp, (char *[]){str, new_arg}, last_status, &pos);
 		else
 			new_arg = strjoin_char(new_arg, str[pos], '\0');
 	}
 	return (new_arg);
-}
-
-static int	dollar_or_quotes(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] == DOLLAR || arg[i] == SINGLE_QUOTE || 
-			arg[i] == DOUBLE_QUOTE)
-			return (1);
-		++i;
-	}
-	return (0);
 }
 
 int	expand_commands(t_node **head)
@@ -184,9 +122,11 @@ int	expand_commands(t_node **head)
 				continue ;
 			expanded = process_str(tmp, tmp->content->args[i], \
 									(*head)->last_status);
+			if (!expanded)
+				return (FN_FAILURE);
 			free(tmp->content->args[i]);
 			tmp->content->args[i] = ft_strdup(expanded);
-      free(expanded);
+			free(expanded);
 		}
 		tmp = tmp->next;
 	}

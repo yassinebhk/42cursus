@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:52:20 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/07 16:05:32 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/16 10:24:22 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	new_len_str(char *str)
 	return (len);
 }
 
-static char *delete (char *str)
+static char	*delete(char *str)
 {
 	int		i;
 	size_t	pos;

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/09 11:29:06 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:11:43 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,19 @@ void	free_lists(t_env *env, t_env *exp)
 	}
 }
 
-void	free_content(t_command *command)
+static void	free_command(t_command *command)
 {
-	int	pos;
-
 	if (!command)
 		return ;
 	free(command->command);
 	command->command = NULL;
+}
+
+void	free_content(t_command *command)
+{
+	int	pos;
+
+	free_command(command);
 	if (command->num_args > 0 && command->args)
 	{
 		pos = -1;

@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/09 12:47:58 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:27:31 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -518,6 +518,51 @@ void					print_error(char *command, int erno);
 /***************************************
 		executor
 ***************************************/
+
+/***************************************
+ * expand_utils.c
+ * ************************************/
+
+/**
+ * @brief Creates a copy of a string with n size
+ * @param s String to copy
+ * @param n Size to copy
+ */
+char					*ft_strndup(const char *s, size_t n);
+
+/**
+ * @brief Checks if the character selected for the variable is valid
+ * @param c character of the variable
+ */
+
+int						var_char_is_valid(char c);
+
+/**
+ * @brief Returns 1 if it finds a dollar or a quote character inside the command
+ * @param arg The command line inserted
+ */
+
+int						dollar_or_quotes(char *arg);
+
+/**
+ * @brief Returns variable value if it exists
+ * @param env_list List of existing variables
+ * @param var_name Variable name
+ */
+char					*find_var_value(t_env *env_list, char *var_name);
+
+char					*load_variable(t_node *tmp, char **strings, \
+								int last_exit_status, int *pos);
+
+/*****************************************
+ * expand.c
+ * *************************************/
+
+char					*expand_variable(t_node *tmp, char *str, int arr[3]);
+
+int						find_var_delimeter(char *str, int pos);
+
+char					*strjoin_char(char *s1, char c, char terminator);
 
 /**
  * @brief Assings args of the commands by expanding variables

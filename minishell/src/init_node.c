@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/09 10:46:46 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:12:53 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	find_pipe(char *line, int *pos)
 	(*pos)++;
 }
 
-static t_node	*fill_node(char *line, int *pos, t_lists *lists, int last_status)
+static t_node	*fill_node(char *line, int *pos, t_lists *lists, \
+						int last_status)
 {
 	int		init_pos;
 	t_node	*new_node;
