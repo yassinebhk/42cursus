@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 11:14:36 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 12:56:21 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	skip_argument(char *str, int *read_pos)
 	squote_opened = 0;
 	dquote_opened = 0;
 	in_quotes = 0;
-	while ((str[*read_pos] && !ft_isspace(str[*read_pos]) && \
-			!is_redir(str, *read_pos)) || squote_opened || dquote_opened)
+	while ((str[*read_pos] && !ft_isspace(str[*read_pos]) && !is_redir(str,
+				*read_pos)) || squote_opened || dquote_opened)
 	{
 		if (!in_quotes && (squote_opened || dquote_opened))
 			in_quotes = 1;
@@ -65,8 +65,8 @@ static int	parse_arg(char *str, t_command **command, int *i, int *args_pos)
 	cp_i = 0;
 	new_arg_index = *i;
 	skip_argument(str, i);
-	(*command)->args[*args_pos] = (char *)malloc(sizeof(char) * \
-										((*i) - new_arg_index + 1));
+	(*command)->args[*args_pos] = (char *)malloc(sizeof(char) * ((*i)
+				- new_arg_index + 1));
 	if (!(*command)->args[*args_pos])
 		return (perror(ENO_MEM_ERROR), ENO_MEM);
 	while (new_arg_index < *i)
@@ -74,8 +74,8 @@ static int	parse_arg(char *str, t_command **command, int *i, int *args_pos)
 	(*command)->args[(*args_pos)++][cp_i] = '\0';
 	if ((*args_pos) == 1)
 	{
-		(*command)->command = malloc(sizeof(char) * \
-						(strlen((*command)->args[0]) + 1));
+		(*command)->command = malloc(sizeof(char) * (strlen((*command)->args[0])
+					+ 1));
 		if (!(*command)->command)
 			return (perror(ENO_MEM_ERROR), FN_FAILURE);
 		strcpy((*command)->command, (*command)->args[0]);
@@ -119,8 +119,8 @@ int	new_command(char *str, t_command **command)
 	count_args_redir(str, &n_args, &n_redir);
 	(*command)->num_args = n_args;
 	(*command)->num_redir = n_redir;
-	(*command)->args = (char **)malloc(sizeof(char *) * \
-									((*command)->num_args + 1));
+	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args
+				+ 1));
 	if (!(*command)->args)
 		return (perror(ENO_MEM_ERROR), FN_FAILURE);
 	(*command)->args[n_args] = NULL;

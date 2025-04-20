@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*																			*/
-/*														:::	  ::::::::   */
+/*														:::		::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2024/11/02 22:08:48 by maxgarci		  #+#	#+#			 */
+/*													+:+ +:+			+:+	 */
+/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+		+#+		*/
+/*												+#+#+#+#+#+   +#+			*/
+/*   Created: 2024/11/02 22:08:48 by maxgarci			#+#	#+#			 */
 /*   Updated: 2025/02/09 11:28:16 by maxgarci         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
@@ -32,8 +32,8 @@ void	read_heredoc(const char *delimiter)
 		line = get_next_line(STDIN_FILENO);
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, delimiter, delim_len) == 0 && \
-				line[delim_len] == '\n')
+		if (ft_strncmp(line, delimiter, delim_len) == 0
+			&& line[delim_len] == '\n')
 			break ;
 		write(fd, line, strlen(line));
 	}

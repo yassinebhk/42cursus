@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:27:15 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/18 18:32:28 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:06:10 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	*ft_strndup(const char *s, size_t n)
 
 int	var_char_is_valid(char c)
 {
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') \
-			|| c == '_' || c == '?');
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+		|| c == '?');
 }
 
 int	dollar_or_quotes(char *arg)
@@ -44,8 +44,8 @@ int	dollar_or_quotes(char *arg)
 	i = 0;
 	while (arg[i])
 	{
-		if (arg[i] == DOLLAR || arg[i] == SINGLE_QUOTE || \
-			arg[i] == DOUBLE_QUOTE)
+		if (arg[i] == DOLLAR || arg[i] == SINGLE_QUOTE
+			|| arg[i] == DOUBLE_QUOTE)
 			return (1);
 		++i;
 	}
@@ -70,8 +70,8 @@ char	*load_variable(t_node *tmp, char **strings, int last_status, int *pos)
 	char	*var_value;
 
 	var_end_pos = find_var_delimeter(strings[0], *pos);
-	var_value = expand_variable(tmp, strings[0], \
-					(int []){*pos, var_end_pos, last_status});
+	var_value = expand_variable(tmp, strings[0], (int []){*pos, var_end_pos,
+			last_status});
 	if (!var_value)
 		return (strings[1]);
 	i = -1;

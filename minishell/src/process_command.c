@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/20 09:54:36 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 12:56:30 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	process_command(char *line, t_lists *lists, int last_status)
 {
 	t_node	*head;
-	int	status;
+	int		status;
 
 	head = NULL;
 	status = -1;

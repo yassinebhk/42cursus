@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_one_command.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/09 10:45:53 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:03:50 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ static int	exec_comm(t_node *head, int input, int output)
 		if (input == r_heredoc)
 		{
 			read_heredoc(head->content->redir[inpos]->filename);
-			head->fd_in = open(HEREDOC_FILENAME, O_RDONLY); // cambiar por un archivo temporal 
+			head->fd_in = open(HEREDOC_FILENAME, O_RDONLY);
+				// cambiar por un archivo temporal
 			if (head->fd_in < 0)
 			{
 				perror("open error");
@@ -155,7 +156,7 @@ static int	exec_comm(t_node *head, int input, int output)
 			perror(NO_EXEC_PERM_ERROR);
 		perror("execve failed");
 		free_node(head);
-		exit (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	else
 		wait(&status);
