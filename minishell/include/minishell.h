@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 11:06:05 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 14:23:57 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -577,19 +577,55 @@ char					*strjoin_char(char *s1, char c, char terminator);
  */
 int						expand_commands(t_node **head);
 
+/*****************************************
+ * execute_one_command.c
+ * *************************************/
+
 /**
- * @brief Executes one command
+ * @brief Handles one command execution
  * @param head The head of the commands list
  * @param lists The original lists
  * @returns 1 if occurs an error. Otherwise, 0.
  */
 int						execute_one_command(t_node **head, t_lists *lists);
 
+/*****************************************
+ * redirect.c
+ * *************************************/
+
+/**
+ * @brief Redirects command 
+ * @param head The head of the commands list
+ * @returns 1 if occurs an error. Otherwise, 0.
+ */
+int	          redirect(t_node *head);
+
+/*****************************************
+ * exec_comm.c
+ * *************************************/
+
+/**
+ * @brief Executes one command
+ * @param head The head of the commands list
+ * @param input Type of input redirection
+ * @param output Type of output redirection
+ * @returns Status of the command execution
+ */
+int	          exec_comm(t_node *head, int input, int output);
+
+/*****************************************
+ * heredoc.c
+ * *************************************/
+
 /**
  * @brief Creates the heredoc temporal file
  * @param delimiter The delimiter
  */
 void					read_heredoc(const char *delimiter);
+
+/*****************************************
+ * execute_comm_utils.c
+ * *************************************/
 
 /**
  * @brief Checks if the command is a built_in
@@ -623,7 +659,7 @@ void	execute_child(t_lists *lists, t_node **nodes, int *fd, \
 		int prev_fd);
 
 /***************************************
- *		execute_commands
+ *		execute_commands.c
  **************************************/
 /**
  * @brief Executes all the commands
@@ -632,13 +668,6 @@ void	execute_child(t_lists *lists, t_node **nodes, int *fd, \
  * @returns 1 if occurs an error. Otherwise, 0.
  */
 int						execute_commands(t_node **head, t_lists *lists);
-
-/**
- * @brief Remove the backslash from the strings
- * @param head The head of the commands list
- * @returns 1 if occurs an error. Otherwise, 0.
- */
-int						delete_backslash(t_node **head);
 
 /***************************************
  *		 set_fd
