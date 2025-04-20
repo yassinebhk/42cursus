@@ -6,7 +6,7 @@
 #    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2025/04/16 11:16:31 by maxgarci         ###   ########.fr        #
+#    Updated: 2025/04/20 11:00:35 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,14 +33,14 @@ LIBFT_PATH			:= libft/
 LIBFT				:= $(LIBFT_PATH)libft.a
 
 SRC_PATH			:= src/
-SRC 				:= main.c print_error.c env_vars.c builts.c echo.c \
-						cd.c free.c list_utils.c list_utils_two.c pwd.c export.c \
+SRC 				:= main.c env_vars.c builts.c echo.c cd.c free.c\
+						list_utils.c list_utils_two.c pwd.c export.c \
 						unset.c print_lists.c export_two.c exit.c cd_update.c \
 						count_pipes.c parsing.c export_utils.c \
 						translate_str.c invalid_character.c init_node.c init_node_utils.c\
 						process_command.c node_creation.c execute_one_command.c \
-						execute_commands.c delete_backslash.c signals.c expand.c \
-						expand_utils.c heredoc.c
+						execute_commands.c execute_child.c delete_backslash.c set_fd.c \
+						signals.c expand.c expand_utils.c heredoc.c parse_redir.c
 
 SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
 

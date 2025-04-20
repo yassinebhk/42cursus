@@ -6,21 +6,23 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 15:53:34 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/18 18:40:11 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 09:54:36 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	process_command(t_node *head, char *line, t_lists *lists)
+int	process_command(char *line, t_lists *lists, int last_status)
 {
+	t_node	*head;
 	int	status;
 
+	head = NULL;
 	status = -1;
 	if (!line || !even_quotes(line) || invalid_character(line))
 		return (FN_FAILURE);
 	translate_str(line);
-	if (fill_nodes(line, &head, lists))
+	if (fill_nodes(line, &head, lists, last_status))
 		return (free_node(head), free(line), FN_FAILURE);
 	if (head->content->command)
 		g_signal = 1;

@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/16 18:11:43 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 10:10:27 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	free_content(t_command *command)
 	if (command->num_args > 0 && command->args)
 	{
 		pos = -1;
-		while (++pos <= command->num_args)
+		while (++pos <= command->num_args && command->args[pos])
 		{
 			free(command->args[pos]);
 			command->args[pos] = NULL;
@@ -75,7 +75,7 @@ void	free_content(t_command *command)
 	if (command->num_redir > 0 && command->redir)
 	{
 		pos = -1;
-		while (++pos < command->num_redir)
+		while (++pos < command->num_redir && command->redir[pos])
 		{
 			free(command->redir[pos]->filename);
 			free(command->redir[pos]);
@@ -92,12 +92,18 @@ void	free_node(t_node *head)
 	while (head)
 	{
 		tmp = head->next;
-		free_lists(head->var_list->env, head->var_list->exp);
-		free(head->var_list);
-		head->var_list = NULL;
-		free_content(head->content);
-		free(head->content);
-		head->content = NULL;
+		if (head->var_list)
+		{
+			free_lists(head->var_list->env, head->var_list->exp);
+			free(head->var_list);
+			head->var_list = NULL;
+		}
+		if (head->content)
+		{
+			free_content(head->content);
+			free(head->content);
+			head->content = NULL;
+		}
 		free(head);
 		head = tmp;
 	}

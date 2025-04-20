@@ -6,25 +6,11 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/24 11:39:30 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 11:14:36 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-static int	is_redir(char *str, int pos)
-{
-	if (pos > 0 && str[pos - 1] == BACKSLASH)
-		return (0);
-	return ((str[pos] == '>' && *(str + 1) == '>') || str[pos] == '>'
-		|| (str[pos] == '<' && *(str + 1) == '<') || str[pos] == '<');
-}
-
-static inline int	valid_char_filename(char c)
-{
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-' \
-			|| c == '_' || c == '.' || ((c >= '0') && (c <= '9')));
-}
 
 static void	skip_argument(char *str, int *read_pos)
 {
@@ -71,62 +57,37 @@ static void	count_args_redir(char *str, int *n_args, int *n_redir)
 	}
 }
 
-static int	handle_redir(char *str, int *pos, t_redir *redir)
+static int	parse_arg(char *str, t_command **command, int *i, int *args_pos)
 {
-	if (!redir)
-		return (perror(ENO_MEM_ERROR), FN_FAILURE);
-	if (str[*pos] == '>' && str[*pos + 1] == '>')
-		redir->type = r_append;
-	else if (str[*pos] == '>')
-		redir->type = r_output;
-	else if (str[*pos] == '<' && str[*pos + 1] == '<')
-		redir->type = r_heredoc;
-	else if (str[*pos] == '<')
-		redir->type = r_input;
-	else if (!valid_char_filename(str[*pos + 2]))
-		return (perror(PARSING_ERROR), FN_FAILURE);
-	while (is_redir(str, *pos))
-		(*pos)++;
-	while (ft_isspace(str[*pos]))
-		(*pos)++;
-	return (FN_SUCCESS);
-}
+	int	cp_i;
+	int	new_arg_index;
 
-static t_redir	*create_redir(char *str)
-{
-	int		i;
-	int		begin;
-	int		cp_i;
-	t_redir	*redir;
-
-	redir = malloc(sizeof(t_redir));
-	i = 0;
-	if (handle_redir(str, &i, redir))
-		return (NULL);
-	begin = i;
-	while (str[i] > ' ' && !is_redir(str + i, i))
-	{
-		if (!valid_char_filename(str[i]))
-			return (perror(BAD_ASSIGNMENT_ERROR), redir);
-		i++;
-	}
-	redir->filename = (char *)malloc(sizeof(char) * (i - begin + 1));
-	if (!redir->filename)
-		return (perror(ENO_MEM_ERROR), redir);
 	cp_i = 0;
-	while (begin < i)
-		redir->filename[cp_i++] = str[begin++];
-	redir->filename[cp_i] = '\0';
-	return (redir);
+	new_arg_index = *i;
+	skip_argument(str, i);
+	(*command)->args[*args_pos] = (char *)malloc(sizeof(char) * \
+										((*i) - new_arg_index + 1));
+	if (!(*command)->args[*args_pos])
+		return (perror(ENO_MEM_ERROR), ENO_MEM);
+	while (new_arg_index < *i)
+		(*command)->args[*args_pos][cp_i++] = str[new_arg_index++];
+	(*command)->args[(*args_pos)++][cp_i] = '\0';
+	if ((*args_pos) == 1)
+	{
+		(*command)->command = malloc(sizeof(char) * \
+						(strlen((*command)->args[0]) + 1));
+		if (!(*command)->command)
+			return (perror(ENO_MEM_ERROR), FN_FAILURE);
+		strcpy((*command)->command, (*command)->args[0]);
+	}
+	return (FN_SUCCESS);
 }
 
 static int	create_command(char *str, t_command **command)
 {
 	int	redir_pos;
 	int	args_pos;
-	int	cp_i;
 	int	i;
-	int	new_arg_index;
 
 	redir_pos = 0;
 	args_pos = 0;
@@ -135,36 +96,13 @@ static int	create_command(char *str, t_command **command)
 	{
 		if (is_redir(str, i))
 		{
-			(*command)->redir[redir_pos] = create_redir(str + i);
-			if (!((*command)->redir[redir_pos++]))
+			if (parse_redir(str, command, &i, &redir_pos))
 				return (PARSING);
-			while (is_redir(str, i))
-				++i;
-			while (ft_isspace(str[i]))
-				++i;
-			while (str[i] > ' ' && !is_redir(str, i))
-				++i;
 		}
 		else
 		{
-			cp_i = 0;
-			new_arg_index = i;
-			skip_argument(str, &i);
-			(*command)->args[args_pos] = (char *)malloc(sizeof(char) * \
-												(i - new_arg_index + 1));
-			if (!(*command)->args[args_pos])
-				return (perror(ENO_MEM_ERROR), ENO_MEM);
-			while (new_arg_index < i)
-				(*command)->args[args_pos][cp_i++] = str[new_arg_index++];
-			(*command)->args[args_pos++][cp_i] = '\0';
-			if (args_pos - 1 == 0)
-			{
-				(*command)->command = malloc(sizeof(char) * \
-								(strlen((*command)->args[0]) + 1));
-				if (!(*command)->command)
-					perror(ENO_MEM_ERROR);
-				strcpy((*command)->command, (*command)->args[0]);
-			}
+			if (parse_arg(str, command, &i, &args_pos))
+				return (ENO_MEM);
 		}
 		clear_spaces(str, &i);
 	}

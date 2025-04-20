@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/16 18:12:53 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 10:13:13 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static t_command	*get_content(char *line, int init_pos, int end_pos)
 	if (!size)
 		return (free(command), NULL);
 	if (new_command(str, &command))
-		return (free(str), free(command), NULL);
+		return (free(str), free_content(command), free(command), NULL);
 	return (free(str), command);
 }
 
@@ -83,7 +83,7 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists, \
 	return (new_node);
 }
 
-int	fill_nodes(char *line, t_node **head, t_lists *lists)
+int	fill_nodes(char *line, t_node **head, t_lists *lists, int last_status)
 {
 	int		i;
 	int		pos;
@@ -95,9 +95,9 @@ int	fill_nodes(char *line, t_node **head, t_lists *lists)
 	npipes = count_pipes(line);
 	while (++i <= npipes)
 	{
-		new_node = fill_node(line, &pos, lists, (*head)->last_status);
+		new_node = fill_node(line, &pos, lists, last_status);
 		if (!new_node)
-			return (free_node(*head), *head = NULL, 1);
+			return (FN_FAILURE);
 		if (!i)
 			*head = new_node;
 		else

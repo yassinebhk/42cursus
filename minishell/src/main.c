@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:16:31 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/17 17:53:48 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 09:52:31 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,22 @@ int	main(int argc __attribute__((unused)), char **argv __attribute__((unused)),
 {
 	char	*line;
 	t_lists	lists;
-	t_node	head;
+	int		last_status;
 
-	line = NULL;
+	last_status = 0;
 	ft_memset(&lists, 0, sizeof(t_lists));
 	lists.env = get_var(environment, 0);
 	lists.exp = get_var(environment, 1);
-	head.last_status = 0;
 	while (1)
 	{
 		init_signals();
 		line = readline("$ ");
 		if (!line)
-			signal_d(&head, &lists);
+			signal_d(&lists);
 		add_history(line);
 		if (line && !is_only_spaces_or_tabs(line))
 		{
-			head.last_status = process_command(&head, line, &lists);
+			last_status = process_command(line, &lists, last_status);
 			g_signal = 0;
 		}
 	}

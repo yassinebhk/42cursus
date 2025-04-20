@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/02/28 10:00:36 by ybouhaik		  #+#	#+#			 */
-/*   Updated: 2025/03/14 16:51:57 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 09:51:48 by maxgarci         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ void	sigint_handler(int signal)
 	}
 }
 
-void	signal_d(t_node *node, t_lists *lists)
+void	signal_d(t_lists *lists)
 {
-	(void)node;
 	free_lists(lists->env, lists->exp);
 	printf("exit\n");
 	exit(0);

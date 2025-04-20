@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/18 18:27:31 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 11:06:05 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,8 @@ extern int				g_signal;
 
 void					print_command(t_command *cmd);
 
-int						process_command(t_node *head, char *line,
-							t_lists *lists);
+int						process_command(char *line, t_lists *lists, \
+							int last_status);
 
 /**
  * @brief Check if there are invalid characters ('\') or '|', ';', '&'
@@ -229,7 +229,7 @@ void					translate_str(char *str);
  * @param status The error status of the program
  * @returns 1 if failts. Otherwise, 0.
  */
-int						fill_nodes(char *line, t_node **head, t_lists *lists);
+int						fill_nodes(char *line, t_node **head, t_lists *lists, int last_status);
 
 /**
  * @brief Add a new node to the command list
@@ -238,14 +238,12 @@ int						fill_nodes(char *line, t_node **head, t_lists *lists);
  */
 void					ft_add_node_back(t_node **head, t_node *new_node);
 
-/**
- * @brief Split the string in three parts: the command,
-		their args and the redirections
- * @param str The string
- * @param command The command struct
- * @returns 0 if occurs any error. Otherwise 1.
- */
-int						new_command(char *str, t_command **command);
+
+/***************************************
+		node_creation.c
+***************************************/
+
+int						is_redir(char *str, int pos);
 
 /**
  * @brief Split the string in three parts: the command,
@@ -255,6 +253,23 @@ int						new_command(char *str, t_command **command);
  * @returns 0 if occurs any error. Otherwise 1.
  */
 int						new_command(char *str, t_command **command);
+
+
+/***************************************
+		node_creation.c
+***************************************/
+
+/**
+ * @brief Create redirection and move str pointer to
+		next arg
+ * @param str The string
+ * @param command The command struct
+ * @param *i str position pointer
+ * @param *redir_pos redirection position on command struct
+ * @returns 0 if occurs any error. Otherwise PARSING_ERR
+ */
+
+int	parse_redir(char *str, t_command **command, int *i, int *redir_pos);
 
 /**
  * @brief Truncs the str between init and end position, used for getting parts
@@ -507,14 +522,6 @@ int						ft_exit(char **str, t_env **env, t_env **exp,
 		print_command_not_found
 ***************************************/
 
-/**
- * @brief Print error caused by command not found
- * @param command The command
- * @param errno The error status
- */
-
-void					print_error(char *command, int erno);
-
 /***************************************
 		executor
 ***************************************/
@@ -608,7 +615,16 @@ char					*get_path_list(char *command, t_env *env);
  */
 int						get_absolute_path(char *path_list, char *command,
 							t_node *head);
+/***************************************
+ *		execute_child.c
+ * ************************************/
 
+void	execute_child(t_lists *lists, t_node **nodes, int *fd, \
+		int prev_fd);
+
+/***************************************
+ *		execute_commands
+ **************************************/
 /**
  * @brief Executes all the commands
  * @param head The head of the commands list
@@ -624,13 +640,16 @@ int						execute_commands(t_node **head, t_lists *lists);
  */
 int						delete_backslash(t_node **head);
 
+/***************************************
+ *		 set_fd
+ * ************************************/
 int						set_fd(t_node **head);
 
 /***************************************
 		signals
 ***************************************/
 
-void					signal_d(t_node *node, t_lists *lists);
+void					signal_d(t_lists *lists);
 void					sigint_handler(int signal);
 void					init_signals(void);
 

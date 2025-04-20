@@ -72,5 +72,6 @@ NOTAS:
    -> pwd con argumento no valido
 
 COSAS POR HACER
-is_redir ha dado invalid read en valgrind cuando ejecutas heredoc
-echo $? ha dado invalid read
+> echo hola | export ejecuta echo en STD_OUT y no export
+> las redirecciones tienen fallos en algun punto
+    $ cat prueba.txt | tr '$' '~' > prueba.txt
