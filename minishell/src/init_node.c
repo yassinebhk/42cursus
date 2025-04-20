@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_node.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 10:13:13 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 13:01:18 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static void	find_pipe(char *line, int *pos)
 	(*pos)++;
 }
 
-static t_node	*fill_node(char *line, int *pos, t_lists *lists, \
-						int last_status)
+static t_node	*fill_node(char *line, int *pos, t_lists *lists,
+		int last_status)
 {
 	int		init_pos;
 	t_node	*new_node;
@@ -78,8 +78,8 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists, \
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
 		return (free_lists(new_node->var_list->env, new_node->var_list->exp),
-			free(new_node->var_list), free(new_node),
-			perror(ENO_MEM_ERROR), NULL);
+			free(new_node->var_list), free(new_node), perror(ENO_MEM_ERROR),
+			NULL);
 	return (new_node);
 }
 

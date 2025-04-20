@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/18 18:41:37 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 12:55:20 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,10 @@ static char	*process_str(t_node *tmp, char *str, int last_status)
 			quotes = 0;
 		else if (quotes == 2 && str[pos] == DOUBLE_QUOTE)
 			quotes = 0;
-		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR \
-				&& (!ft_isspace(str[pos + 1]) \
-				&& str[pos + 1] != DOUBLE_QUOTE))
-			new_arg = load_variable(tmp, (char *[]){str, new_arg}, last_status, &pos);
+		else if ((!quotes || quotes == 2) && str[pos] == DOLLAR
+			&& (!ft_isspace(str[pos + 1]) && str[pos + 1] != DOUBLE_QUOTE))
+			new_arg = load_variable(tmp, (char *[]){str, new_arg}, last_status,
+					&pos);
 		else
 			new_arg = strjoin_char(new_arg, str[pos], '\0');
 	}
@@ -120,8 +120,8 @@ int	expand_commands(t_node **head)
 			arg_needs_expansion = dollar_or_quotes(tmp->content->args[i]);
 			if (!arg_needs_expansion)
 				continue ;
-			expanded = process_str(tmp, tmp->content->args[i], \
-									(*head)->last_status);
+			expanded = process_str(tmp, tmp->content->args[i],
+					(*head)->last_status);
 			if (!expanded)
 				return (FN_FAILURE);
 			free(tmp->content->args[i]);
