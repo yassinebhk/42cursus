@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 10:54:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 11:14:33 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 12:57:06 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	is_redir(char *str, int pos)
 
 static inline int	valid_char_filename(char c)
 {
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-' \
-			|| c == '_' || c == '.' || ((c >= '0') && (c <= '9')));
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-'
+		|| c == '_' || c == '.' || ((c >= '0') && (c <= '9')));
 }
 
 static int	handle_type_redir(char *str, int *pos, t_redir *redir)

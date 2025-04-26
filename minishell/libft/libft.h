@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 12:09:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/01/31 11:46:21 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/20 12:59:23 by ybouhaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 
 /**
- * @brief Checks if the character passed as argument is considered a 'space' 
+ * @brief Checks if the character passed as argument is considered a 'space'
 		character
  * @param c The character
  * @returns Returns one if the character is a space character and
 		returns zero if the character is not a space character
 */
-int			ft_isspace(int c);
+int					ft_isspace(int c);
 /**
  * @brief Converts a lower-case letter to the corresponding
 		upper-case letter.  The argument must be representable as an unsigned
@@ -215,7 +215,7 @@ char				*ft_strrchr(const char *s, int c);
 */
 char				**ft_split(char const *s, char c);
 /**
- * @brief A modified version of split where only separate by one time by 
+ * @brief A modified version of split where only separate by one time by
  * 		the delimiter.
  * @param s The string to separe
  * @param c The character using as dellimiter

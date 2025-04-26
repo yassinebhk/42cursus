@@ -6,7 +6,7 @@
 /*   By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 09:41:31 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/19 09:42:07 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:47:19 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	exec_external(t_lists *lists, t_node *head, t_node *curr)
 	char	*path_list;
 
 	path_list = get_path_list("PATH\0", curr->var_list->env);
-	if (!path_list || get_absolute_path(path_list, curr->content->command,
+	if (get_absolute_path(path_list, curr->content->command,
 			curr))
 		exit_child(NULL, head, lists, -1);
 	execve(curr->content->command, curr->content->args, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 11:06:05 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:24:26 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <stdlib.h>
 
 /***************************************
 	DEFINE
@@ -170,7 +170,7 @@ extern int				g_signal;
 
 void					print_command(t_command *cmd);
 
-int						process_command(char *line, t_lists *lists, \
+int						process_command(char *line, t_lists *lists,
 							int last_status);
 
 /**
@@ -229,7 +229,8 @@ void					translate_str(char *str);
  * @param status The error status of the program
  * @returns 1 if failts. Otherwise, 0.
  */
-int						fill_nodes(char *line, t_node **head, t_lists *lists, int last_status);
+int						fill_nodes(char *line, t_node **head, t_lists *lists,
+							int last_status);
 
 /**
  * @brief Add a new node to the command list
@@ -237,7 +238,6 @@ int						fill_nodes(char *line, t_node **head, t_lists *lists, int last_status);
  * @param new_node The new node
  */
 void					ft_add_node_back(t_node **head, t_node *new_node);
-
 
 /***************************************
 		node_creation.c
@@ -254,7 +254,6 @@ int						is_redir(char *str, int pos);
  */
 int						new_command(char *str, t_command **command);
 
-
 /***************************************
 		node_creation.c
 ***************************************/
@@ -269,7 +268,8 @@ int						new_command(char *str, t_command **command);
  * @returns 0 if occurs any error. Otherwise PARSING_ERR
  */
 
-int	parse_redir(char *str, t_command **command, int *i, int *redir_pos);
+int						parse_redir(char *str, t_command **command, int *i,
+							int *redir_pos);
 
 /**
  * @brief Truncs the str between init and end position, used for getting parts
@@ -445,7 +445,7 @@ int						valid_var(char *var);
  * @param head first node
  * @param lists env and exp lists
  * @returns exit state of the command
-*/
+ */
 int						execute_built(t_node **head, t_lists *lists);
 
 /**
@@ -558,8 +558,8 @@ int						dollar_or_quotes(char *arg);
  */
 char					*find_var_value(t_env *env_list, char *var_name);
 
-char					*load_variable(t_node *tmp, char **strings, \
-								int last_exit_status, int *pos);
+char					*load_variable(t_node *tmp, char **strings,
+							int last_exit_status, int *pos);
 
 /*****************************************
  * expand.c
@@ -569,7 +569,7 @@ char					*expand_variable(t_node *tmp, char *str, int arr[3]);
 
 int						find_var_delimeter(char *str, int pos);
 
-char					*strjoin_char(char *s1, char c, char terminator);
+char					*strjoin_char(char *s1, char c);
 
 /**
  * @brief Assings args of the commands by expanding variables
@@ -577,19 +577,55 @@ char					*strjoin_char(char *s1, char c, char terminator);
  */
 int						expand_commands(t_node **head);
 
+/*****************************************
+ * execute_one_command.c
+ * *************************************/
+
 /**
- * @brief Executes one command
+ * @brief Handles one command execution
  * @param head The head of the commands list
  * @param lists The original lists
  * @returns 1 if occurs an error. Otherwise, 0.
  */
 int						execute_one_command(t_node **head, t_lists *lists);
 
+/*****************************************
+ * redirect.c
+ * *************************************/
+
+/**
+ * @brief Redirects command
+ * @param head The head of the commands list
+ * @returns 1 if occurs an error. Otherwise, 0.
+ */
+int						redirect(t_node *head);
+
+/*****************************************
+ * exec_comm.c
+ * *************************************/
+
+/**
+ * @brief Executes one command
+ * @param head The head of the commands list
+ * @param input Type of input redirection
+ * @param output Type of output redirection
+ * @returns Status of the command execution
+ */
+int						exec_comm(t_node *head, int input, int output);
+
+/*****************************************
+ * heredoc.c
+ * *************************************/
+
 /**
  * @brief Creates the heredoc temporal file
  * @param delimiter The delimiter
  */
 void					read_heredoc(const char *delimiter);
+
+/*****************************************
+ * execute_comm_utils.c
+ * *************************************/
 
 /**
  * @brief Checks if the command is a built_in
@@ -619,11 +655,11 @@ int						get_absolute_path(char *path_list, char *command,
  *		execute_child.c
  * ************************************/
 
-void	execute_child(t_lists *lists, t_node **nodes, int *fd, \
-		int prev_fd);
+void					execute_child(t_lists *lists, t_node **nodes, int *fd,
+							int prev_fd);
 
 /***************************************
- *		execute_commands
+ *		execute_commands.c
  **************************************/
 /**
  * @brief Executes all the commands
@@ -633,15 +669,8 @@ void	execute_child(t_lists *lists, t_node **nodes, int *fd, \
  */
 int						execute_commands(t_node **head, t_lists *lists);
 
-/**
- * @brief Remove the backslash from the strings
- * @param head The head of the commands list
- * @returns 1 if occurs an error. Otherwise, 0.
- */
-int						delete_backslash(t_node **head);
-
 /***************************************
- *		 set_fd
+ *			set_fd
  * ************************************/
 int						set_fd(t_node **head);
 

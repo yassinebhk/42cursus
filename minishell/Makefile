@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
-#    Updated: 2025/04/20 11:00:35 by maxgarci         ###   ########.fr        #
+#    Created: 2025/04/26 18:46:15 by maxgarci          #+#    #+#              #
+#    Updated: 2025/04/26 18:46:17 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,9 +38,9 @@ SRC 				:= main.c env_vars.c builts.c echo.c cd.c free.c\
 						unset.c print_lists.c export_two.c exit.c cd_update.c \
 						count_pipes.c parsing.c export_utils.c \
 						translate_str.c invalid_character.c init_node.c init_node_utils.c\
-						process_command.c node_creation.c execute_one_command.c \
-						execute_commands.c execute_child.c delete_backslash.c set_fd.c \
-						signals.c expand.c expand_utils.c heredoc.c parse_redir.c
+						process_command.c node_creation.c execute_one_command.c exec_comm.c \
+						exec_comm_utils.c execute_commands.c execute_child.c redirect.c \
+						set_fd.c signals.c expand.c expand_utils.c heredoc.c parse_redir.c
 
 SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
 
