@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+         #
+#    By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/04/26 18:46:15 by maxgarci          #+#    #+#              #
-#    Updated: 2025/04/26 18:46:17 by maxgarci         ###   ########.fr        #
+#    Created: 2024/12/28 18:51:22 by maxgarci          #+#    #+#              #
+#    Updated: 2025/04/30 11:00:53 by maxgarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ RED		= \033[31;1m
 NAME				:= minishell
 
 CC 				:= cc
-CFLAGS 				:= -g -Wall -Wextra -Werror 
+CFLAGS 				:= -Wall -Wextra -Werror 
 INCLUDES 			:= -I./include -I./libft #-fsanitize=address
 LIBRARIES			:= -lreadline 
 
@@ -40,7 +40,8 @@ SRC 				:= main.c env_vars.c builts.c echo.c cd.c free.c\
 						translate_str.c invalid_character.c init_node.c init_node_utils.c\
 						process_command.c node_creation.c execute_one_command.c exec_comm.c \
 						exec_comm_utils.c execute_commands.c execute_child.c redirect.c \
-						set_fd.c signals.c expand.c expand_utils.c heredoc.c parse_redir.c
+						set_fd.c signals.c expand.c expand_utils1.c expand_utils2.c heredoc.c \
+						parse_redir.c get_absolute_path.c
 
 SRCS				:= $(addprefix $(SRC_PATH), $(SRC))
 

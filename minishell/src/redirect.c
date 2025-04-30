@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:20:33 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 14:20:51 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:54:34 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,10 @@ int	redirect(t_node *head)
 	num_input = find_input_redirection(head->content);
 	num_output = find_output_redirection(head->content);
 	if (num_input > 0)
-	{
-		if (handle_input_redirections(head, num_output))
-			return (FN_FAILURE);
-	}
+		return (handle_input_redirections(head, num_output));
 	else if (num_output > 0)
-	{
-		if (handle_output_redirections(head, 0))
-			return (FN_FAILURE);
-	}
+		return (handle_output_redirections(head, 0));
 	else
-	{
-		if (exec_comm(head, 0, 0))
-			return (FN_FAILURE);
-	}
+		return (exec_comm(head, 0, 0));
 	return (FN_SUCCESS);
 }

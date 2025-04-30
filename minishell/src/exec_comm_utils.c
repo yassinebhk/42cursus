@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:05:41 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/26 17:41:15 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:40:56 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,39 +31,4 @@ int	is_built_in(char *command)
 		|| !ft_strcmp(command, "exit"))
 		return (FN_FAILURE);
 	return (FN_SUCCESS);
-}
-
-int	get_absolute_path(char *path_list, char *command, t_node *head)
-{
-	int		pos;
-	char	*tmp;
-	char	**split;
-	char	*path;
-	char	*absolute_dir;
-
-	if (!access((head)->content->command, X_OK))
-		return (FN_SUCCESS);
-	if (!path_list)
-	{
-		ft_putstr_fd(command, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		return (FN_FAILURE);
-	}
-	pos = -1;
-	split = ft_split(path_list, ':');
-	while (split[++pos])
-	{
-		path = split[pos];
-		tmp = ft_strjoin(path, "/");
-		absolute_dir = ft_strjoin(tmp, command);
-		if (!access(absolute_dir, e_X_OK))
-			return (free(head->content->command),
-				head->content->command = ft_strdup(absolute_dir),
-				ft_free(split), free(tmp), free(absolute_dir), FN_SUCCESS);
-		free(tmp);
-		free(absolute_dir);
-	}
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	return (ft_free(split), FN_FAILURE);
 }

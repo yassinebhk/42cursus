@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 14:07:54 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 17:18:33 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:41:07 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	child_comm_execution(t_node *head)
 		perror(NO_EXEC_PERM_ERROR);
 	perror("execve failed");
 	free_node(head);
-	exit(EXIT_FAILURE);
+	exit(COMMAND_NOT_FOUND);
 }
 
 int	exec_comm(t_node *head, int input, int output)
@@ -87,11 +87,14 @@ int	exec_comm(t_node *head, int input, int output)
 	else if (!pid)
 	{
 		redirect_uniq_child(head, input, output);
-		child_comm_execution(head);
+		if (head->content->command)
+			child_comm_execution(head);
+		else
+			exit(EXIT_SUCCESS);
 	}
 	else
 		wait(&status);
 	if (input == r_heredoc)
 		unlink(HEREDOC_FILENAME);
-	return (status);
+	return (WEXITSTATUS(status));
 }

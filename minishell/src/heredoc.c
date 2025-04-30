@@ -6,7 +6,7 @@
 /*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+		+#+		*/
 /*												+#+#+#+#+#+   +#+			*/
 /*   Created: 2024/11/02 22:08:48 by maxgarci			#+#	#+#			 */
-/*   Updated: 2025/02/09 11:28:16 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:55:05 by maxgarci         ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ void	read_heredoc(const char *delimiter)
 		ft_printf(PROMPT_HEREDOC);
 		fflush(stdout);
 		line = get_next_line(STDIN_FILENO);
-		if (line == NULL)
-			break ;
-		if (ft_strncmp(line, delimiter, delim_len) == 0
-			&& line[delim_len] == '\n')
+		if (line == NULL || (ft_strncmp(line, delimiter, delim_len) == 0
+				&& line[delim_len] == '\n'))
 			break ;
 		write(fd, line, strlen(line));
+		free(line);
 	}
+	if (line)
+		free(line);
 	close(fd);
 }

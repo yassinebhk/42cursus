@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:21:51 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/20 10:10:27 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/27 13:02:26 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	free_content(t_command *command)
 	int	pos;
 
 	free_command(command);
-	if (command->num_args > 0 && command->args)
+	if (command->args)
 	{
 		pos = -1;
 		while (++pos <= command->num_args && command->args[pos])

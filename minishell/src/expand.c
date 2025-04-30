@@ -6,29 +6,11 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 17:09:35 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/26 18:43:00 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:36:44 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*strjoin_char(char *s1, char c)
-{
-	size_t	len1;
-	size_t	i;
-	char	*new_str;
-
-	len1 = ft_strlen(s1);
-	new_str = (char *)malloc(len1 + 2);
-	if (!new_str)
-		return (NULL);
-	i = -1;
-	while (++i < len1)
-		new_str[i] = s1[i];
-	new_str[i] = c;
-	new_str[i + 1] = '\0';
-	return (free(s1), new_str);
-}
 
 char	*expand_variable(t_node *tmp, char *str, int arr[3])
 {
@@ -55,24 +37,6 @@ char	*expand_variable(t_node *tmp, char *str, int arr[3])
 	if (var_value)
 		return (ft_strdup(var_value));
 	return (ft_strdup(""));
-}
-
-int	find_var_delimeter(char *str, int pos)
-{
-	int	next;
-	int	valid_char;
-
-	next = pos + 1;
-	while (str[next])
-	{
-		valid_char = var_char_is_valid(str[next]);
-		if (!valid_char)
-			return (next);
-		next++;
-	}
-	if (str[next - 1] == SINGLE_QUOTE || str[next - 1] == DOUBLE_QUOTE)
-		return (next - 1);
-	return (next);
 }
 
 static char	*process_str(t_node *tmp, char *str, int last_status)
@@ -104,6 +68,28 @@ static char	*process_str(t_node *tmp, char *str, int last_status)
 	return (new_arg);
 }
 
+static int	expand_argument(t_node *tmp, int i, char *expanded)
+{
+	if (!expanded)
+		return (FN_FAILURE);
+	free(tmp->content->args[i]);
+	tmp->content->args[i] = ft_strdup(expanded);
+	if (!tmp->content->args[i])
+		return (perror(ENO_MEM_ERROR), FN_FAILURE);
+	return (FN_SUCCESS);
+}
+
+static int	update_command_if_needed(t_node *tmp)
+{
+	free(tmp->content->command);
+	tmp->content->command = malloc(sizeof(char) * \
+									(strlen(tmp->content->args[0]) + 1));
+	if (!tmp->content->command)
+		return (perror(ENO_MEM_ERROR), FN_FAILURE);
+	strcpy(tmp->content->command, tmp->content->args[0]);
+	return (FN_SUCCESS);
+}
+
 int	expand_commands(t_node **head)
 {
 	int		i;
@@ -122,17 +108,10 @@ int	expand_commands(t_node **head)
 				continue ;
 			expanded = process_str(tmp, tmp->content->args[i],
 					(*head)->last_status);
-			if (!expanded)
+			if (expand_argument(tmp, i, expanded) == FN_FAILURE)
 				return (FN_FAILURE);
-			free(tmp->content->args[i]);
-			tmp->content->args[i] = ft_strdup(expanded);
-			if (i == 0)
-			{
-				tmp->content->command = malloc(sizeof(char) * (strlen(tmp->content->args[0]) + 1));
-				if (!tmp->content->command)
-					return (perror(ENO_MEM_ERROR), FN_FAILURE);
-				strcpy(tmp->content->command, tmp->content->args[0]);
-			}
+			if (i == 0 && update_command_if_needed(tmp) == FN_FAILURE)
+				return (FN_FAILURE);
 			free(expanded);
 		}
 		tmp = tmp->next;

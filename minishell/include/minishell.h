@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/26 18:24:26 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/28 01:40:11 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@
 # define MAX_LINE_LENGTH 1024
 # define PROMPT_HEREDOC "heredoc> "
 # define HEREDOC_FILENAME "/tmp/.heredoc_tmp"
+
+# define YES 1
+# define NO 0
 
 /***************************************
 		ENUM

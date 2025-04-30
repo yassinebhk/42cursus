@@ -6,7 +6,7 @@
 /*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 16:09:37 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/26 17:35:17 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/04/29 10:47:04 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 int	execute_one_command(t_node **head, t_lists *lists)
 {
 	char	*path_list;
+	int		status;
 
-	if (is_built_in((*head)->content->command))
-		return (execute_built(head, lists));
-	path_list = get_path_list("PATH\0", lists->env);
-	if (get_absolute_path(path_list, (*head)->content->command, *head))
-		return (COMMAND_NOT_FOUND);
-	if (redirect(*head))
-		return (FN_FAILURE);
-	return (FN_SUCCESS);
+	status = FN_SUCCESS;
+	if ((*head)->content->command && access((*head)->content->command, e_X_OK))
+	{
+		if (is_built_in((*head)->content->command))
+			return (execute_built(head, lists));
+		path_list = get_path_list("PATH\0", lists->env);
+		status = get_absolute_path(path_list, (*head)->content->command, *head);
+	}
+	if (status == FN_SUCCESS)
+		return (redirect(*head));
+	else
+		return (status);
 }
