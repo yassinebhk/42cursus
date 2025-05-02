@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:05:56 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/29 09:34:25 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/02 16:13:04 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,11 @@ int	execute_commands(t_node **head, t_lists *lists)
 	if (set_fd(head))
 		return (EXIT_FAILURE);
 	tmp = *head;
+	status = FN_SUCCESS;
 	prev_fd_in = tmp->fd_in;
 	while (tmp)
 	{
-		if (!handle_pipe(fd))
+		if (handle_pipe(fd) == FN_SUCCESS)
 			status = handle_fork((t_node *[]){tmp, *head}, lists, fd,
 					prev_fd_in);
 		if (prev_fd_in)

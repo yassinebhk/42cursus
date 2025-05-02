@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_child.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 09:41:31 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/26 17:47:19 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:09:01 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void	exit_child(const char *str, t_node *head, t_lists *lists, int fd)
 	free_lists(lists->env, lists->exp);
 	if (fd != -1)
 		close(fd);
+	if (!str)
+		exit(EXIT_SUCCESS);
 	exit(EXIT_FAILURE);
 }
 
@@ -56,6 +58,8 @@ static void	exec_external(t_lists *lists, t_node *head, t_node *curr)
 {
 	char	*path_list;
 
+	if (!curr->content->command)
+		exit_child(NULL, head, lists, -1);
 	path_list = get_path_list("PATH\0", curr->var_list->env);
 	if (get_absolute_path(path_list, curr->content->command,
 			curr))
@@ -76,8 +80,6 @@ void	execute_child(t_lists *lists, t_node **nodes, int *fd,
 		close(fd[1]);
 	if (curr == head)
 		close(fd[0]);
-	if (!curr->content->command)
-		exit_child("no command found", head, lists, -1);
 	redirect_fds(lists, nodes, fd, &prev_fd);
 	if (is_built_in(curr->content->command))
 	{
