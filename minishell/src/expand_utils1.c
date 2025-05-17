@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*   expand_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:27:15 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/26 18:04:53 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/15 08:08:31 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,6 @@ char	*ft_strndup(const char *s, size_t n)
 		new_str[i] = s[i];
 	new_str[len] = '\0';
 	return (new_str);
-}
-
-int	var_char_is_valid(char c)
-{
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
-		|| c == '?');
 }
 
 int	dollar_or_quotes(char *arg)
@@ -80,4 +74,9 @@ char	*load_variable(t_node *tmp, char **strings, int last_status, int *pos)
 	free(var_value);
 	*pos = var_end_pos - 1;
 	return (strings[1]);
+}
+
+int	char_is_valid(char c)
+{
+	return (c > ' ' && c != ';' && c != '*' && c != '~');
 }

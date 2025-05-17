@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_node.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:45:02 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/20 13:01:18 by ybouhaik         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:42:26 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_command	*get_content(char *line, int init_pos, int end_pos)
 
 	command = (t_command *)ft_calloc(1, sizeof(t_command));
 	if (!command)
-		return (perror(ENO_MEM_ERROR), NULL);
+		return (ft_putstr_fd(ENO_MEM_ERROR, 2), NULL);
 	str = (char *)ft_calloc(1, sizeof(char) * (end_pos - init_pos));
 	size = ft_strlcpy(str, line + init_pos, end_pos - init_pos);
 	if (!size)
@@ -65,10 +65,10 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists,
 	find_pipe(line, pos);
 	new_node = (t_node *)ft_calloc(1, sizeof(t_node));
 	if (!new_node)
-		return (perror(ENO_MEM_ERROR), NULL);
+		return (ft_putstr_fd(ENO_MEM_ERROR, 2), NULL);
 	new_node->var_list = (t_lists *)ft_calloc(1, sizeof(t_lists));
 	if (!new_node->var_list)
-		return (free(new_node), perror(ENO_MEM_ERROR), NULL);
+		return (free(new_node), ft_putstr_fd(ENO_MEM_ERROR, 2), NULL);
 	new_node->var_list->env = ft_listdup(lists->env);
 	new_node->var_list->exp = ft_listdup(lists->exp);
 	new_node->last_status = last_status;
@@ -78,8 +78,8 @@ static t_node	*fill_node(char *line, int *pos, t_lists *lists,
 	new_node->content = get_content(line, init_pos, *pos);
 	if (!new_node->content)
 		return (free_lists(new_node->var_list->env, new_node->var_list->exp),
-			free(new_node->var_list), free(new_node), perror(ENO_MEM_ERROR),
-			NULL);
+			free(new_node->var_list), free(new_node),
+			ft_putstr_fd(ENO_MEM_ERROR, 2), NULL);
 	return (new_node);
 }
 

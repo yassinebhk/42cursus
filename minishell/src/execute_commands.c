@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 17:05:56 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/05/02 16:13:04 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:18:22 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,30 @@ static int	handle_pipe(int fd[2])
 {
 	if (pipe(fd) == -1)
 	{
-		perror("pipe function failed");
+		ft_putstr_fd("pipe function failed", 2);
 		return (FN_FAILURE);
 	}
 	return (FN_SUCCESS);
 }
 
 static int	handle_fork(t_node **nodes, t_lists *lists, int fd[2],
-							int prev_fd_in)
+		int prev_fd_in)
 {
-	t_node	*tmp;
-	t_node	*head;
 	int		pid;
 	int		status;
 
-	tmp = nodes[0];
-	head = nodes[1];
+	status = 0;
 	pid = fork();
 	if (pid < 0)
 	{
-		perror("fork failed");
+		ft_putstr_fd("fork failed", 2);
 		return (FN_FAILURE);
 	}
 	if (pid == 0)
 	{
 		if (prev_fd_in != -1)
 			close(fd[0]);
-		execute_child(lists, (t_node *[]){head, tmp}, fd, prev_fd_in);
+		execute_child(lists, (t_node *[]){nodes[1], nodes[0]}, fd, prev_fd_in);
 	}
 	else
 	{

@@ -3,55 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:44:36 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/26 18:43:42 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:02:12 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	skip_argument(char *str, int *read_pos)
+static int	is_non_empty_arg(char *str, int start, int end)
 {
-	int	squote_opened;
-	int	dquote_opened;
-	int	in_quotes;
-
-	squote_opened = 0;
-	dquote_opened = 0;
-	in_quotes = 0;
-	while ((str[*read_pos] && !ft_isspace(str[*read_pos]) && !is_redir(str,
-				*read_pos)) || squote_opened || dquote_opened)
+	while (start < end)
 	{
-		if (!in_quotes && (squote_opened || dquote_opened))
-			in_quotes = 1;
-		check_quotes(str[*read_pos], &squote_opened, &dquote_opened);
-		++(*read_pos);
+		if (!ft_isspace(str[start]) && str[start] != '"' && str[start] != '\'')
+			return (1);
+		start++;
 	}
+	return (0);
 }
 
 static void	count_args_redir(char *str, int *n_args, int *n_redir)
 {
 	int	pos;
+	int	arg_start;
 
 	pos = 0;
 	while (str[pos])
 	{
 		if (is_redir(str, pos))
 		{
-			while (is_redir(str, pos))
-				pos++;
-			while (ft_isspace(str[pos]))
-				pos++;
-			while (str[pos] > ' ' && !is_redir(str, pos))
-				pos++;
+			pos = skip_redir_token(str, pos);
+			pos = skip_redir_filename(str, pos);
 			(*n_redir)++;
 		}
 		else
 		{
+			arg_start = pos;
 			skip_argument(str, &pos);
-			(*n_args)++;
+			if (is_non_empty_arg(str, arg_start, pos))
+				(*n_args)++;
 		}
 		clear_spaces(str, &pos);
 	}
@@ -68,7 +59,7 @@ static int	parse_arg(char *str, t_command **command, int *i, int *args_pos)
 	(*command)->args[*args_pos] = (char *)malloc(sizeof(char) * ((*i)
 				- new_arg_index + 1));
 	if (!(*command)->args[*args_pos])
-		return (perror(ENO_MEM_ERROR), ENO_MEM);
+		return (ft_putstr_fd(ENO_MEM_ERROR, 2), ENO_MEM);
 	while (new_arg_index < *i)
 		(*command)->args[*args_pos][cp_i++] = str[new_arg_index++];
 	(*command)->args[(*args_pos)++][cp_i] = '\0';
@@ -77,7 +68,7 @@ static int	parse_arg(char *str, t_command **command, int *i, int *args_pos)
 		(*command)->command = malloc(sizeof(char) * (strlen((*command)->args[0])
 					+ 1));
 		if (!(*command)->command)
-			return (perror(ENO_MEM_ERROR), FN_FAILURE);
+			return (ft_putstr_fd(ENO_MEM_ERROR, 2), FN_FAILURE);
 		strcpy((*command)->command, (*command)->args[0]);
 	}
 	return (FN_SUCCESS);
@@ -122,17 +113,17 @@ int	new_command(char *str, t_command **command)
 	(*command)->args = (char **)malloc(sizeof(char *) * ((*command)->num_args
 				+ 1));
 	if (!(*command)->args)
-		return (perror(ENO_MEM_ERROR), FN_FAILURE);
+		return (ft_putstr_fd(ENO_MEM_ERROR, 2), FN_FAILURE);
 	(*command)->args[n_args] = NULL;
 	if (n_redir)
 	{
 		(*command)->redir = (t_redir **)malloc(sizeof(t_redir *) * n_redir);
 		if (!(*command)->redir)
-			return (perror(ENO_MEM_ERROR), FN_FAILURE);
+			return (ft_putstr_fd(ENO_MEM_ERROR, 2), FN_FAILURE);
 	}
 	else
 		(*command)->redir = NULL;
 	if (create_command(str, command))
-		return (perror(PARSING_ERROR), FN_FAILURE);
+		return (ft_putstr_fd(PARSING_ERROR, 2), FN_FAILURE);
 	return (FN_SUCCESS);
 }

@@ -6,16 +6,16 @@
 /*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 09:41:31 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/05/02 17:09:01 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:46:26 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	exit_child(const char *str, t_node *head, t_lists *lists, int fd)
+static void	exit_child(char *str, t_node *head, t_lists *lists, int fd)
 {
 	if (str)
-		perror(str);
+		ft_putstr_fd(str, 2);
 	free_node(head);
 	free_lists(lists->env, lists->exp);
 	if (fd != -1)
@@ -35,22 +35,22 @@ static void	redirect_fds(t_lists *lists, t_node **nodes, int *fd, int *prev_fd)
 	if (curr->fd_out != STDOUT_FILENO)
 	{
 		if (dup2(curr->fd_out, STDOUT_FILENO) == -1)
-			exit_child("dup2 fd_out to file failed ", head, lists, -1);
+			exit_child("dup2 fd_out to file failed\n", head, lists, -1);
 	}
 	else if (curr->next)
 	{
 		if (dup2(fd[1], STDOUT_FILENO) == -1)
-			exit_child("dup2 fd_out failed ", head, lists, fd[1]);
+			exit_child("dup2 fd_out failed\n", head, lists, fd[1]);
 	}
 	if (curr->fd_in != STDIN_FILENO)
 	{
 		if (dup2(curr->fd_in, STDIN_FILENO) == -1)
-			exit_child("dup2 fd_in from file failed ", head, lists, -1);
+			exit_child("dup2 fd_in from file failed\n", head, lists, -1);
 	}
 	else
 	{
 		if (dup2((*prev_fd), STDIN_FILENO) == -1)
-			exit_child("dup2 fd_in failed ", head, lists, fd[0]);
+			exit_child("dup2 fd_in failed\n", head, lists, fd[0]);
 	}
 }
 
@@ -65,7 +65,7 @@ static void	exec_external(t_lists *lists, t_node *head, t_node *curr)
 			curr))
 		exit_child(NULL, head, lists, -1);
 	execve(curr->content->command, curr->content->args, 0);
-	exit_child("execv: ", head, lists, -1);
+	exit_child("execv:\n", head, lists, -1);
 }
 
 void	execute_child(t_lists *lists, t_node **nodes, int *fd,

@@ -45,7 +45,10 @@ void	signal_d(t_lists *lists)
 void	signal_quit(int signal)
 {
 	if (signal == SIGQUIT)
+	{
 		write(2, "Quit (core dumped)\n", 20);
+		_exit(131);
+	}
 }
 
 void	init_signals(void)

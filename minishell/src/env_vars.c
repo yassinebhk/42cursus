@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:34:21 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 11:34:25 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:39:11 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	set(t_env **list, char *curr, char *old, int list_type)
 		{
 			free(curr);
 			free(old);
-			perror("malloc failed");
+			ft_putstr_fd("malloc failed", 2);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -34,7 +34,7 @@ static void	set(t_env **list, char *curr, char *old, int list_type)
 		{
 			free(curr);
 			free(old);
-			perror("malloc failed");
+			ft_putstr_fd("malloc failed", 2);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -54,7 +54,7 @@ void	set_dirs_env(t_env **env, char *curr, char *old)
 		{
 			free(curr);
 			free(old);
-			perror("malloc failed");
+			ft_putstr_fd("malloc failed", 2);
 			exit(EXIT_FAILURE);
 		}
 		ft_add_back(env, old_dir);
@@ -76,7 +76,7 @@ void	set_dirs_exp(t_env **exp, char *curr, char *old)
 		{
 			free(curr);
 			free(old);
-			perror("malloc failed");
+			ft_putstr_fd("malloc failed", 2);
 			exit(EXIT_FAILURE);
 		}
 		ft_add_back(exp, old_dir);

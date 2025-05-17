@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 18:36:52 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/04/28 01:40:11 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/17 20:03:17 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,15 @@
  * ERROR MACROS
  */
 
-# define ENO_MEM_ERROR "minishell: Allocation failed, no memory available"
-# define PARSING_ERROR "minishell: Parsing failed"
-# define BAD_ASSIGNMENT_ERROR "minishell: Bad assignment"
-# define COMMAND_NOT_FOUND_ERROR "minishell: Command not found"
-# define VARIABLE_NOT_FOUND_ERROR "minishell: Variable not found"
-# define NO_EXEC_PERM_ERROR "minishell: Permission denied"
-# define SINGLE_QUOTE_ERROR "minishell: Missing single quote"
-# define DOUBLE_QUOTE_ERROR "minishell: Missing double quote"
+# define ENO_MEM_ERROR "minishell: Allocation failed, no memory available\n"
+# define PARSING_ERROR "minishell: Parsing failed\n"
+# define BAD_ASSIGNMENT_ERROR "minishell: Bad assignment\n"
+# define COMMAND_NOT_FOUND_ERROR "minishell: Command not found\n"
+# define VARIABLE_NOT_FOUND_ERROR "minishell: Variable not found\n"
+# define NO_EXEC_PERM_ERROR "minishell: Permission denied\n"
+# define SINGLE_QUOTE_ERROR "minishell: Missing single quote\n"
+# define DOUBLE_QUOTE_ERROR "minishell: Missing double quote\n"
+# define NO_SUCH_FILE "No such file or directory\n"
 
 # define NUM_ERRORS 2
 # define EXPORT_FLAG 1
@@ -545,7 +546,7 @@ char					*ft_strndup(const char *s, size_t n);
  * @param c character of the variable
  */
 
-int						var_char_is_valid(char c);
+int						char_is_valid(char c);
 
 /**
  * @brief Returns 1 if it finds a dollar or a quote character inside the command
@@ -684,5 +685,20 @@ int						set_fd(t_node **head);
 void					signal_d(t_lists *lists);
 void					sigint_handler(int signal);
 void					init_signals(void);
+void					signal_quit(int signal);
+
+/***************************************
+		process_str.c
+***************************************/
+
+char					*process_str(t_node *tmp, char *str, int last_status);
+
+/***************************************
+		process_str.c
+***************************************/
+
+void					skip_argument(char *str, int *read_pos);
+int						skip_redir_token(char *str, int pos);
+int						skip_redir_filename(char *str, int pos);
 
 #endif

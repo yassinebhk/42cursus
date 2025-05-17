@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:30:24 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/02/09 17:05:02 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:47:12 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ static int	move_to_path_env(char *new_dir, t_env **env, t_env **exp)
 	new_rel_dir = ft_strjoin(cwd, tmp);
 	if (new_dir && *new_dir == '/' && chdir(new_dir))
 	{
-		perror("cd absolute ");
+		ft_putstr_fd("cd absolute\n", 2);
 		return (free(old_dir), free(new_rel_dir), free(cwd), free(tmp), 1);
 	}
 	else if (*new_dir != '/' && chdir(new_rel_dir))
 	{
-		perror("cd relative ");
+		ft_putstr_fd("cd relative\n", 2);
 		return (free(old_dir), free(new_rel_dir), free(cwd), free(tmp), 1);
 	}
 	if (*new_dir == '/')
@@ -69,7 +69,7 @@ static int	change_directory(t_env **env, t_env **exp, char *var, int flag)
 	if (chdir(new_dir))
 	{
 		ft_putstr_fd(old_dir, 2);
-		perror(" parent does not exist: ");
+		ft_putstr_fd(" parent does not exist:\n", 2);
 		if (!flag)
 			free(new_dir);
 		return (free(old_dir), 1);

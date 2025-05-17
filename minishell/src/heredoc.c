@@ -22,7 +22,7 @@ void	read_heredoc(const char *delimiter)
 	fd = open(HEREDOC_FILENAME, O_CREAT | O_WRONLY | O_TRUNC, 0600);
 	if (fd == -1)
 	{
-		perror("Error opening heredoc file");
+		ft_putstr_fd("Error opening heredoc file", 2);
 		exit(FN_FAILURE);
 	}
 	while (1)

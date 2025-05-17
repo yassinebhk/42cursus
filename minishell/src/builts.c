@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builts.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 11:29:00 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/04/16 10:23:35 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:35:13 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static int	dup_file_descriptors(t_node **head)
 	if ((*head)->fd_in != STDIN_FILENO && (*head)->fd_in != -1)
 	{
 		if (dup2((*head)->fd_in, STDIN_FILENO) == -1)
-			return (perror("dup2 fd_in failed"), 1);
+			return (ft_putstr_fd("dup2 fd_in failed", 2), 1);
 		close((*head)->fd_in);
 	}
 	if ((*head)->fd_out != STDOUT_FILENO && (*head)->fd_out != -1)
 	{
 		if (dup2((*head)->fd_out, STDOUT_FILENO) == -1)
-			return (perror("dup2 fd_out failed"), 1);
+			return (ft_putstr_fd("dup2 fd_out failed", 2), 1);
 		close((*head)->fd_out);
 	}
 	return (0);
@@ -37,14 +37,14 @@ int	execute_built(t_node **head, t_lists *lists)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdin == -1 || saved_stdout == -1)
-		return (perror("Error saving original fd"), 1);
+		return (ft_putstr_fd("Error saving original fd", 2), 1);
 	if (set_fd(head))
 		return (FN_FAILURE);
 	dup_file_descriptors(head);
 	(*head)->last_status = find_built(head, &lists);
 	if (dup2(saved_stdin, STDIN_FILENO) == -1 || dup2(saved_stdout,
 			STDOUT_FILENO) == -1)
-		return (perror("Error restoring original fd"), 1);
+		return (ft_putstr_fd("Error restoring original fd", 2), 1);
 	close(saved_stdin);
 	close(saved_stdout);
 	return ((*head)->last_status);

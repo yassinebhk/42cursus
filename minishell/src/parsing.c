@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybouhaik <ybouhaik@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 09:34:08 by ybouhaik          #+#    #+#             */
-/*   Updated: 2025/01/29 11:28:31 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:41:31 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int	check_quotes_balance(int single_quote_count, int double_quote_count)
 {
 	if (single_quote_count % 2 != 0)
 	{
-		perror(SINGLE_QUOTE_ERROR);
+		ft_putstr_fd(SINGLE_QUOTE_ERROR, 2);
 		return (0);
 	}
 	if (double_quote_count % 2 != 0)
 	{
-		perror(DOUBLE_QUOTE_ERROR);
+		ft_putstr_fd(DOUBLE_QUOTE_ERROR, 2);
 		return (0);
 	}
 	return (1);

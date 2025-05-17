@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_node_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxgarci <maxgarci@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: maxgarci <maxgarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 14:17:20 by maxgarci          #+#    #+#             */
-/*   Updated: 2025/03/14 14:23:56 by maxgarci         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:42:46 by maxgarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_env	*ft_nodedup(t_env *node)
 
 	new_node = (t_env *)malloc(sizeof(t_env));
 	if (!new_node)
-		return (perror(ENO_MEM_ERROR), NULL);
+		return (ft_putstr_fd(ENO_MEM_ERROR, 2), NULL);
 	new_node->index = node->index;
 	new_node->key = ft_strdup(node->key);
 	new_node->next = NULL;
